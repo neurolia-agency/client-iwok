@@ -1,0 +1,824 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   DESIGN TOKENS — IWOK Muraliste
+   Source: pipeline/output/01-brand/, pipeline/output/02-art-direction/
+   Dernière mise à jour : 2026-02-23
+   ============================================ */
+
+:root {
+  /* ---------- Couleurs Sémantiques ---------- */
+
+  /* Background / Surfaces */
+  --background: oklch(0.98 0.01 90);       /* Craie #FAFAF7 */
+  --background-alt: oklch(0.96 0.01 80);   /* Sable #F5F2ED */
+  --background-dark: oklch(0.17 0.01 55);  /* Noir Mural #1C1917 */
+
+  --card: oklch(0.93 0.01 80);             /* Pierre #EDEAE4 */
+  --card-foreground: oklch(0.17 0.01 55);  /* Encre */
+
+  --popover: oklch(0.93 0.01 80);
+  --popover-foreground: oklch(0.17 0.01 55);
+
+  /* Textes */
+  --foreground: oklch(0.17 0.01 55);           /* Encre #1C1917 */
+  --foreground-heading: oklch(0.25 0.01 55);   /* Charbon #2D2926 */
+  --foreground-subtitle: oklch(0.43 0.01 55);  /* Graphite #57534E */
+  --muted-foreground: oklch(0.53 0.02 60);     /* Cendre #78716C */
+  --foreground-subtle: oklch(0.70 0.01 70);    /* Poussière #A8A29E */
+
+  /* Texte sur fond sombre */
+  --foreground-on-dark: oklch(0.98 0.01 90);   /* Craie */
+
+  /* Primaire — Ocre Artiste */
+  --primary: oklch(0.69 0.14 75);              /* #C8962D */
+  --primary-foreground: oklch(0.17 0.01 55);   /* Encre (texte sur Ocre) */
+  --primary-light: oklch(0.79 0.12 80);        /* #DDB65A */
+  --primary-dark: oklch(0.55 0.11 70);         /* #9A7020 */
+  --primary-pale: oklch(0.95 0.03 85);         /* #F5EDD8 */
+
+  /* Secondaire — Noir Mural */
+  --secondary: oklch(0.17 0.01 55);            /* #1C1917 */
+  --secondary-foreground: oklch(0.98 0.01 90); /* Craie */
+  --secondary-light: oklch(0.25 0.01 55);      /* #2D2926 */
+  --secondary-soft: oklch(0.35 0.01 55);       /* #44403C */
+
+  /* Accent — Terracotta */
+  --accent: oklch(0.55 0.14 42);               /* #BC5B3A */
+  --accent-foreground: oklch(0.98 0.01 90);    /* Craie */
+  --accent-light: oklch(0.64 0.12 48);         /* #D07A5C */
+  --accent-dark: oklch(0.42 0.12 38);          /* #8E3F24 */
+  --accent-pale: oklch(0.93 0.03 40);          /* #F3E5DE */
+
+  /* Bordures / Inputs */
+  --border: oklch(0.86 0.02 80);               /* Grès #D6D0C6 */
+  --input: oklch(0.86 0.02 80);
+  --ring: oklch(0.69 0.14 75);                 /* Ocre (focus ring) */
+
+  /* États sémantiques */
+  --success: oklch(0.55 0.12 145);
+  --error: oklch(0.52 0.15 30);
+  --warning: oklch(0.69 0.14 75);              /* Réutilise Ocre */
+  --info: oklch(0.55 0.05 220);                /* Bleu-gris discret */
+
+  /* Destructive */
+  --destructive: oklch(0.52 0.15 30);
+  --destructive-foreground: oklch(0.98 0.01 90);
+
+  /* ---------- Muted ---------- */
+  --muted: oklch(0.96 0.01 80);                /* Sable */
+
+  /* ---------- Radius ---------- */
+  --radius: 0.5rem;                            /* 8px — standard */
+  --radius-subtle: 0.25rem;                    /* 4px — petits éléments */
+  --radius-large: 0.75rem;                     /* 12px — sections surélevées */
+  --radius-pill: 9999px;                       /* badges, tags, chips */
+  --radius-none: 0px;                          /* images full-bleed (fresque bord-à-bord) */
+
+  /* ---------- Typographie ---------- */
+  /* next/font injecte --font-syne, --font-inter et --font-fraunces sur <html> */
+  --font-heading: var(--font-syne, 'Syne', 'Arial Black', system-ui, sans-serif);
+  --font-sans: var(--font-inter, 'Inter', system-ui, -apple-system, sans-serif);
+  --font-body: var(--font-fraunces, 'Fraunces', Georgia, serif);
+
+  /* Tailles fluides */
+  --font-size-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --font-size-h2: clamp(2rem, 3vw + 0.75rem, 3rem);
+  --font-size-h3: clamp(1.625rem, 2vw + 0.5rem, 2.25rem);
+  --font-size-h4: clamp(1.25rem, 1.5vw + 0.25rem, 1.5rem);
+  --font-size-h5: clamp(1.125rem, 1vw + 0.25rem, 1.25rem);
+  --font-size-body: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --font-size-body-lg: clamp(1.125rem, 1vw + 0.25rem, 1.25rem);
+  --font-size-small: 0.875rem;
+  --font-size-caption: 0.75rem;
+
+  /* Poids */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Line heights */
+  --line-height-tight: 1.05;
+  --line-height-snug: 1.15;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+
+  /* Letter spacing */
+  --letter-spacing-tight: -0.02em;   /* gros titres Syne */
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;     /* caps uniquement (labels, tags) */
+
+  /* ---------- Espacement ---------- */
+  --spacing-section: 10rem;          /* 160px — entre sections principales desktop */
+  --spacing-section-mobile: 6rem;    /* 96px — entre sections principales mobile */
+  --spacing-section-inner: 7.5rem;   /* 120px — padding intérieur sections desktop */
+  --spacing-section-inner-mobile: 4rem; /* 64px — padding intérieur sections mobile */
+  --spacing-group: 3rem;             /* 48px — entre groupes d'éléments */
+  --spacing-gap: 1.5rem;             /* 24px — entre éléments d'un même groupe */
+  --spacing-gap-tight: 0.75rem;      /* 12px — entre éléments liés */
+
+  /* Layout */
+  --container-max: 1280px;
+  --container-padding: clamp(1.25rem, 5vw, 5rem);
+  --text-max: 680px;
+
+  /* ---------- Transitions ---------- */
+  --transition-standard: 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-button: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-reveal: 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-reveal-fast: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-hero: 1200ms cubic-bezier(0.77, 0, 0.175, 1);
+
+  --easing-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --easing-dramatic: cubic-bezier(0.77, 0, 0.175, 1); /* CSS fallback — remplacé par CustomEase "hop" dans GSAP */
+  --easing-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---------- GSAP CustomEase (à enregistrer avec CustomEase.create()) ---------- */
+  /* Source : references/animations/gsap-flip-plugin-landing-page/script.js        */
+  /* "hop"  : M0,0 C0.355,0.022 0.448,0.079 0.5,0.5 0.542,0.846 0.615,1 1,1      */
+  /* "hop2" : M0,0 C0.078,0.617 0.114,0.716 0.255,0.828 0.373,0.922 0.561,1 1,1   */
+  /* Usage hop  : clip-path panels, transitions d'entrée                            */
+  /* Usage hop2 : split-text slide-up, reveals de contenu                           */
+
+  /* ---------- Ombres ---------- */
+  --shadow-subtle: 0 1px 3px rgba(28, 25, 23, 0.06), 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-hover: 0 4px 12px rgba(28, 25, 23, 0.08), 0 2px 4px rgba(28, 25, 23, 0.04);
+  --shadow-elevated: 0 12px 32px rgba(28, 25, 23, 0.12), 0 4px 8px rgba(28, 25, 23, 0.06);
+
+  /* ---------- Z-Index ---------- */
+  --z-header: 50;
+  --z-modal: 100;
+  --z-progress: 200;
+}
+
+/* ============================================
+   THEME INLINE — Mapping vers Tailwind CSS 4
+   ============================================ */
+@theme inline {
+  /* Couleurs sémantiques */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Couleurs étendues IWOK */
+  --color-background-alt: var(--background-alt);
+  --color-background-dark: var(--background-dark);
+  --color-foreground-heading: var(--foreground-heading);
+  --color-foreground-subtitle: var(--foreground-subtitle);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-foreground-on-dark: var(--foreground-on-dark);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-pale: var(--primary-pale);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+  --color-accent-pale: var(--accent-pale);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-info: var(--info);
+
+  /* Radius */
+  --radius-sm: var(--radius-subtle);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-large);
+  --radius-xl: var(--radius-pill);
+
+  /* Fonts */
+  --font-heading: var(--font-heading);
+  --font-sans: var(--font-sans);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis gère le smooth scroll */
+    overflow-x: hidden; /* Empêche le scroll horizontal parasite */
+  }
+
+  /* Masque la scrollbar native tout en conservant le scroll actif */
+  html,
+  body {
+    -ms-overflow-style: none; /* IE / Edge legacy */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Typographie — Syne pour les titres */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--foreground-heading);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold); /* 800 — réservé H1 */
+    line-height: var(--line-height-tight);
+  }
+
+  h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold); /* 700 */
+    line-height: 1.1;
+  }
+
+  h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold); /* 600 */
+    line-height: var(--line-height-snug);
+  }
+
+  h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-semibold); /* 600 */
+    line-height: 1.2;
+  }
+
+  h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-weight-medium); /* 500 */
+    line-height: 1.3;
+  }
+
+  p {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-relaxed);
+    color: var(--muted-foreground);
+    max-width: var(--text-max);
+  }
+
+  /* Sur fond sombre : texte en Craie */
+  .dark-section h1,
+  .dark-section h2,
+  .dark-section h3,
+  .dark-section h4,
+  .dark-section p {
+    color: var(--foreground-on-dark);
+  }
+}
+
+/* ============================================
+   UTILITIES CUSTOM
+   ============================================ */
+@layer utilities {
+  /* Conteneur principal */
+  .container-custom {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  /* Padding sections */
+  .section-padding {
+    padding-block: var(--spacing-section-inner);
+  }
+
+  @media (max-width: 640px) {
+    .section-padding {
+      padding-block: var(--spacing-section-inner-mobile);
+    }
+  }
+
+  /* Espacement entre sections */
+  .section-gap {
+    margin-block-end: var(--spacing-section);
+  }
+
+  @media (max-width: 640px) {
+    .section-gap {
+      margin-block-end: var(--spacing-section-mobile);
+    }
+  }
+
+  /* Full-bleed (héro, portfolio aperçu, sections d'impact) */
+  .full-bleed {
+    width: 100vw;
+    margin-inline-start: calc(50% - 50vw);
+  }
+
+  /* Section immersive (100vh) */
+  .section-immersive {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Section sombre */
+  .dark-section {
+    background-color: var(--background-dark);
+    color: var(--foreground-on-dark);
+  }
+
+  /* Image plein écran — radius 0 (fresque bord-à-bord) */
+  .img-fresque {
+    border-radius: var(--radius-none);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Typographie — body large (intros, leads) */
+  .text-lead {
+    font-size: var(--font-size-body-lg);
+    line-height: 1.5;
+    color: var(--foreground-subtitle);
+  }
+
+  /* Caption et labels */
+  .text-caption {
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .text-small {
+    font-size: var(--font-size-small);
+    line-height: 1.5;
+  }
+
+  /* Texte équilibré */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Sticky header */
+  .header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Ombres */
+  .shadow-card { box-shadow: var(--shadow-subtle); }
+  .shadow-card-hover { box-shadow: var(--shadow-hover); }
+  .shadow-modal { box-shadow: var(--shadow-elevated); }
+
+  /* Transitions */
+  .transition-standard { transition: all var(--transition-standard); }
+  .transition-reveal { transition: all var(--transition-reveal); }
+
+  /* Fonts — Next.js injectés */
+  .font-syne { font-family: var(--font-syne, 'Syne', sans-serif); }
+  .font-inter { font-family: var(--font-inter, 'Inter', sans-serif); }
+
+  /* Barre de progression scroll */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transform-origin: left;
+    z-index: var(--z-progress);
+  }
+
+  /* ============================================
+     HOMEPAGE HERO
+     ============================================ */
+  .homepage-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--background-dark);
+  }
+
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    pointer-events: none;
+  }
+
+  .hero-accent-line {
+    position: absolute;
+    top: 20%;
+    left: var(--container-padding);
+    width: 1px;
+    height: clamp(80px, 15vw, 160px);
+    background-color: var(--primary);
+    opacity: 0.6;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: var(--container-max);
+    width: 100%;
+    margin: 0 auto;
+    padding: 8rem var(--container-padding) 6rem;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    max-width: none;
+    line-height: 1;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw + 1rem, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+    color: var(--foreground-on-dark);
+    margin-bottom: 2rem;
+    max-width: 16ch;
+    margin-inline: auto;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+    line-height: 1.6;
+    color: var(--muted-foreground);
+    max-width: 52ch;
+    margin-inline: auto;
+    margin-bottom: 3rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  /* ============================================
+     CTAs — BOUTONS IWOK
+     Concept : "Marquage territorial" — identité graffeur
+     Primaire  : sweep fill (coup de bombe)
+     Secondaire: trait tracé + marqueur (la signature)
+
+     ⚠️  .cta-primary = BOUTON PRINCIPAL DU SITE
+     Utilisé dans : navbar, hero, CTA sections, formulaires.
+     Toute nouvelle page DOIT utiliser .cta-primary pour
+     les actions principales (devis, contact, portfolio).
+     ============================================ */
+
+  /* --- Bouton Primaire : "Le coup de bombe" --- */
+  .cta-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary-foreground);
+    text-decoration: none;
+    padding: 1.125rem 2.5rem;
+    border-radius: 0;
+    border: 1.5px solid var(--primary);
+    background-color: var(--primary);
+    overflow: hidden;
+    cursor: pointer;
+    isolation: isolate;
+    transition:
+      color 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Fill animé — sweep de gauche à droite */
+  .cta-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--accent);
+    transform: translateX(-105%);
+    transition: transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+
+  .cta-primary:hover {
+    color: var(--accent-foreground);
+    border-color: var(--accent);
+  }
+
+  .cta-primary:hover::before {
+    transform: translateX(0);
+  }
+
+  .cta-primary:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
+
+  /* Variante compacte — navbar uniquement */
+  .cta-primary--sm {
+    padding: 0.625rem 1.375rem;
+    font-size: 0.625rem;
+  }
+
+  /* --- Bouton Secondaire : "L'entrebâillement" --- */
+  /* Au repos : texte austère Syne + marqueur ocre.                */
+  /* Au hover : une fente s'ouvre derrière le texte, révélant      */
+  /* un fragment flou de fresque. Curiosité → clic.                */
+
+  .cta-secondary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--foreground-on-dark);
+    text-decoration: none;
+    /* Match cta-primary dimensions exactly */
+    padding: 1.125rem 2.5rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+      border-color 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Slit image container — the "entrebâillement" */
+  .cta-secondary__slit {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    /* Fente fermée au repos */
+    clip-path: inset(50% 0 50% 0);
+    transition: clip-path 320ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+  }
+
+  /* Terracotta-tinted scrim — warmth + legibility */
+  .cta-secondary__slit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(188, 91, 58, 0.35);
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  /* Texte au-dessus de la fente */
+  .cta-secondary__text {
+    position: relative;
+    z-index: 1;
+    transition: color 300ms ease;
+  }
+
+  /* ── Hover state ── */
+  .cta-secondary:hover {
+    border-color: var(--primary);
+  }
+
+  .cta-secondary:hover .cta-secondary__text {
+    color: var(--primary);
+  }
+
+  /* Slit opens — 480ms spring easing (slower reveal = more tension) */
+  .cta-secondary:hover .cta-secondary__slit {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 480ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cta-secondary:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
+
+  /* Touch devices — no hover, keep simple */
+  @media (hover: none) {
+    .cta-secondary__slit {
+      display: none;
+    }
+  }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .site-footer {
+    background-color: var(--background-dark);
+    color: var(--foreground-on-dark);
+  }
+
+  .footer-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 5rem var(--container-padding) 3rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--foreground-on-dark);
+    text-decoration: none;
+    display: inline-block;
+    transition: color var(--transition-standard);
+  }
+  .footer-logo:hover { color: var(--primary); }
+
+  .footer-baseline {
+    font-family: var(--font-heading);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--foreground-subtle);
+    margin: 0;
+    max-width: none;
+    line-height: 1.5;
+  }
+
+  .footer-instagram {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: color var(--transition-standard);
+  }
+  .footer-instagram:hover { color: var(--primary); }
+
+  .footer-col-title {
+    font-family: var(--font-heading);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--foreground-subtle);
+    margin: 0;
+  }
+
+  .footer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-link {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: color var(--transition-standard);
+  }
+  .footer-link:hover { color: var(--foreground-on-dark); }
+
+  .footer-text {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin: 0;
+    max-width: none;
+  }
+
+  .footer-placeholder {
+    color: var(--foreground-subtle);
+    font-style: italic;
+  }
+
+  .footer-address {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-divider {
+    height: 1px;
+    background-color: var(--secondary-light);
+    margin-bottom: 2rem;
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-copyright {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--foreground-subtle);
+    margin: 0;
+    max-width: none;
+    line-height: 1;
+  }
+
+  .footer-legal-link {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--foreground-subtle);
+    text-decoration: none;
+    transition: color var(--transition-standard);
+  }
+  .footer-legal-link:hover { color: var(--muted-foreground); }
+
+  /* ============================================
+     PORTFOLIO — Masonry Grid
+     ============================================ */
+  .masonry-grid {
+    columns: 4;
+    column-gap: 1rem;
+  }
+
+  @media (max-width: 1024px) {
+    .masonry-grid {
+      columns: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .masonry-grid {
+      columns: 1;
+    }
+  }
+}

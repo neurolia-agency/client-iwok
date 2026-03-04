@@ -1,0 +1,10 @@
+{
+  "name": "client-iwok",
+  "org": "neurolia-agency",
+  "client": "Iwok",
+  "type": "client",
+  "status": "en-attente",
+  "description": "Site muraliste Iwok",
+  "stack": ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS 4"],
+  "access": "core-dev"
+}

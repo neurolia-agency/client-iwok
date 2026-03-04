@@ -1,0 +1,17 @@
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+.env
+.env.local
+.env.development.local
+.DS_Store
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+*.log
+*.local
+private_informations/
+sécurité/
+.claude/settings.local.json
