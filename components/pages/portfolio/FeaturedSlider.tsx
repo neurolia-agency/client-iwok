@@ -56,6 +56,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const animatingRef = useRef(false);
   const matRef = useRef<THREE.ShaderMaterial | null>(null);
   const texturesRef = useRef<THREE.Texture[]>([]);
@@ -233,6 +234,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
             t.image.naturalHeight || 1200
           );
           renderer.render(scene, camera);
+          setLoaded(true);
         }
       });
       tex.minFilter = THREE.LinearFilter;
@@ -306,6 +308,8 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
         height: "80vh",
         overflow: "hidden",
         borderRadius: "0.5rem",
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
       }}
     >
       {/* WebGL canvas */}

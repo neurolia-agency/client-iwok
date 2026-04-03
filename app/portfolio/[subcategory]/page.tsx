@@ -7,7 +7,7 @@ import {
   type CategoryName,
   type PortfolioSectionSlug,
 } from "@/data/portfolio-projects";
-import GalleryCard from "@/components/pages/portfolio/GalleryCard";
+import SubcategoryGallery from "@/components/pages/portfolio/SubcategoryGallery";
 
 const SLUG_TO_CATEGORY: Record<string, { name: CategoryName; slug: PortfolioSectionSlug }> = Object.fromEntries(
   Object.entries(CATEGORY_SLUGS).map(([name, slug]) => [slug, { name: name as CategoryName, slug }])
@@ -51,7 +51,7 @@ export default async function SubcategoryPage({ params }: Props) {
   const projects = PORTFOLIO_PROJECTS.filter((p) => p.section === entry.slug);
 
   return (
-    <section className="container-custom" style={{ paddingBlock: "var(--spacing-group)" }}>
+    <section className="container-custom" style={{ paddingTop: "7rem", paddingBottom: "var(--spacing-group)" }}>
       <div style={{ marginBottom: "2rem" }}>
         <Link
           href="/portfolio"
@@ -91,11 +91,7 @@ export default async function SubcategoryPage({ params }: Props) {
         </p>
       </div>
 
-      <div className="masonry-grid">
-        {projects.map((project) => (
-          <GalleryCard key={project.id} project={project} />
-        ))}
-      </div>
+      <SubcategoryGallery projects={projects} />
     </section>
   );
 }

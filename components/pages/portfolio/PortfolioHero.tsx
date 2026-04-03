@@ -57,7 +57,7 @@ export default function PortfolioHero() {
     >
       {/* Background image */}
       <Image
-        src="/images/selection-gui-on-scope/08122021-2.jpg"
+        src="/images/selection-gui-on-scope/08122021-2.webp"
         alt=""
         fill
         priority

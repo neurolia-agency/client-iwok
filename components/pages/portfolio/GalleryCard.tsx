@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import type { PortfolioProject } from "@/data/portfolio-projects";
 
@@ -9,6 +12,7 @@ interface GalleryCardProps {
 export default function GalleryCard({ project, onClick }: GalleryCardProps) {
   const coverImage = project.images[project.cover];
   const isPortrait = coverImage.height > coverImage.width;
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
     <button
@@ -38,12 +42,15 @@ export default function GalleryCard({ project, onClick }: GalleryCardProps) {
         height={coverImage.height}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         loading="lazy"
+        onLoad={() => setImgLoaded(true)}
         style={{
           objectFit: "cover",
           width: "100%",
           height: "auto",
           aspectRatio: isPortrait ? "3 / 4" : `${coverImage.width} / ${coverImage.height}`,
           display: "block",
+          opacity: imgLoaded ? 1 : 0,
+          transition: "opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         }}
       />
 
