@@ -83,9 +83,9 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
     category: "Entreprises et Collectivités",
     slug: "entreprises",
-    background: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.jpg",
-    preview1: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg",
-    preview2: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.48.00_622e5da2.jpg",
+    background: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.webp",
+    preview1: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.webp",
+    preview2: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.48.00_622e5da2.webp",
   },
   {
     category: "Participatifs",
@@ -98,7 +98,7 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
     category: "Coups de cœur",
     slug: "coups-de-coeur",
     background: "/images/selection-gui-on-scope/08122021-2.jpg",
-    preview1: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.jpg",
+    preview1: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.webp",
     preview2: "/images/selection-gui-on-scope/WhatsApp Image 2023-07-05 at 12.33.57.jpeg",
   },
 ];
@@ -114,8 +114,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2024,
     location: "Decazeville (12)",
     images: [
-      { src: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.jpg", alt: "Vue d'ensemble du skate parc de Decazeville avec fresques murales colorées", width: 3689, height: 2075 },
-      { src: "/images/entreprises/Skate Park Decaze - Guillaume 2024-40.jpg", alt: "Fresque murale abstraite skate parc Decazeville", width: 4032, height: 3024 },
+      { src: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.webp", alt: "Vue d'ensemble du skate parc de Decazeville avec fresques murales colorées", width: 3689, height: 2075 },
+      { src: "/images/entreprises/Skate Park Decaze - Guillaume 2024-40.webp", alt: "Fresque murale abstraite skate parc Decazeville", width: 4032, height: 3024 },
     ],
     cover: 0,
   },
@@ -126,9 +126,9 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2025,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/Kerea reception-41.jpg", alt: "Fresque KEREA — vue d'ensemble réception", width: 4256, height: 2832 },
-      { src: "/images/entreprises/kerea.png", alt: "Fresque murale KEREA — détail portrait coloré", width: 1251, height: 971 },
-      { src: "/images/entreprises/WhatsApp Image 2025-09-10 à 14.40.55_bc4be19a.jpg", alt: "Fresque KEREA en cours de réalisation", width: 1600, height: 1201 },
+      { src: "/images/entreprises/Kerea reception-41.webp", alt: "Fresque KEREA — vue d'ensemble réception", width: 4256, height: 2832 },
+      { src: "/images/entreprises/kerea.webp", alt: "Fresque murale KEREA — détail portrait coloré", width: 1251, height: 971 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-10 à 14.40.55_bc4be19a.webp", alt: "Fresque KEREA en cours de réalisation", width: 1600, height: 1201 },
     ],
     cover: 0,
   },
@@ -139,7 +139,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Trémouilles (12)",
     images: [
-      { src: "/images/entreprises/DJI_0946-2.jpg", alt: "Fresque façade école Trémouilles — vue drone", width: 8000, height: 6000 },
+      { src: "/images/entreprises/DJI_0946-2.webp", alt: "Fresque façade école Trémouilles — vue drone", width: 8000, height: 6000 },
     ],
     cover: 0,
   },
@@ -150,10 +150,10 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2020,
     location: "Onet-le-Château (12)",
     images: [
-      { src: "/images/entreprises/20200710_142600.jpg", alt: "Fresque vestiaires Lycée Laroque — vue d'ensemble", width: 2407, height: 1753 },
-      { src: "/images/entreprises/20200716_175558.jpg", alt: "Fresque vestiaires Laroque — couleurs vives", width: 4032, height: 1960 },
-      { src: "/images/entreprises/20200720_140134.jpg", alt: "Détail fresque vestiaires sportifs Lycée Laroque", width: 4032, height: 1960 },
-      { src: "/images/entreprises/vestiaire laroque.jpg", alt: "Résultat final vestiaires Lycée Laroque", width: 3977, height: 1933 },
+      { src: "/images/entreprises/20200710_142600.webp", alt: "Fresque vestiaires Lycée Laroque — vue d'ensemble", width: 2407, height: 1753 },
+      { src: "/images/entreprises/20200716_175558.webp", alt: "Fresque vestiaires Laroque — couleurs vives", width: 4032, height: 1960 },
+      { src: "/images/entreprises/20200720_140134.webp", alt: "Détail fresque vestiaires sportifs Lycée Laroque", width: 4032, height: 1960 },
+      { src: "/images/entreprises/vestiaire laroque.webp", alt: "Résultat final vestiaires Lycée Laroque", width: 3977, height: 1933 },
     ],
     cover: 3,
   },
@@ -164,8 +164,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Caussade (82)",
     images: [
-      { src: "/images/entreprises/20210423_082428.jpg", alt: "Détail fresque tennis Caussade", width: 4032, height: 1960 },
-      { src: "/images/entreprises/20210423_082444.jpg", alt: "Fresque club tennis Caussade — résultat final", width: 4032, height: 1960 },
+      { src: "/images/entreprises/20210423_082428.webp", alt: "Détail fresque tennis Caussade", width: 4032, height: 1960 },
+      { src: "/images/entreprises/20210423_082444.webp", alt: "Fresque club tennis Caussade — résultat final", width: 4032, height: 1960 },
     ],
     cover: 0,
   },
@@ -176,8 +176,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2019,
     location: "Rodez (12)",
     images: [
-      { src: "/images/entreprises/IMG-20191220-WA0026.jpg", alt: "Fresque Soudhydro — vue latérale", width: 1200, height: 1600 },
-      { src: "/images/entreprises/IMG-20191220-WA0032.jpg", alt: "Soudhydro Rodez — fresque extérieure terminée", width: 1600, height: 1200 },
+      { src: "/images/entreprises/IMG-20191220-WA0026.webp", alt: "Fresque Soudhydro — vue latérale", width: 1200, height: 1600 },
+      { src: "/images/entreprises/IMG-20191220-WA0032.webp", alt: "Soudhydro Rodez — fresque extérieure terminée", width: 1600, height: 1200 },
     ],
     cover: 1,
   },
@@ -188,11 +188,11 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2025,
     location: "Rodez (12)",
     images: [
-      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg", alt: "Fresque restaurant Bichette — vue d'ensemble", width: 1068, height: 1600 },
-      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.05_bc59e8f0.jpg", alt: "Décoration murale Bichette Rodez", width: 1066, height: 1600 },
-      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.48.00_622e5da2.jpg", alt: "Fresque murale Bichette — style graphique", width: 1536, height: 2048 },
-      { src: "/images/entreprises/WhatsApp Image 2025-10-23 à 16.17.13_ef7b8194.jpg", alt: "Résultat final fresque Bichette Rodez", width: 1600, height: 1600 },
-      { src: "/images/entreprises/WhatsApp Image 2025-10-23 à 16.17.14_b6af5275.jpg", alt: "Détail fresque Bichette — finitions", width: 1600, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.webp", alt: "Fresque restaurant Bichette — vue d'ensemble", width: 1068, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.05_bc59e8f0.webp", alt: "Décoration murale Bichette Rodez", width: 1066, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.48.00_622e5da2.webp", alt: "Fresque murale Bichette — style graphique", width: 1536, height: 2048 },
+      { src: "/images/entreprises/WhatsApp Image 2025-10-23 à 16.17.13_ef7b8194.webp", alt: "Résultat final fresque Bichette Rodez", width: 1600, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-10-23 à 16.17.14_b6af5275.webp", alt: "Détail fresque Bichette — finitions", width: 1600, height: 1600 },
     ],
     cover: 0,
   },
@@ -203,7 +203,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2025,
     location: "Trémouilles (12)",
     images: [
-      { src: "/images/entreprises/WhatsApp Image 2025-10-24 à 16.10.57_e1ebf6f7.jpg", alt: "Résultat final petits chevaux école Trémouilles", width: 1600, height: 900 },
+      { src: "/images/entreprises/WhatsApp Image 2025-10-24 à 16.10.57_e1ebf6f7.webp", alt: "Résultat final petits chevaux école Trémouilles", width: 1600, height: 900 },
     ],
     cover: 0,
   },
@@ -214,7 +214,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2024,
     location: "Le Monastère (12)",
     images: [
-      { src: "/images/entreprises/WhatsApp Image 2026-01-16 at 14.17.jpeg", alt: "Fresque façade Le Monastère — vue d'ensemble", width: 1600, height: 904 },
+      { src: "/images/entreprises/WhatsApp Image 2026-01-16 at 14.17.webp", alt: "Fresque façade Le Monastère — vue d'ensemble", width: 1600, height: 904 },
     ],
     cover: 0,
   },
@@ -225,7 +225,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Pampelonne (81)",
     images: [
-      { src: "/images/entreprises/IMG_20210827_131400.jpg", alt: "Fresque contrôle technique Pampelonne", width: 3000, height: 3000 },
+      { src: "/images/entreprises/IMG_20210827_131400.webp", alt: "Fresque contrôle technique Pampelonne", width: 3000, height: 3000 },
     ],
     cover: 0,
   },
@@ -236,7 +236,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Albi (81)",
     images: [
-      { src: "/images/entreprises/salle des fêtes Albi 81.jpg", alt: "Fresque murale salle des fêtes d'Albi", width: 3000, height: 3000 },
+      { src: "/images/entreprises/salle des fêtes Albi 81.webp", alt: "Fresque murale salle des fêtes d'Albi", width: 3000, height: 3000 },
     ],
     cover: 0,
   },
@@ -247,7 +247,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2019,
     location: "Rodez (12)",
     images: [
-      { src: "/images/entreprises/escape game agglobus rodez 2019.JPG", alt: "Décor escape game Agglobus Rodez", width: 4000, height: 3000 },
+      { src: "/images/entreprises/escape game agglobus rodez 2019.webp", alt: "Décor escape game Agglobus Rodez", width: 4000, height: 3000 },
     ],
     cover: 0,
   },
@@ -258,7 +258,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/fire.jpg", alt: "Fresque murale caserne pompiers", width: 591, height: 443 },
+      { src: "/images/entreprises/fire.webp", alt: "Fresque murale caserne pompiers", width: 591, height: 443 },
     ],
     cover: 0,
   },
@@ -280,7 +280,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/beer-cow.png", alt: "Fresque murale pop art avec deux vaches portant des lunettes de soleil", width: 1200, height: 1246 },
+      { src: "/images/entreprises/beer-cow.webp", alt: "Fresque murale pop art avec deux vaches portant des lunettes de soleil", width: 1200, height: 1246 },
     ],
     cover: 0,
   },
@@ -291,7 +291,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/colors.png", alt: "Vue aérienne d'un atelier participatif avec fresque géométrique multicolore", width: 4032, height: 2488 },
+      { src: "/images/entreprises/colors.webp", alt: "Vue aérienne d'un atelier participatif avec fresque géométrique multicolore", width: 4032, height: 2488 },
     ],
     cover: 0,
   },
@@ -302,7 +302,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/anim-entreprise-1.jpg", alt: "Animation live painting pour événement entreprise", width: 1068, height: 1600 },
+      { src: "/images/entreprises/anim-entreprise-1.webp", alt: "Animation live painting pour événement entreprise", width: 1068, height: 1600 },
     ],
     cover: 0,
   },
@@ -313,7 +313,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2024,
     location: "Rodez (12)",
     images: [
-      { src: "/images/entreprises/WhatsApp Image 2025-05-13 à 20.24.36_6b369a59 - Copie.jpg", alt: "Fresque cabinet ophtalmologie — portrait lunettes colorées", width: 1201, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-05-13 à 20.24.36_6b369a59 - Copie.webp", alt: "Fresque cabinet ophtalmologie — portrait lunettes colorées", width: 1201, height: 1600 },
     ],
     cover: 0,
   },
@@ -324,7 +324,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/wine.png", alt: "Fresque murale réaliste — mains portant des verres de vin", width: 4772, height: 6310 },
+      { src: "/images/entreprises/wine.webp", alt: "Fresque murale réaliste — mains portant des verres de vin", width: 4772, height: 6310 },
     ],
     cover: 0,
   },
@@ -335,7 +335,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Tarn (81)",
     images: [
-      { src: "/images/entreprises/IMG-20210313-WA0001.jpg", alt: "Fresque piscine camping — décoration aquatique", width: 884, height: 988 },
+      { src: "/images/entreprises/IMG-20210313-WA0001.webp", alt: "Fresque piscine camping — décoration aquatique", width: 884, height: 988 },
     ],
     cover: 0,
   },
@@ -346,8 +346,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/IMG_20230723_122905.jpg", alt: "Décoration murale pour commerce — vue d'ensemble", width: 4000, height: 3000 },
-      { src: "/images/entreprises/IMG_20230723_122948.jpg", alt: "Décoration murale pour commerce — détail", width: 2464, height: 2464 },
+      { src: "/images/entreprises/IMG_20230723_122905.webp", alt: "Décoration murale pour commerce — vue d'ensemble", width: 4000, height: 3000 },
+      { src: "/images/entreprises/IMG_20230723_122948.webp", alt: "Décoration murale pour commerce — détail", width: 2464, height: 2464 },
     ],
     cover: 0,
   },
@@ -358,8 +358,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2025,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.jpg", alt: "Exposition artiste muraliste — vue d'ensemble", width: 1200, height: 1600 },
-      { src: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.47_7f151ba7.jpg", alt: "Vernissage exposition — visiteurs", width: 1200, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.webp", alt: "Exposition artiste muraliste — vue d'ensemble", width: 1200, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.47_7f151ba7.webp", alt: "Vernissage exposition — visiteurs", width: 1200, height: 1600 },
     ],
     cover: 0,
   },
