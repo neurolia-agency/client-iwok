@@ -30,7 +30,7 @@ export default function Header() {
     setMenuOpen(false);
   }, [pathname]);
 
-  const isDark = !scrolled && !menuOpen;
+  const isDark = !scrolled || menuOpen;
 
   return (
     <>
@@ -41,12 +41,14 @@ export default function Header() {
           top: 0,
           zIndex: 50,
           transition: "background-color 500ms ease, box-shadow 500ms ease",
-          backgroundColor: scrolled
-            ? "color-mix(in oklch, var(--background) 92%, transparent)"
-            : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
-          boxShadow: scrolled ? "var(--shadow-subtle)" : "none",
+          backgroundColor: menuOpen
+            ? "transparent"
+            : scrolled
+              ? "color-mix(in oklch, var(--background) 92%, transparent)"
+              : "transparent",
+          backdropFilter: scrolled && !menuOpen ? "blur(12px)" : "none",
+          WebkitBackdropFilter: scrolled && !menuOpen ? "blur(12px)" : "none",
+          boxShadow: scrolled && !menuOpen ? "var(--shadow-subtle)" : "none",
         }}
       >
         <div
@@ -84,7 +86,6 @@ export default function Header() {
           <nav
             aria-label="Navigation principale"
             style={{
-              display: "flex",
               alignItems: "center",
               gap: "2.5rem",
             }}
@@ -102,13 +103,15 @@ export default function Header() {
           </nav>
 
           {/* CTA desktop */}
-          <Link
-            href="/contact"
-            className="cta-primary cta-primary--sm hidden lg:inline-block"
-            style={{ whiteSpace: "nowrap" }}
-          >
-            Parler de mon projet
-          </Link>
+          <div className="hidden lg:block">
+            <Link
+              href="/contact"
+              className="cta-primary cta-primary--sm"
+              style={{ whiteSpace: "nowrap" }}
+            >
+              Parler de mon projet
+            </Link>
+          </div>
 
           {/* Hamburger mobile */}
           <button
@@ -116,9 +119,8 @@ export default function Header() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-            className="lg:hidden"
+            className="flex lg:hidden"
             style={{
-              display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",

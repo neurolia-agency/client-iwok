@@ -2,37 +2,40 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   PORTFOLIO_PROJECTS,
-  SUBCATEGORY_SLUGS,
-  type FeaturedSubcategory,
+  SECTIONS,
+  CATEGORY_SLUGS,
+  type CategoryName,
+  type PortfolioSectionSlug,
 } from "@/data/portfolio-projects";
 import GalleryCard from "@/components/pages/portfolio/GalleryCard";
 
-const SLUG_TO_SUBCATEGORY: Record<string, FeaturedSubcategory> = Object.fromEntries(
-  Object.entries(SUBCATEGORY_SLUGS).map(([k, v]) => [v, k as FeaturedSubcategory])
-) as Record<string, FeaturedSubcategory>;
+const SLUG_TO_CATEGORY: Record<string, { name: CategoryName; slug: PortfolioSectionSlug }> = Object.fromEntries(
+  Object.entries(CATEGORY_SLUGS).map(([name, slug]) => [slug, { name: name as CategoryName, slug }])
+) as Record<string, { name: CategoryName; slug: PortfolioSectionSlug }>;
 
 interface Props {
   params: Promise<{ subcategory: string }>;
 }
 
 export function generateStaticParams() {
-  return Object.values(SUBCATEGORY_SLUGS).map((slug) => ({ subcategory: slug }));
+  return SECTIONS.map((s) => ({ subcategory: s.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory: slug } = await params;
-  const name = SLUG_TO_SUBCATEGORY[slug] ?? slug;
+  const entry = SLUG_TO_CATEGORY[slug];
+  const name = entry?.name ?? slug;
   return {
     title: `${name} — Portfolio IWOK | Fresques murales`,
-    description: `Découvrez les projets ${name.toLowerCase()} réalisés par IWOK — fresques murales sur mesure.`,
+    description: `Découvrez les projets ${typeof name === "string" ? name.toLowerCase() : slug} réalisés par IWOK — fresques murales sur mesure.`,
   };
 }
 
 export default async function SubcategoryPage({ params }: Props) {
   const { subcategory: slug } = await params;
-  const subcategory = SLUG_TO_SUBCATEGORY[slug];
+  const entry = SLUG_TO_CATEGORY[slug];
 
-  if (!subcategory) {
+  if (!entry) {
     return (
       <div className="container-custom" style={{ paddingBlock: "6rem", textAlign: "center" }}>
         <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", marginBottom: "1rem" }}>
@@ -45,9 +48,7 @@ export default async function SubcategoryPage({ params }: Props) {
     );
   }
 
-  const projects = PORTFOLIO_PROJECTS.filter(
-    (p) => p.section === "projets-a-la-une" && p.subcategory === subcategory
-  );
+  const projects = PORTFOLIO_PROJECTS.filter((p) => p.section === entry.slug);
 
   return (
     <section className="container-custom" style={{ paddingBlock: "var(--spacing-group)" }}>
@@ -76,7 +77,7 @@ export default async function SubcategoryPage({ params }: Props) {
             letterSpacing: "-0.02em",
           }}
         >
-          {subcategory}
+          {entry.name}
         </h1>
         <p
           style={{

@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useImperativeHandle, forwardRef } from "react";
 import Link from "next/link";
-import { FEATURED_SLIDES, SUBCATEGORY_SLUGS } from "@/data/portfolio-projects";
+import { FEATURED_SLIDES } from "@/data/portfolio-projects";
 import * as THREE from "three";
 import gsap from "gsap";
+
+export interface FeaturedSliderHandle {
+  goToSlide: (index: number) => void;
+}
 
 const VERT = `
 varying vec2 vUv;
@@ -48,7 +52,7 @@ void main() {
 }
 `;
 
-export default function FeaturedSlider() {
+const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index: number) => void }>(function FeaturedSlider({ onSlideChange }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
@@ -128,6 +132,7 @@ export default function FeaturedSlider() {
         animatingRef.current = false;
         // React state update AFTER animation completes (avoids mid-animation re-render)
         setCurrent(next);
+        onSlideChange?.(next);
       },
     });
 
@@ -172,7 +177,7 @@ export default function FeaturedSlider() {
       tl.set(nextLine, { transformOrigin: "left" }, 0.8);
       tl.to(nextLine, { scaleX: 1, duration: 1.5, ease: "expo.inOut" }, 0.8);
     }
-  }, [render, getPreviewImgs, getTitleInner]);
+  }, [render, getPreviewImgs, getTitleInner, onSlideChange]);
 
   const goPrev = useCallback(() => {
     const prev = (currentRef.current - 1 + FEATURED_SLIDES.length) % FEATURED_SLIDES.length;
@@ -183,6 +188,8 @@ export default function FeaturedSlider() {
     const next = (currentRef.current + 1) % FEATURED_SLIDES.length;
     goToSlide(next);
   }, [goToSlide]);
+
+  useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
 
   // Init Three.js
   useEffect(() => {
@@ -310,10 +317,17 @@ export default function FeaturedSlider() {
       {/* Dark overlay for readability */}
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", pointerEvents: "none" }} />
 
+      {/* Full-slide clickable link */}
+      <Link
+        href={`/portfolio/${FEATURED_SLIDES[current].slug}`}
+        style={{ position: "absolute", inset: 0, zIndex: 5, cursor: "pointer" }}
+        aria-label={`Voir les projets ${FEATURED_SLIDES[current].category}`}
+      />
+
       {/* Slides (preview images) — initial visibility set via inline styles */}
       {FEATURED_SLIDES.map((slide, i) => (
         <div
-          key={slide.subcategory}
+          key={slide.category}
           ref={(el) => { previewRefs.current[i] = el; }}
           style={{
             position: "absolute",
@@ -378,7 +392,7 @@ export default function FeaturedSlider() {
       {/* Titles — only active slide visible, others hidden */}
       {FEATURED_SLIDES.map((slide, i) => (
         <div
-          key={`title-${slide.subcategory}`}
+          key={`title-${slide.category}`}
           ref={(el) => { titleRefs.current[i] = el; }}
           style={{
             position: "absolute",
@@ -405,7 +419,7 @@ export default function FeaturedSlider() {
               letterSpacing: "-0.02em",
             }}
           >
-            {slide.subcategory}
+            {slide.category}
           </div>
         </div>
       ))}
@@ -426,31 +440,36 @@ export default function FeaturedSlider() {
         <button
           onClick={goPrev}
           aria-label="Slide précédent"
+          className="slider-nav-btn"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "3rem",
-            height: "3rem",
-            background: "rgba(255,255,255,0.1)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.2)",
+            width: "3.25rem",
+            height: "3.25rem",
+            background: "rgba(28, 25, 23, 0.55)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1.5px solid var(--primary)",
             borderRadius: "50%",
             cursor: "pointer",
-            color: "#fff",
-            fontSize: "1.25rem",
-            transition: "background 0.3s",
+            color: "var(--primary)",
+            transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+            boxShadow: "0 0 16px rgba(200, 150, 45, 0.15)",
           }}
         >
-          &#8592;
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.5 3.5L5.5 9L11.5 14.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </button>
         <span
           style={{
             color: "#fff",
-            fontSize: "0.85rem",
+            fontSize: "0.8rem",
             fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            opacity: 0.8,
+            fontWeight: 600,
+            letterSpacing: "0.08em",
+            opacity: 0.9,
             whiteSpace: "nowrap",
           }}
         >
@@ -459,23 +478,27 @@ export default function FeaturedSlider() {
         <button
           onClick={goNext}
           aria-label="Slide suivant"
+          className="slider-nav-btn"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "3rem",
-            height: "3rem",
-            background: "rgba(255,255,255,0.1)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.2)",
+            width: "3.25rem",
+            height: "3.25rem",
+            background: "rgba(28, 25, 23, 0.55)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1.5px solid var(--primary)",
             borderRadius: "50%",
             cursor: "pointer",
-            color: "#fff",
-            fontSize: "1.25rem",
-            transition: "background 0.3s",
+            color: "var(--primary)",
+            transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+            boxShadow: "0 0 16px rgba(200, 150, 45, 0.15)",
           }}
         >
-          &#8594;
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.5 3.5L12.5 9L6.5 14.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </button>
       </div>
 
@@ -487,7 +510,7 @@ export default function FeaturedSlider() {
       >
         {FEATURED_SLIDES.map((slide, i) => (
           <button
-            key={`bullet-${slide.subcategory}`}
+            key={`bullet-${slide.category}`}
             onClick={() => goToSlide(i)}
             style={{
               display: "flex",
@@ -498,7 +521,7 @@ export default function FeaturedSlider() {
               border: "none",
               cursor: "pointer",
             }}
-            aria-label={`Aller à ${slide.subcategory}`}
+            aria-label={`Aller à ${slide.category}`}
           >
             <span
               style={{
@@ -526,9 +549,9 @@ export default function FeaturedSlider() {
         ))}
       </nav>
 
-      {/* CTA "Voir les projets {subcategory}" — links to subcategory page */}
+      {/* CTA — links to category page */}
       <Link
-        href={`/portfolio/${SUBCATEGORY_SLUGS[FEATURED_SLIDES[current].subcategory]}`}
+        href={`/portfolio/${FEATURED_SLIDES[current].slug}`}
         style={{
           position: "absolute",
           bottom: "clamp(1.5rem, 4vw, 3rem)",
@@ -552,8 +575,10 @@ export default function FeaturedSlider() {
           transition: "background 0.3s",
         }}
       >
-        Voir les projets {FEATURED_SLIDES[current].subcategory}
+        Voir les projets {FEATURED_SLIDES[current].category}
       </Link>
     </div>
   );
-}
+});
+
+export default FeaturedSlider;

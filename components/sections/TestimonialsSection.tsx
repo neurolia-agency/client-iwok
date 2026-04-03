@@ -152,7 +152,6 @@ export default function TestimonialsSection() {
       ref={sectionRef}
       style={{
         backgroundColor: "var(--background)",
-        padding: "var(--spacing-section-inner)",
       }}
       className="section-padding"
     >

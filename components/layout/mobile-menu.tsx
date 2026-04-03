@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { href: "/portfolio", label: "Portfolio" },
+  { href: "/portfolio", label: "Réalisations" },
   { href: "/services", label: "Services" },
   { href: "/a-propos", label: "À Propos" },
   { href: "/contact", label: "Contact" },
@@ -41,7 +41,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         backgroundColor: "var(--background-dark)",
         display: "flex",
         flexDirection: "column",
-        padding: "6rem 2rem 3rem",
+        padding: "8rem 2rem 3rem",
         pointerEvents: isOpen ? "auto" : "none",
         opacity: isOpen ? 1 : 0,
         transform: isOpen ? "translateY(0)" : "translateY(-12px)",
@@ -136,7 +136,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             transition: "background-color var(--transition-button)",
           }}
         >
-          Demander un devis
+          Parler de mon projet
         </Link>
 
         {/* Instagram */}

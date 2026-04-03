@@ -41,10 +41,9 @@ export default function CtaFinal() {
   return (
     <section
       ref={sectionRef}
-      className="dark-section full-bleed"
+      className="dark-section full-bleed section-padding"
       style={{
         backgroundColor: "var(--background-dark)",
-        padding: "var(--spacing-section-inner)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -101,7 +100,7 @@ export default function CtaFinal() {
             willChange: "opacity, transform",
           }}
         >
-          Devis gratuit — Réponse sous 48h
+          Devis gratuit · Réponse sous 48h
         </p>
 
         {/* CTA Button */}
@@ -135,7 +134,7 @@ export default function CtaFinal() {
             e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          Demander un devis
+          Parler de mon projet
         </Link>
       </div>
     </section>

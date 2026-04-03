@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 
 export default function PortfolioHero() {
@@ -54,8 +55,39 @@ export default function PortfolioHero() {
         paddingBottom: "var(--spacing-section-inner-mobile)",
       }}
     >
+      {/* Background image */}
+      <Image
+        src="/images/selection-gui-on-scope/08122021-2.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: "cover", objectPosition: "center calc(40% + 200px)" }}
+      />
+
+      {/* Dark overlay */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(28, 25, 23, 0.72)",
+          zIndex: 1,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(28,25,23,0.95) 0%, rgba(28,25,23,0.3) 60%, rgba(28,25,23,0.6) 100%)",
+          zIndex: 1,
+        }}
+      />
+
       {/* Grain */}
-      <div className="grain-overlay" aria-hidden="true" />
+      <div className="grain-overlay" aria-hidden="true" style={{ zIndex: 2 }} />
 
       {/* Accent line */}
       <div
@@ -71,7 +103,7 @@ export default function PortfolioHero() {
         }}
       />
 
-      <div className="container-custom" style={{ position: "relative", zIndex: 1 }}>
+      <div className="container-custom" style={{ position: "relative", zIndex: 10 }}>
         {/* Eyebrow */}
         <p
           data-hero-eyebrow

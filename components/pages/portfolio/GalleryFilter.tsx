@@ -1,16 +1,16 @@
 "use client";
 
-import { SECTIONS, type PortfolioSectionSlug } from "@/data/portfolio-projects";
+import { FEATURED_SLIDES } from "@/data/portfolio-projects";
 
 interface GalleryFilterProps {
-  active: PortfolioSectionSlug;
-  onChange: (slug: PortfolioSectionSlug) => void;
+  activeIndex: number;
+  onChange: (index: number) => void;
 }
 
-export default function GalleryFilter({ active, onChange }: GalleryFilterProps) {
+export default function GalleryFilter({ activeIndex, onChange }: GalleryFilterProps) {
   return (
     <nav
-      aria-label="Naviguer entre les sections du portfolio"
+      aria-label="Naviguer entre les catégories du portfolio"
       style={{
         position: "sticky",
         top: "4.5rem",
@@ -31,12 +31,12 @@ export default function GalleryFilter({ active, onChange }: GalleryFilterProps) 
           alignItems: "center",
         }}
       >
-        {SECTIONS.map(({ slug, title }) => {
-          const isActive = active === slug;
+        {FEATURED_SLIDES.map((slide, i) => {
+          const isActive = activeIndex === i;
           return (
             <button
-              key={slug}
-              onClick={() => onChange(slug)}
+              key={slide.slug}
+              onClick={() => onChange(i)}
               aria-pressed={isActive}
               style={{
                 fontFamily: "var(--font-sans)",
@@ -68,7 +68,7 @@ export default function GalleryFilter({ active, onChange }: GalleryFilterProps) 
                 }
               }}
             >
-              {title}
+              {slide.category}
             </button>
           );
         })}

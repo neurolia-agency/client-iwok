@@ -22,7 +22,7 @@ interface CtaSecondaryProps {
 export default function CtaSecondary({
   href,
   children,
-  peekImage = "/images/section-grid-animate/fire.jpg",
+  peekImage = "/images/section-grid-animate/fire.webp",
   className,
 }: CtaSecondaryProps) {
   return (

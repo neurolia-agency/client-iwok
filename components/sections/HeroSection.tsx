@@ -219,7 +219,7 @@ export default function HeroSection() {
         <div className="grain-overlay" aria-hidden="true" style={{ zIndex: 2 }} />
 
         {/* Contenu principal */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 10, padding: "0 var(--container-padding)" }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 10, padding: "clamp(4.5rem, 8vh, 6rem) var(--container-padding) 0" }}>
           <div style={{ width: "100%", height: "100%", margin: "0 auto", display: "grid", gridTemplateRows: "minmax(0, 1fr) auto", rowGap: "clamp(1.5rem, 3vh, 2.75rem)", paddingBottom: heroBottomSafeSpace }}>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", minHeight: 0 }}>
               {/* Eyebrow */}
@@ -227,7 +227,7 @@ export default function HeroSection() {
                 Artiste muraliste
               </p>
 
-              <h1 style={{ fontFamily: "var(--font-heading)", color: "var(--foreground-on-dark)", lineHeight: 1.05, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", gap: "18vw", width: "100%" }}>
+              <h1 className="hero-h1-grid" style={{ fontFamily: "var(--font-heading)", color: "var(--foreground-on-dark)", lineHeight: 1.05, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", gap: "18vw", width: "100%" }}>
 
                 {/* Colonne gauche : DU SIMPLE / MUR */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
@@ -302,9 +302,9 @@ export default function HeroSection() {
                 <p ref={baselineRef} style={{ fontFamily: "var(--font-body)", fontSize: "clamp(1rem, 1vw + 0.4rem, 1.1875rem)", lineHeight: "1.7", fontWeight: 300, letterSpacing: "0.01em", color: "var(--muted)", marginBottom: "1.5rem", maxWidth: "48ch", marginInline: "auto", opacity: 0 }}>
                  L&apos;exigence de l&apos;artisan, l&apos;œil de l&apos;artiste.
                 </p>
-                <div ref={ctasRef} style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "3rem", opacity: 0 }}>
+                <div ref={ctasRef} className="hero-ctas-wrap" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "clamp(1rem, 3vw, 3rem)", opacity: 0 }}>
                   <Link href="/contact" className="cta-primary">Parler de mon projet</Link>
-                  <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/fire.jpg">Explorer la galerie <span aria-hidden="true"> →</span></CtaSecondary>
+                  <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/fire.webp">Explorer la galerie <span aria-hidden="true"> →</span></CtaSecondary>
                 </div>
               </div>
             </div>

@@ -97,7 +97,7 @@ export default function CtaContextuel() {
               "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 300ms, transform 800ms cubic-bezier(0.16, 1, 0.3, 1) 300ms, color 380ms cubic-bezier(0.16, 1, 0.3, 1), border-color 380ms cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          Demander un devis
+          Parler de mon projet
         </Link>
       </div>
     </section>

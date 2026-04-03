@@ -2,12 +2,12 @@
 /* Source de vérité : pipeline/output/04-portfolio-categories.md */
 
 export type PortfolioSectionSlug =
-  | "projets-a-la-une"
-  | "interieur"
-  | "exterieur"
+  | "particuliers"
+  | "entreprises"
+  | "participatifs"
   | "coups-de-coeur";
 
-export type FeaturedSubcategory = "Entreprises" | "Particuliers" | "Participatifs";
+export type CategoryName = "Particuliers" | "Entreprises et Collectivités" | "Participatifs" | "Coups de cœur";
 
 export interface ProjectImage {
   src: string;
@@ -20,7 +20,6 @@ export interface PortfolioProject {
   id: string;
   title: string;
   section: PortfolioSectionSlug;
-  subcategory?: FeaturedSubcategory;
   year: number;
   location: string;
   images: ProjectImage[];
@@ -31,25 +30,23 @@ export interface PortfolioSection {
   slug: PortfolioSectionSlug;
   title: string;
   description: string;
-  subcategories?: FeaturedSubcategory[];
 }
 
 export const SECTIONS: PortfolioSection[] = [
   {
-    slug: "projets-a-la-une",
-    title: "Projets à la une",
-    description: "Les réalisations phares, sélectionnées pour leur envergure et leur impact visuel.",
-    subcategories: ["Entreprises", "Particuliers", "Participatifs"],
+    slug: "particuliers",
+    title: "Particuliers",
+    description: "Fresques et décorations murales pour les particuliers — chambres, salons, façades.",
   },
   {
-    slug: "interieur",
-    title: "Intérieur",
-    description: "Fresques et décorations murales en intérieur — chambres, restaurants, bureaux.",
+    slug: "entreprises",
+    title: "Entreprises et Collectivités",
+    description: "Les réalisations phares pour entreprises, collectivités et espaces publics.",
   },
   {
-    slug: "exterieur",
-    title: "Extérieur",
-    description: "Façades, murs et espaces urbains transformés par la peinture.",
+    slug: "participatifs",
+    title: "Participatifs",
+    description: "Ateliers et fresques collectives — quand l'art se partage.",
   },
   {
     slug: "coups-de-coeur",
@@ -61,281 +58,558 @@ export const SECTIONS: PortfolioSection[] = [
 /* ─── Featured Slider Data ──────────────────────────── */
 
 export interface FeaturedSlide {
-  subcategory: FeaturedSubcategory;
+  category: CategoryName;
+  slug: PortfolioSectionSlug;
   background: string;
   preview1: string;
   preview2: string;
 }
 
-export const SUBCATEGORY_SLUGS: Record<FeaturedSubcategory, string> = {
-  Entreprises: "entreprises",
-  Particuliers: "particuliers",
-  Participatifs: "participatifs",
+export const CATEGORY_SLUGS: Record<CategoryName, PortfolioSectionSlug> = {
+  "Particuliers": "particuliers",
+  "Entreprises et Collectivités": "entreprises",
+  "Participatifs": "participatifs",
+  "Coups de cœur": "coups-de-coeur",
 };
 
 export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
-    subcategory: "Entreprises",
-    background: "/images/selection-projets/intermarcher 12 2021/inter.jpeg",
-    preview1: "/images/selection-projets/restaurant-bichette/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg",
-    preview2: "/images/selection-projets/controle-technique/IMG_20210827_131400.jpg",
-  },
-  {
-    subcategory: "Particuliers",
+    category: "Particuliers",
+    slug: "particuliers",
     background: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_2f1aa34c.jpg",
     preview1: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_be6338bd.jpg",
     preview2: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_2dfe4ffa.jpg",
   },
   {
-    subcategory: "Participatifs",
+    category: "Entreprises et Collectivités",
+    slug: "entreprises",
+    background: "/images/selection-projets/intermarcher 12 2021/inter.jpeg",
+    preview1: "/images/selection-projets/restaurant-bichette/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg",
+    preview2: "/images/selection-projets/controle-technique/IMG_20210827_131400.jpg",
+  },
+  {
+    category: "Participatifs",
+    slug: "participatifs",
     background: "/images/participatif/WhatsApp Image 2023-07-05 at 12.34.13.jpeg",
     preview1: "/images/participatif/IMG_20231222_151117 - Copie.jpg",
     preview2: "/images/participatif/IMG_20240209_115548.jpg",
+  },
+  {
+    category: "Coups de cœur",
+    slug: "coups-de-coeur",
+    background: "/images/selection-gui-on-scope/08122021-2.jpg",
+    preview1: "/images/selection-oneshot/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.jpg",
+    preview2: "/images/selection-gui-on-scope/WhatsApp Image 2023-07-05 at 12.33.57.jpeg",
   },
 ];
 
 export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   /* ═══════════════════════════════════════════════
-     PROJETS À LA UNE — ENTREPRISES
+     ENTREPRISES ET COLLECTIVITÉS
      ═══════════════════════════════════════════════ */
   {
     id: "skate-parc-decazeville",
     title: "Skate Parc Decazeville",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    section: "entreprises",
     year: 2024,
     location: "Decazeville (12)",
     images: [
-      { src: "/images/selection-projets/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-4.jpg", alt: "Vue d'ensemble du skate parc de Decazeville avec fresques murales colorées", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-23.jpg", alt: "Détail fresque skate parc Decazeville — personnage stylisé", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-27.jpg", alt: "Fresque latérale skate parc Decazeville", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-31.jpg", alt: "Skate parc Decazeville — vue rampe et fresque", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-40.jpg", alt: "Fresque murale abstraite skate parc Decazeville", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-41.jpg", alt: "Finition fresque skate parc Decazeville — couleurs vives", width: 1600, height: 1200 },
+      { src: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.jpg", alt: "Vue d'ensemble du skate parc de Decazeville avec fresques murales colorées", width: 3689, height: 2075 },
+      { src: "/images/entreprises/Skate Park Decaze - Guillaume 2024-40.jpg", alt: "Fresque murale abstraite skate parc Decazeville", width: 4032, height: 3024 },
     ],
     cover: 0,
   },
   {
     id: "kerea-centre-tri",
     title: "Centre de Tri KEREA",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    section: "entreprises",
     year: 2025,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/selection-projets/kerea/Kerea arrivée-39.jpg", alt: "Inauguration fresque KEREA — vue d'ensemble", width: 1600, height: 1067 },
-      { src: "/images/selection-projets/kerea/Kerea reception-09.jpg", alt: "Réception KEREA — fresque grand format", width: 1600, height: 1067 },
-      { src: "/images/selection-projets/kerea/Kerea reception-12.jpg", alt: "Détail fresque KEREA — portrait coloré", width: 1600, height: 1067 },
-      { src: "/images/selection-projets/kerea/Kerea reception-39.jpg", alt: "Fresque KEREA — visiteurs devant l'œuvre", width: 1600, height: 1067 },
-      { src: "/images/selection-projets/kerea/Kerea reception-41.jpg", alt: "Fresque KEREA — vue latérale", width: 1600, height: 1067 },
-      { src: "/images/selection-projets/kerea/WhatsApp Image 2025-09-10 à 14.30.02_679dc1ae.jpg", alt: "Fresque murale KEREA en cours de réalisation", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/kerea/WhatsApp Image 2025-09-10 à 14.30.03_789d1e0c.jpg", alt: "Détail technique fresque KEREA", width: 1200, height: 1600 },
+      { src: "/images/entreprises/Kerea reception-41.jpg", alt: "Fresque KEREA — vue d'ensemble réception", width: 4256, height: 2832 },
+      { src: "/images/entreprises/kerea.png", alt: "Fresque murale KEREA — détail portrait coloré", width: 1251, height: 971 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-10 à 14.40.55_bc4be19a.jpg", alt: "Fresque KEREA en cours de réalisation", width: 1600, height: 1201 },
     ],
     cover: 0,
   },
   {
     id: "ecole-tremouilles-facade",
     title: "École Trémouilles — Façade",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    section: "entreprises",
     year: 2021,
     location: "Trémouilles (12)",
     images: [
-      { src: "/images/selection-projets/ecole trémouilles façade 2021/DJI_0892-2.jpg", alt: "Vue aérienne fresque école Trémouilles", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/ecole trémouilles façade 2021/DJI_0946-2.jpg", alt: "Fresque façade école Trémouilles — vue drone", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/ecole trémouilles façade 2021/DJI_0960-2.jpg", alt: "École Trémouilles — fresque complète vue aérienne", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/ecole trémouilles façade 2021/IMG_20220725_161735.jpg", alt: "Fresque école Trémouilles — vue depuis la rue", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/ecole trémouilles façade 2021/IMG_20230301_125751.jpg", alt: "Fresque école Trémouilles — détail", width: 1600, height: 1200 },
+      { src: "/images/entreprises/DJI_0946-2.jpg", alt: "Fresque façade école Trémouilles — vue drone", width: 8000, height: 6000 },
     ],
     cover: 0,
   },
   {
     id: "vestiaires-lycee-laroque",
     title: "Vestiaires Lycée Laroque",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
-    year: 2019,
+    section: "entreprises",
+    year: 2020,
     location: "Onet-le-Château (12)",
     images: [
-      { src: "/images/selection-projets/vestiaires Lycée Laroque 12 2019/20200710_142600.jpg", alt: "Fresque vestiaires Lycée Laroque — vue d'ensemble", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/vestiaires Lycée Laroque 12 2019/20200715_114329.jpg", alt: "Détail fresque vestiaires sportifs Lycée Laroque", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/vestiaires Lycée Laroque 12 2019/20200715_211511.jpg", alt: "Fresque vestiaires Laroque — personnage sportif", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/vestiaires Lycée Laroque 12 2019/20200716_175558.jpg", alt: "Fresque vestiaires Laroque — couleurs vives", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/vestiaires Lycée Laroque 12 2019/vestiaire laroque.jpg", alt: "Résultat final vestiaires Lycée Laroque", width: 1600, height: 1200 },
+      { src: "/images/entreprises/20200710_142600.jpg", alt: "Fresque vestiaires Lycée Laroque — vue d'ensemble", width: 2407, height: 1753 },
+      { src: "/images/entreprises/20200716_175558.jpg", alt: "Fresque vestiaires Laroque — couleurs vives", width: 4032, height: 1960 },
+      { src: "/images/entreprises/20200720_140134.jpg", alt: "Détail fresque vestiaires sportifs Lycée Laroque", width: 4032, height: 1960 },
+      { src: "/images/entreprises/vestiaire laroque.jpg", alt: "Résultat final vestiaires Lycée Laroque", width: 3977, height: 1933 },
     ],
-    cover: 4,
+    cover: 3,
+  },
+  {
+    id: "club-tennis-caussade",
+    title: "Club de Tennis Caussade",
+    section: "entreprises",
+    year: 2021,
+    location: "Caussade (82)",
+    images: [
+      { src: "/images/entreprises/20210423_082428.jpg", alt: "Détail fresque tennis Caussade", width: 4032, height: 1960 },
+      { src: "/images/entreprises/20210423_082444.jpg", alt: "Fresque club tennis Caussade — résultat final", width: 4032, height: 1960 },
+    ],
+    cover: 0,
   },
   {
     id: "soudhydro-rodez",
     title: "Soudhydro",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
-    year: 2018,
+    section: "entreprises",
+    year: 2019,
     location: "Rodez (12)",
     images: [
-      { src: "/images/selection-projets/soudhydro Rodez 12 2018/IMG-20191220-WA0007.jpg", alt: "Fresque industrielle Soudhydro Rodez", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/soudhydro Rodez 12 2018/IMG-20191220-WA0022.jpg", alt: "Détail fresque Soudhydro — soudeur", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/soudhydro Rodez 12 2018/IMG-20191220-WA0026.jpg", alt: "Fresque Soudhydro — vue latérale", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/soudhydro Rodez 12 2018/IMG-20191220-WA0032.jpg", alt: "Soudhydro Rodez — fresque extérieure terminée", width: 1600, height: 1200 },
+      { src: "/images/entreprises/IMG-20191220-WA0026.jpg", alt: "Fresque Soudhydro — vue latérale", width: 1200, height: 1600 },
+      { src: "/images/entreprises/IMG-20191220-WA0032.jpg", alt: "Soudhydro Rodez — fresque extérieure terminée", width: 1600, height: 1200 },
     ],
-    cover: 0,
-  },
-  {
-    id: "monastere-facade",
-    title: "Façade Le Monastère",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
-    year: 2024,
-    location: "Le Monastère (12)",
-    images: [
-      { src: "/images/selection-projets/le monastère 12 Façade 2024/WhatsApp Image 2026-01-16 at 14.17..jpeg", alt: "Fresque façade Le Monastère — vue d'ensemble", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/le monastère 12 Façade 2024/WhatsApp Image 2026-01-16 at 14.17.3.jpeg", alt: "Détail fresque façade Le Monastère", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/le monastère 12 Façade 2024/WhatsApp Image 2026-01-16 at 14.17.36.jpeg", alt: "Fresque Le Monastère — personnages colorés", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/le monastère 12 Façade 2024/WhatsApp Image 2026-01-16.jpeg", alt: "Vue d'ensemble façade Le Monastère après fresque", width: 1600, height: 1200 },
-    ],
-    cover: 0,
+    cover: 1,
   },
   {
     id: "restaurant-bichette",
     title: "Restaurant Bichette",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    section: "entreprises",
     year: 2025,
     location: "Rodez (12)",
     images: [
-      { src: "/images/selection-projets/restaurant Bichette rodez 12 wc 2025/WhatsApp Image 2025-09-04 à 13.47.04_40479fa7.jpg", alt: "Fresque WC restaurant Bichette — détail", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/restaurant Bichette rodez 12 wc 2025/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg", alt: "Fresque restaurant Bichette — vue d'ensemble", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/restaurant Bichette rodez 12 wc 2025/WhatsApp Image 2025-09-04 à 13.47.05_bc59e8f0.jpg", alt: "Décoration murale Bichette Rodez", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/restaurant Bichette rodez 12 wc 2025/WhatsApp Image 2025-09-04 à 13.48.00_4dde2e50.jpg", alt: "Fresque murale Bichette — style graphique", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/restaurant Bichette rodez 12 wc 2025/WhatsApp Image 2025-10-23 à 16.17.13_ef7b8194.jpg", alt: "Résultat final fresque Bichette Rodez", width: 1200, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg", alt: "Fresque restaurant Bichette — vue d'ensemble", width: 1068, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.05_bc59e8f0.jpg", alt: "Décoration murale Bichette Rodez", width: 1066, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.48.00_622e5da2.jpg", alt: "Fresque murale Bichette — style graphique", width: 1536, height: 2048 },
+      { src: "/images/entreprises/WhatsApp Image 2025-10-23 à 16.17.13_ef7b8194.jpg", alt: "Résultat final fresque Bichette Rodez", width: 1600, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-10-23 à 16.17.14_b6af5275.jpg", alt: "Détail fresque Bichette — finitions", width: 1600, height: 1600 },
     ],
     cover: 0,
   },
   {
     id: "petits-chevaux-tremouilles",
     title: "Petits Chevaux — École Trémouilles",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    section: "entreprises",
     year: 2025,
     location: "Trémouilles (12)",
     images: [
-      { src: "/images/selection-projets/petits chevaux sol ecole trémouilles 2025/WhatsApp Image 2025-09-12 à 13.35.45_4eea7229.jpg", alt: "Peinture au sol petits chevaux école Trémouilles", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/petits chevaux sol ecole trémouilles 2025/WhatsApp Image 2025-09-12 à 13.35.45_51bfea78.jpg", alt: "Jeu de petits chevaux peint au sol — détail", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/petits chevaux sol ecole trémouilles 2025/WhatsApp Image 2025-10-24 à 16.10.57_e1ebf6f7.jpg", alt: "Résultat final petits chevaux école Trémouilles", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/petits chevaux sol ecole trémouilles 2025/WhatsApp Image 2025-10-24 à 16.10.58_d7a67ef2.jpg", alt: "Vue d'ensemble jeu au sol école Trémouilles", width: 1600, height: 1200 },
+      { src: "/images/entreprises/WhatsApp Image 2025-10-24 à 16.10.57_e1ebf6f7.jpg", alt: "Résultat final petits chevaux école Trémouilles", width: 1600, height: 900 },
     ],
-    cover: 2,
+    cover: 0,
   },
   {
-    id: "club-tennis-caussade",
-    title: "Club de Tennis Caussade",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
-    year: 2021,
-    location: "Caussade (82)",
+    id: "monastere-facade",
+    title: "Façade Le Monastère",
+    section: "entreprises",
+    year: 2024,
+    location: "Le Monastère (12)",
     images: [
-      { src: "/images/selection-projets/club tennis caussade 2021/20210422_204728.jpg", alt: "Fresque club de tennis Caussade — raquette géante", width: 1200, height: 1600 },
-      { src: "/images/selection-projets/club tennis caussade 2021/20210423_082428.jpg", alt: "Détail fresque tennis Caussade", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/club tennis caussade 2021/20210423_082444.jpg", alt: "Fresque club tennis Caussade — résultat final", width: 1600, height: 1200 },
+      { src: "/images/entreprises/WhatsApp Image 2026-01-16 at 14.17.jpeg", alt: "Fresque façade Le Monastère — vue d'ensemble", width: 1600, height: 904 },
     ],
-    cover: 1,
+    cover: 0,
   },
   {
     id: "controle-technique-pampelonne",
     title: "Contrôle Technique Pampelonne",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    section: "entreprises",
     year: 2021,
     location: "Pampelonne (81)",
     images: [
-      { src: "/images/selection-projets/Controle technique pampelonne 81 2021/IMG_20210827_131333.jpg", alt: "Fresque contrôle technique Pampelonne — façade", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/Controle technique pampelonne 81 2021/IMG_20210827_131400.jpg", alt: "Détail fresque automobile Pampelonne", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/Controle technique pampelonne 81 2021/IMG_20210827_131604.jpg", alt: "Fresque contrôle technique — vue d'ensemble", width: 1600, height: 1200 },
+      { src: "/images/entreprises/IMG_20210827_131400.jpg", alt: "Fresque contrôle technique Pampelonne", width: 3000, height: 3000 },
     ],
     cover: 0,
   },
   {
-    id: "intermarche",
-    title: "Intermarché",
-    section: "projets-a-la-une",
-    subcategory: "Entreprises",
+    id: "salle-fetes-albi",
+    title: "Salle des Fêtes Albi",
+    section: "entreprises",
+    year: 2021,
+    location: "Albi (81)",
+    images: [
+      { src: "/images/entreprises/salle des fêtes Albi 81.jpg", alt: "Fresque murale salle des fêtes d'Albi", width: 3000, height: 3000 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "escape-game-agglobus",
+    title: "Escape Game Agglobus",
+    section: "entreprises",
+    year: 2019,
+    location: "Rodez (12)",
+    images: [
+      { src: "/images/entreprises/escape game agglobus rodez 2019.JPG", alt: "Décor escape game Agglobus Rodez", width: 4000, height: 3000 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-pompier",
+    title: "Fresque Pompier",
+    section: "entreprises",
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/selection-projets/intermarcher 12 2021/IMG_20210729_131459.jpg", alt: "Fresque Intermarché — rayon fruits et légumes", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/intermarcher 12 2021/inter.jpeg", alt: "Fresque murale Intermarché — vue d'ensemble", width: 1600, height: 1200 },
-      { src: "/images/selection-projets/intermarcher 12 2021/WhatsApp Image 2021-09-21 at 10.25.14.jpeg", alt: "Résultat final fresque Intermarché", width: 1200, height: 1600 },
-    ],
-    cover: 1,
-  },
-
-  /* ═══════════════════════════════════════════════
-     PROJETS À LA UNE — PARTICULIERS
-     ═══════════════════════════════════════════════ */
-  {
-    id: "particulier-interieur-3",
-    title: "Fresque Abstraite",
-    section: "projets-a-la-une",
-    subcategory: "Particuliers",
-    year: 2025,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_028794ac.jpg", alt: "Fresque abstraite intérieur — couleurs vives", width: 1200, height: 1600 },
-      { src: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_11a55126.jpg", alt: "Détail fresque abstraite particulier", width: 1200, height: 1600 },
-      { src: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_2dfe4ffa.jpg", alt: "Fresque abstraite — vue d'ensemble", width: 1600, height: 1200 },
+      { src: "/images/entreprises/fire.jpg", alt: "Fresque murale caserne pompiers", width: 591, height: 443 },
     ],
     cover: 0,
   },
   {
-    id: "particulier-interieur-4",
-    title: "Fresque Nature",
-    section: "projets-a-la-une",
-    subcategory: "Particuliers",
-    year: 2025,
+    id: "buron-sistre",
+    title: "Buron de la Sistre",
+    section: "entreprises",
+    year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_3543fe83.jpg", alt: "Fresque murale nature — forêt et animaux", width: 1600, height: 1200 },
-      { src: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_46c9744e.jpg", alt: "Détail fresque nature — feuillage", width: 1200, height: 1600 },
-      { src: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_be6338bd.jpg", alt: "Fresque nature — vue complète", width: 1600, height: 1200 },
+      { src: "/images/entreprises/bureau-sistre.webp", alt: "Graffiti mural coloré Buron de la Sistre", width: 2000, height: 1464 },
     ],
     cover: 0,
   },
   {
-    id: "oneshot-particulier-2",
-    title: "Fresque Visage Femme",
-    section: "projets-a-la-une",
-    subcategory: "Particuliers",
+    id: "fresque-vaches-pop-art",
+    title: "Fresque Vaches Pop Art",
+    section: "entreprises",
+    year: 2022,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/entreprises/beer-cow.png", alt: "Fresque murale pop art avec deux vaches portant des lunettes de soleil", width: 1200, height: 1246 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "atelier-geometrique",
+    title: "Atelier Géométrique Coloré",
+    section: "entreprises",
+    year: 2022,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/entreprises/colors.png", alt: "Vue aérienne d'un atelier participatif avec fresque géométrique multicolore", width: 4032, height: 2488 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "animation-entreprise",
+    title: "Animation Entreprise",
+    section: "entreprises",
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/selection-oneshot/WhatsApp Image 2023-07-05 at 12.33.42.jpeg", alt: "Fresque visage de femme — style pop art", width: 1200, height: 1600 },
-      { src: "/images/selection-oneshot/WhatsApp Image 2023-07-05 at 12.34.12 (1).jpeg", alt: "Fresque intérieur — détail pop art", width: 1600, height: 1200 },
+      { src: "/images/entreprises/anim-entreprise-1.jpg", alt: "Animation live painting pour événement entreprise", width: 1068, height: 1600 },
     ],
     cover: 0,
   },
   {
-    id: "gui-on-scope-portrait-1",
-    title: "Portrait Live — Franck Tourneret",
-    section: "projets-a-la-une",
-    subcategory: "Particuliers",
-    year: 2021,
+    id: "cabinet-ophtalmologie",
+    title: "Cabinet d'Ophtalmologie",
+    section: "entreprises",
+    year: 2024,
+    location: "Rodez (12)",
+    images: [
+      { src: "/images/entreprises/WhatsApp Image 2025-05-13 à 20.24.36_6b369a59 - Copie.jpg", alt: "Fresque cabinet ophtalmologie — portrait lunettes colorées", width: 1201, height: 1600 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-vin-entreprise",
+    title: "Fresque Vin",
+    section: "entreprises",
+    year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/selection-gui-on-scope/003_GuiHome Décoration © Franck Tourneret.jpg", alt: "Guillaume Jeanjean en action — photo Franck Tourneret", width: 1200, height: 1600 },
-      { src: "/images/selection-gui-on-scope/007_GuiHome Décoration © Franck Tourneret.jpg", alt: "Artiste peignant une fresque — portrait professionnel", width: 1200, height: 1600 },
-      { src: "/images/selection-gui-on-scope/015_GuiHome Décoration © Franck Tourneret.jpg", alt: "GuiHome Décoration au travail — série Franck Tourneret", width: 1200, height: 1600 },
+      { src: "/images/entreprises/wine.png", alt: "Fresque murale réaliste — mains portant des verres de vin", width: 4772, height: 6310 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "camping-piscine",
+    title: "Camping — Fresque Piscine",
+    section: "entreprises",
+    year: 2021,
+    location: "Tarn (81)",
+    images: [
+      { src: "/images/entreprises/IMG-20210313-WA0001.jpg", alt: "Fresque piscine camping — décoration aquatique", width: 884, height: 988 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "commerce-decoration",
+    title: "Décoration Commerciale",
+    section: "entreprises",
+    year: 2023,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/entreprises/IMG_20230723_122905.jpg", alt: "Décoration murale pour commerce — vue d'ensemble", width: 4000, height: 3000 },
+      { src: "/images/entreprises/IMG_20230723_122948.jpg", alt: "Décoration murale pour commerce — détail", width: 2464, height: 2464 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "exposition-peinture",
+    title: "Exposition Peinture",
+    section: "entreprises",
+    year: 2025,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.jpg", alt: "Exposition artiste muraliste — vue d'ensemble", width: 1200, height: 1600 },
+      { src: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.47_7f151ba7.jpg", alt: "Vernissage exposition — visiteurs", width: 1200, height: 1600 },
     ],
     cover: 0,
   },
 
   /* ═══════════════════════════════════════════════
-     PROJETS À LA UNE — PARTICIPATIFS
+     PARTICULIERS
+     ═══════════════════════════════════════════════ */
+  {
+    id: "fresque-daft-punk",
+    title: "Fresque Daft Punk",
+    section: "particuliers",
+    year: 2024,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/daft-punk.jpg", alt: "Fresque murale Daft Punk avec casques iconiques et couleurs vives", width: 4080, height: 3072 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-marvel",
+    title: "Fresque Marvel",
+    section: "particuliers",
+    year: 2022,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/marvel.png", alt: "Fresque murale Iron Man style Marvel — chambre enfant", width: 2400, height: 1851 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-simba",
+    title: "Fresque Lion Simba",
+    section: "particuliers",
+    year: 2021,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/simba.jpg", alt: "Fresque murale du lion Simba avec feuilles vertes et détails aquarelle", width: 1440, height: 1081 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-lion-realiste",
+    title: "Fresque Lion Réaliste",
+    section: "particuliers",
+    year: 2021,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/286760592_593764265670510_6938627902755638076_n.jpg", alt: "Fresque murale lion réaliste — intérieur particulier", width: 1440, height: 1082 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "portrait-femme-africaine",
+    title: "Portrait Femme Africaine",
+    section: "particuliers",
+    year: 2023,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/african-wife.jpg", alt: "Portrait stylisé de femme africaine avec couleurs vives et détails réalistes", width: 3000, height: 4000 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-bonne-soeur",
+    title: "Fresque Bonne Sœur",
+    section: "particuliers",
+    year: 2023,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/bonne-soeur.jpg", alt: "Fresque murale représentant une bonne sœur avec style street art coloré", width: 1200, height: 1600 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-basketball",
+    title: "Fresque Basketball",
+    section: "particuliers",
+    year: 2022,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/basket.jpg", alt: "Fresque murale sur thème basketball avec joueur en action", width: 2044, height: 1615 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-ble",
+    title: "Fresque Champ de Blé",
+    section: "particuliers",
+    year: 2023,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/ble.jpg", alt: "Fresque murale champêtre avec champ de blé doré", width: 3000, height: 3000 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-surf",
+    title: "Fresque Surf",
+    section: "particuliers",
+    year: 2020,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/SURF.jpg", alt: "Fresque murale surf — chambre particulier", width: 960, height: 540 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "chambre-simon",
+    title: "Chambre Simon",
+    section: "particuliers",
+    year: 2021,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/simon.jpg", alt: "Fresque personnalisée chambre enfant Simon", width: 960, height: 712 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "portrait-mural",
+    title: "Portrait Mural",
+    section: "particuliers",
+    year: 2021,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/IMG_20211218_120647.jpg", alt: "Portrait mural réaliste — commande particulier", width: 3000, height: 4000 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-personnage-bd",
+    title: "Personnage Style BD",
+    section: "particuliers",
+    year: 2019,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/28752404_176937463112664_3180297642009690112_n - Copie.jpg", alt: "Fresque personnage style bande dessinée — intérieur", width: 1080, height: 1075 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "decoration-exterieure",
+    title: "Décoration Extérieure",
+    section: "particuliers",
+    year: 2019,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/20190305_114501.jpg", alt: "Décoration murale extérieure — particulier", width: 4032, height: 1960 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-chambre-coloree",
+    title: "Fresque Chambre",
+    section: "particuliers",
+    year: 2021,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/20210118_171900.jpg", alt: "Fresque murale chambre — univers coloré", width: 3024, height: 3024 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "live-painting-mains",
+    title: "Live Painting Mains",
+    section: "particuliers",
+    year: 2022,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/hand.png", alt: "Fresque murale de mains liées style réaliste", width: 1536, height: 1536 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "portrait-cap",
+    title: "Portrait au Béret",
+    section: "particuliers",
+    year: 2023,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/portrait-cap.png", alt: "Graffiti portrait d'homme au béret sur fond rouge", width: 3008, height: 2825 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "cabinet-ophtalmologie-particulier",
+    title: "Cabinet d'Ophtalmologie",
+    section: "particuliers",
+    year: 2024,
+    location: "Rodez (12)",
+    images: [
+      { src: "/images/particuliers/ophtalmo-femme.png", alt: "Fresque cabinet ophtalmologie — portrait lunettes colorées", width: 1201, height: 1600 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-visage-femme",
+    title: "Fresque Visage Femme",
+    section: "particuliers",
+    year: 2023,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/WhatsApp Image 2023-07-05 at 12.33.42.jpeg", alt: "Fresque visage de femme — style pop art", width: 1500, height: 2000 },
+      { src: "/images/particuliers/WhatsApp Image 2023-07-05 at 12.34.12 (1).jpeg", alt: "Fresque intérieur — détail pop art", width: 1640, height: 1232 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-abstraite",
+    title: "Fresque Abstraite",
+    section: "particuliers",
+    year: 2025,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_028794ac.jpg", alt: "Fresque abstraite intérieur — couleurs vives", width: 1200, height: 1600 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_2dfe4ffa.jpg", alt: "Fresque abstraite — vue d'ensemble", width: 1200, height: 1600 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_2f1aa34c.jpg", alt: "Fresque abstraite — détail", width: 1600, height: 1201 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_be6338bd.jpg", alt: "Fresque nature — vue complète", width: 1200, height: 1600 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "fresque-camping",
+    title: "Fresque Camping — Piscine",
+    section: "particuliers",
+    year: 2021,
+    location: "Tarn (81)",
+    images: [
+      { src: "/images/particuliers/IMG-20210319-WA0008.jpg", alt: "Fresque piscine camping — décoration aquatique", width: 1600, height: 1046 },
+    ],
+    cover: 0,
+  },
+  {
+    id: "biggy-le-krill",
+    title: "Biggy Le Krill — Live Painting",
+    section: "particuliers",
+    year: 2018,
+    location: "Aveyron (12)",
+    images: [
+      { src: "/images/particuliers/biggy le krill 12 2018.jpg", alt: "Live painting Biggy Le Krill — performance artistique", width: 4032, height: 1960 },
+    ],
+    cover: 0,
+  },
+
+  /* ═══════════════════════════════════════════════
+     PARTICIPATIFS
      ═══════════════════════════════════════════════ */
   {
     id: "atelier-participatif-ecole-1",
     title: "Atelier Fresque — École",
-    section: "projets-a-la-une",
-    subcategory: "Participatifs",
+    section: "participatifs",
     year: 2022,
     location: "Aveyron (12)",
     images: [
@@ -347,8 +621,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "atelier-participatif-noel",
     title: "Atelier Fresque de Noël",
-    section: "projets-a-la-une",
-    subcategory: "Participatifs",
+    section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
     images: [
@@ -360,8 +633,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "atelier-participatif-enfants",
     title: "Atelier Enfants — Peinture Libre",
-    section: "projets-a-la-une",
-    subcategory: "Participatifs",
+    section: "participatifs",
     year: 2024,
     location: "Aveyron (12)",
     images: [
@@ -374,8 +646,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "atelier-participatif-asso",
     title: "Fresque Associative",
-    section: "projets-a-la-une",
-    subcategory: "Participatifs",
+    section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
     images: [
@@ -387,8 +658,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "participatif-groupe-1",
     title: "Atelier Collectif — Été",
-    section: "projets-a-la-une",
-    subcategory: "Participatifs",
+    section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
     images: [
@@ -402,8 +672,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   {
     id: "participatif-groupe-2",
     title: "Fresque Participative — Mur Collectif",
-    section: "projets-a-la-une",
-    subcategory: "Participatifs",
+    section: "participatifs",
     year: 2025,
     location: "Aveyron (12)",
     images: [
@@ -414,192 +683,12 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
 
   /* ═══════════════════════════════════════════════
-     INTÉRIEUR
+     COUPS DE CŒUR
      ═══════════════════════════════════════════════ */
-  {
-    id: "fresque-surf",
-    title: "Fresque Surf",
-    section: "interieur",
-    year: 2020,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/SURF.jpg", alt: "Fresque murale surf — chambre particulier", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "fresque-marvel",
-    title: "Fresque Marvel",
-    section: "interieur",
-    year: 2022,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/marvel.jpg", alt: "Fresque murale Marvel — Iron Man chambre enfant", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "fresque-simon",
-    title: "Chambre Simon",
-    section: "interieur",
-    year: 2021,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/simon.jpg", alt: "Fresque personnalisée chambre enfant Simon", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "fresque-lion",
-    title: "Fresque Lion Réaliste",
-    section: "interieur",
-    year: 2021,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/286760592_593764265670510_6938627902755638076_n.jpg", alt: "Fresque murale lion réaliste — intérieur particulier", width: 1200, height: 1600 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "decoration-interieur-1",
-    title: "Décoration Intérieure",
-    section: "interieur",
-    year: 2020,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/20200502_110339.jpg", alt: "Décoration murale intérieure — salon particulier", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "decoration-interieur-2",
-    title: "Fresque Chambre",
-    section: "interieur",
-    year: 2021,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/20210118_171900.jpg", alt: "Fresque murale chambre — univers coloré", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "portrait-mural",
-    title: "Portrait Mural",
-    section: "interieur",
-    year: 2021,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/IMG_20211218_120647.jpg", alt: "Portrait mural réaliste — commande particulier", width: 1200, height: 1600 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "fresque-personnage",
-    title: "Personnage Style BD",
-    section: "interieur",
-    year: 2019,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/28752404_176937463112664_3180297642009690112_n - Copie.jpg", alt: "Fresque personnage style bande dessinée — intérieur", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "particulier-deco-marshmallow",
-    title: "Fresque Daft Punk",
-    section: "interieur",
-    year: 2026,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/interieur/lv_0_20260203204313.jpg", alt: "Fresque Daft Punk — timelapse", width: 1200, height: 1600 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "oneshot-particulier-1",
-    title: "Décoration Murale Personnalisée",
-    section: "interieur",
-    year: 2019,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/selection-oneshot/20190305_114501.jpg", alt: "Décoration murale personnalisée — particulier", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "oneshot-wine",
-    title: "Fresque Vin — Intérieur",
-    section: "interieur",
-    year: 2022,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/selection-oneshot/wine.png", alt: "Fresque murale réaliste — mains portant des verres de vin", width: 1600, height: 2100 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "cabinet-ophtalmologie",
-    title: "Cabinet d'Ophtalmologie",
-    section: "interieur",
-    year: 2024,
-    location: "Rodez (12)",
-    images: [
-      { src: "/images/selection-oneshot/WhatsApp Image 2025-05-13 à 20.24.36_6b369a59 - Copie.jpg", alt: "Fresque cabinet ophtalmologie Rodez — portrait lunettes colorées", width: 1200, height: 1600 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "restaurant-bellevue",
-    title: "Restaurant Bellevue",
-    section: "interieur",
-    year: 2023,
-    location: "Salles-Curan (12)",
-    images: [
-      { src: "/images/selection-oneshot/IMG_20230723_122905.jpg", alt: "Décoration murale restaurant Bellevue Salles-Curan", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-
-  /* ═══════════════════════════════════════════════
-     EXTÉRIEUR
-     ═══════════════════════════════════════════════ */
-  {
-    id: "salle-fetes-albi",
-    title: "Salle des Fêtes Albi",
-    section: "exterieur",
-    year: 2021,
-    location: "Albi (81)",
-    images: [
-      { src: "/images/selection-oneshot/salle des fêtes Albi 81.jpg", alt: "Fresque murale salle des fêtes d'Albi", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "salle-fetes-tremouilles",
-    title: "Salle des Fêtes Trémouilles",
-    section: "exterieur",
-    year: 2021,
-    location: "Trémouilles (12)",
-    images: [
-      { src: "/images/selection-oneshot/IMG_20220722_194800.jpg", alt: "Fresque salle des fêtes Trémouilles", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "camping-terrasses-viaur",
-    title: "Camping Les Terrasses du Viaur",
-    section: "exterieur",
-    year: 2021,
-    location: "Tarn (81)",
-    images: [
-      { src: "/images/selection-oneshot/IMG-20210319-WA0008.jpg", alt: "Fresque piscine camping Les Terrasses du Viaur", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
   {
     id: "urban-fest-albi",
     title: "Urban Fest Albi",
-    section: "exterieur",
+    section: "coups-de-coeur",
     year: 2021,
     location: "Albi (81)",
     images: [
@@ -608,31 +697,16 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     cover: 0,
   },
   {
-    id: "escape-game-agglobus",
-    title: "Escape Game Agglobus",
-    section: "exterieur",
-    year: 2019,
-    location: "Rodez (12)",
-    images: [
-      { src: "/images/selection-oneshot/escape game agglobus rodez 2019.JPG", alt: "Décor escape game Agglobus Rodez", width: 1600, height: 1200 },
-    ],
-    cover: 0,
-  },
-  {
-    id: "biggy-le-krill",
+    id: "biggy-le-krill-coeur",
     title: "Biggy Le Krill — Live Painting",
-    section: "exterieur",
+    section: "coups-de-coeur",
     year: 2018,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/selection-oneshot/biggy le krill 12 2018.jpg", alt: "Live painting Biggy Le Krill — performance artistique", width: 1600, height: 1200 },
+      { src: "/images/particuliers/biggy le krill 12 2018.jpg", alt: "Live painting Biggy Le Krill — performance artistique", width: 4032, height: 1960 },
     ],
     cover: 0,
   },
-
-  /* ═══════════════════════════════════════════════
-     COUPS DE CŒUR
-     ═══════════════════════════════════════════════ */
   {
     id: "gui-on-scope-live",
     title: "Live Painting — En Action",

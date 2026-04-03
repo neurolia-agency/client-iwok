@@ -22,24 +22,16 @@ interface PortfolioImage {
 /* ─── Data ───────────────────────────────────────────────── */
 
 const COLUMN_1: PortfolioImage[] = [
-   {
-    src: "/images/section-grid-animate/simba.jpg",
-    alt: "Illustration murale du lion Simba avec feuilles vertes et détails aquarelle",
-    title: "Fresque Lion Simba",
-    category: "Particuliers",
-    width: 1440,
-    height: 1081,
+  {
+    src: "/images/section-grid-animate/ophtalmo-femme.webp",
+    alt: "Fresque d'entrée pour cabinet ophtalmologie avec portrait de femme aux lunettes colorées",
+    title: "Cabinet Ophtalmologie",
+    category: "Entreprises & Collectivités",
+    width: 1201,
+    height: 1600,
   },
   {
-    src: "/images/section-grid-animate/african-wife.jpg",
-    alt: "Portrait stylisé de femme aux lunettes vertes sur fond événementiel",
-    title: "Fresque Portrait Événement",
-    category: "Événementiel",
-    width: 3000,
-    height: 4000,
-  },
-  {
-    src: "/images/section-grid-animate/beer-cow.png",
+    src: "/images/section-grid-animate/beer-cow.webp",
     alt: "Fresque murale extérieure pop art avec deux vaches portant des lunettes de soleil",
     title: "Fresque Vaches Pop Art",
     category: "Particuliers",
@@ -47,39 +39,66 @@ const COLUMN_1: PortfolioImage[] = [
     height: 1246,
   },
   {
-    src: "/images/section-grid-animate/ophtalmo-femme.png",
-    alt: "Fresque d'entrée pour cabinet ophtalmologie avec portrait de femme aux lunettes colorées",
-    title: "Cabinet Ophtalmologie",
+    src: "/images/section-grid-animate/daft-punk.webp",
+    alt: "Fresque murale Daft Punk avec casques iconiques et couleurs vives",
+    title: "Fresque Daft Punk",
+    category: "Particuliers",
+    width: 4080,
+    height: 3072,
+  },
+  {
+    src: "/images/section-grid-animate/fire.webp",
+    alt: "Fresque murale pompier avec équipement de lutte contre les incendies",
+    title: "Fresque Pompier",
     category: "Entreprises & Collectivités",
-    width: 1201,
-    height: 1600,
+    width: 443,
+    height: 591,
   },
 ];
 
 const COLUMN_2: PortfolioImage[] = [
   {
-    src: "/images/section-grid-animate/hand.png",
-    alt: "Artiste peignant une large fresque murale de mains liées style réaliste",
-    title: "Live Painting Mains",
+    src: "/images/section-grid-animate/african-wife.webp",
+    alt: "Portrait stylisé de femme africaine avec couleurs vives et détails réalistes",
+    title: "Fresque Portrait",
     category: "Événementiel",
-    width: 1536,
-    height: 1536,
+    width: 3000,
+    height: 4000,
   },
   {
-    src: "/images/section-grid-animate/colors.png",
+    src: "/images/section-grid-animate/marvel.webp",
+    alt: "Fresque murale Iron Man style Marvel avec couleurs vibrantes rouge, jaune et bleu",
+    title: "Fresque Iron Man",
+    category: "Entreprises & Collectivités",
+    width: 2400,
+    height: 1851,
+  },
+  {
+    src: "/images/section-grid-animate/bonne-soeur.webp",
+    alt: "Fresque murale représentant une bonne sœur avec style street art coloré",
+    title: "Fresque Bonne Sœur",
+    category: "Particuliers",
+    width: 1200,
+    height: 1600,
+  },
+  {
+    src: "/images/section-grid-animate/basket.webp",
+    alt: "Fresque murale sur thème basketball avec joueur en action",
+    title: "Fresque Basketball",
+    category: "Entreprises & Collectivités",
+    width: 2044,
+    height: 1615,
+  },
+];
+
+const COLUMN_3: PortfolioImage[] = [
+  {
+    src: "/images/section-grid-animate/colors.webp",
     alt: "Vue aérienne d'un atelier participatif avec fresque géométrique multicolore",
     title: "Atelier Géométrique Coloré",
     category: "Participatif",
     width: 4032,
     height: 2488,
-  },
-  {
-    src: "/images/section-grid-animate/portrait-cap.png",
-    alt: "Graffiti portrait d'homme au béret sur fond rouge avec deux personnes posant devant",
-    title: "Live Painting Portrait",
-    category: "Événementiel",
-    width: 3008,
-    height: 2825,
   },
   {
     src: "/images/section-grid-animate/wine.webp",
@@ -89,19 +108,8 @@ const COLUMN_2: PortfolioImage[] = [
     width: 4772,
     height: 6310,
   },
-];
-
-const COLUMN_3: PortfolioImage[] = [
   {
-    src: "/images/section-grid-animate/marvel.png",
-    alt: "Fresque murale Iron Man style Marvel avec couleurs vibrantes rouge, jaune et bleu",
-    title: "Fresque Iron Man",
-    category: "Entreprises & Collectivités",
-    width: 2400,
-    height: 1851,
-  },
- {
-    src: "/images/section-grid-animate/kerea.png",
+    src: "/images/section-grid-animate/kerea.webp",
     alt: "Artiste peignant un portrait coloré lors d'un événement live painting au centre KEREA",
     title: "Live Painting KEREA",
     category: "Événementiel",
@@ -109,20 +117,12 @@ const COLUMN_3: PortfolioImage[] = [
     height: 971,
   },
   {
-    src: "/images/section-grid-animate/bureau-sistre.webp",
-    alt: "Graffiti mural coloré style Buron avec lettres stylisées et ampoules jaunes",
-    title: "Buron de la Sistre",
-    category: "Entreprises & Collectivités",
-    width: 2000,
-    height: 1464,
-  },
-  {
-    src: "/images/section-grid-animate/fire.jpg",
-    alt: "Fresque murale pompier avec équipement de lutte contre les incendies",
-    title: "Fresque Pompier",
-    category: "Entreprises & Collectivités",
-    width: 591,
-    height: 788,
+    src: "/images/section-grid-animate/ble.webp",
+    alt: "Fresque murale sur thème champêtre avec champ de blé doré",
+    title: "Fresque Champ de Blé",
+    category: "Particuliers",
+    width: 3000,
+    height: 3000,
   },
 ];
 
@@ -333,10 +333,9 @@ export default function PortfolioPreview() {
   return (
     <section
       ref={sectionRef}
-      className="dark-section"
+      className="dark-section section-padding"
       aria-labelledby="portfolio-preview-heading"
       style={{
-        paddingBlock: "var(--spacing-section-inner)",
         overflow: "hidden",
         position: "relative",
       }}
@@ -357,6 +356,43 @@ export default function PortfolioPreview() {
       />
 
       <div className="portfolio-pin-area" style={{ position: "relative", zIndex: 1 }}>
+        {/* Guillaume portrait — bleeds off left viewport edge, fades into dark bg on right */}
+        <div
+          className="hidden md:block"
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: 0,
+            transform: "translateY(calc(-50% + 300px)) translateX(-35%)",
+            width: "clamp(630px, 58vw, 1020px)",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <Image
+            src="/images/selection-gui-on-scope/portrait-gui-masque.webp"
+            alt=""
+            width={1024}
+            height={1536}
+            sizes="58vw"
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "block",
+            }}
+          />
+          {/* Fade overlay — dissolves right edge into background */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to left, var(--background-dark) 0%, transparent 50%)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+
         {/* ─── Asymmetric layout: sticky title left + scrolling grid right ─── */}
         <div
           className="container-custom"
@@ -370,7 +406,7 @@ export default function PortfolioPreview() {
               alignItems: "flex-start",
             }}
           >
-            {/* ─── Left: Title block (~30%) — no sticky, parent is GSAP-pinned ─── */}
+            {/* ─── Left: Title block (~30%) ─── */}
             <div
               style={{
                 width: "44%",
@@ -495,7 +531,7 @@ export default function PortfolioPreview() {
                 </p>
 
                 {/* CTA */}
-                <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/hand.png">
+                <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/ophtalmo-femme.webp">
                   Voir toutes les réalisations <span aria-hidden="true">→</span>
                 </CtaSecondary>
               </div>
@@ -640,7 +676,7 @@ export default function PortfolioPreview() {
 
             {/* Mobile CTA */}
             <div style={{ textAlign: "center", marginTop: "2rem" }}>
-              <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/hand.png">
+              <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/ophtalmo-femme.webp">
                 Voir toutes les réalisations <span aria-hidden="true">→</span>
               </CtaSecondary>
             </div>
