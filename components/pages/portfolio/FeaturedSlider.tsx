@@ -291,13 +291,6 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
     };
   }, []);
 
-  // Autoplay 3s
-  useEffect(() => {
-    const interval = setInterval(() => {
-      goNext();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [goNext]);
 
   return (
     <div
