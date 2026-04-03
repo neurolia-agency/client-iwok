@@ -76,16 +76,16 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
     category: "Particuliers",
     slug: "particuliers",
-    background: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_2f1aa34c.jpg",
-    preview1: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_be6338bd.jpg",
-    preview2: "/images/interieur/WhatsApp Image 2025-09-04 à 11.06.45_2dfe4ffa.jpg",
+    background: "/images/particuliers/daft-punk.jpg",
+    preview1: "/images/particuliers/ophtalmo-femme.png",
+    preview2: "/images/particuliers/african-wife.jpg",
   },
   {
     category: "Entreprises et Collectivités",
     slug: "entreprises",
-    background: "/images/selection-projets/intermarcher 12 2021/inter.jpeg",
-    preview1: "/images/selection-projets/restaurant-bichette/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg",
-    preview2: "/images/selection-projets/controle-technique/IMG_20210827_131400.jpg",
+    background: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.jpg",
+    preview1: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.jpg",
+    preview2: "/images/entreprises/WhatsApp Image 2025-09-04 à 13.48.00_622e5da2.jpg",
   },
   {
     category: "Participatifs",
@@ -98,7 +98,7 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
     category: "Coups de cœur",
     slug: "coups-de-coeur",
     background: "/images/selection-gui-on-scope/08122021-2.jpg",
-    preview1: "/images/selection-oneshot/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.jpg",
+    preview1: "/images/entreprises/WhatsApp Image 2025-09-12 à 13.35.44_8e71f5be.jpg",
     preview2: "/images/selection-gui-on-scope/WhatsApp Image 2023-07-05 at 12.33.57.jpeg",
   },
 ];
