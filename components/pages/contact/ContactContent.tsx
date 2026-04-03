@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { gsap } from "gsap";
 
 const PHONE = "06 XX XX XX XX";
