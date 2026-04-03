@@ -76,9 +76,9 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
     category: "Particuliers",
     slug: "particuliers",
-    background: "/images/particuliers/daft-punk.jpg",
-    preview1: "/images/particuliers/ophtalmo-femme.png",
-    preview2: "/images/particuliers/african-wife.jpg",
+    background: "/images/particuliers/daft-punk.webp",
+    preview1: "/images/particuliers/ophtalmo-femme.webp",
+    preview2: "/images/particuliers/african-wife.webp",
   },
   {
     category: "Entreprises et Collectivités",
@@ -374,7 +374,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2024,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/daft-punk.jpg", alt: "Fresque murale Daft Punk avec casques iconiques et couleurs vives", width: 4080, height: 3072 },
+      { src: "/images/particuliers/daft-punk.webp", alt: "Fresque murale Daft Punk avec casques iconiques et couleurs vives", width: 4080, height: 3072 },
     ],
     cover: 0,
   },
@@ -385,7 +385,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/marvel.png", alt: "Fresque murale Iron Man style Marvel — chambre enfant", width: 2400, height: 1851 },
+      { src: "/images/particuliers/marvel.webp", alt: "Fresque murale Iron Man style Marvel — chambre enfant", width: 2400, height: 1851 },
     ],
     cover: 0,
   },
@@ -396,7 +396,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/simba.jpg", alt: "Fresque murale du lion Simba avec feuilles vertes et détails aquarelle", width: 1440, height: 1081 },
+      { src: "/images/particuliers/simba.webp", alt: "Fresque murale du lion Simba avec feuilles vertes et détails aquarelle", width: 1440, height: 1081 },
     ],
     cover: 0,
   },
@@ -407,7 +407,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/286760592_593764265670510_6938627902755638076_n.jpg", alt: "Fresque murale lion réaliste — intérieur particulier", width: 1440, height: 1082 },
+      { src: "/images/particuliers/286760592_593764265670510_6938627902755638076_n.webp", alt: "Fresque murale lion réaliste — intérieur particulier", width: 1440, height: 1082 },
     ],
     cover: 0,
   },
@@ -418,7 +418,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/african-wife.jpg", alt: "Portrait stylisé de femme africaine avec couleurs vives et détails réalistes", width: 3000, height: 4000 },
+      { src: "/images/particuliers/african-wife.webp", alt: "Portrait stylisé de femme africaine avec couleurs vives et détails réalistes", width: 3000, height: 4000 },
     ],
     cover: 0,
   },
@@ -429,7 +429,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/bonne-soeur.jpg", alt: "Fresque murale représentant une bonne sœur avec style street art coloré", width: 1200, height: 1600 },
+      { src: "/images/particuliers/bonne-soeur.webp", alt: "Fresque murale représentant une bonne sœur avec style street art coloré", width: 1200, height: 1600 },
     ],
     cover: 0,
   },
@@ -440,7 +440,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/basket.jpg", alt: "Fresque murale sur thème basketball avec joueur en action", width: 2044, height: 1615 },
+      { src: "/images/particuliers/basket.webp", alt: "Fresque murale sur thème basketball avec joueur en action", width: 2044, height: 1615 },
     ],
     cover: 0,
   },
@@ -451,7 +451,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/ble.jpg", alt: "Fresque murale champêtre avec champ de blé doré", width: 3000, height: 3000 },
+      { src: "/images/particuliers/ble.webp", alt: "Fresque murale champêtre avec champ de blé doré", width: 3000, height: 3000 },
     ],
     cover: 0,
   },
@@ -462,7 +462,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2020,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/SURF.jpg", alt: "Fresque murale surf — chambre particulier", width: 960, height: 540 },
+      { src: "/images/particuliers/SURF.webp", alt: "Fresque murale surf — chambre particulier", width: 960, height: 540 },
     ],
     cover: 0,
   },
@@ -473,7 +473,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/simon.jpg", alt: "Fresque personnalisée chambre enfant Simon", width: 960, height: 712 },
+      { src: "/images/particuliers/simon.webp", alt: "Fresque personnalisée chambre enfant Simon", width: 960, height: 712 },
     ],
     cover: 0,
   },
@@ -484,7 +484,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/IMG_20211218_120647.jpg", alt: "Portrait mural réaliste — commande particulier", width: 3000, height: 4000 },
+      { src: "/images/particuliers/IMG_20211218_120647.webp", alt: "Portrait mural réaliste — commande particulier", width: 3000, height: 4000 },
     ],
     cover: 0,
   },
@@ -495,7 +495,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2019,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/28752404_176937463112664_3180297642009690112_n - Copie.jpg", alt: "Fresque personnage style bande dessinée — intérieur", width: 1080, height: 1075 },
+      { src: "/images/particuliers/28752404_176937463112664_3180297642009690112_n - Copie.webp", alt: "Fresque personnage style bande dessinée — intérieur", width: 1080, height: 1075 },
     ],
     cover: 0,
   },
@@ -506,7 +506,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2019,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/20190305_114501.jpg", alt: "Décoration murale extérieure — particulier", width: 4032, height: 1960 },
+      { src: "/images/particuliers/20190305_114501.webp", alt: "Décoration murale extérieure — particulier", width: 4032, height: 1960 },
     ],
     cover: 0,
   },
@@ -517,7 +517,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/20210118_171900.jpg", alt: "Fresque murale chambre — univers coloré", width: 3024, height: 3024 },
+      { src: "/images/particuliers/20210118_171900.webp", alt: "Fresque murale chambre — univers coloré", width: 3024, height: 3024 },
     ],
     cover: 0,
   },
@@ -528,7 +528,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2022,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/hand.png", alt: "Fresque murale de mains liées style réaliste", width: 1536, height: 1536 },
+      { src: "/images/particuliers/hand.webp", alt: "Fresque murale de mains liées style réaliste", width: 1536, height: 1536 },
     ],
     cover: 0,
   },
@@ -539,7 +539,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/portrait-cap.png", alt: "Graffiti portrait d'homme au béret sur fond rouge", width: 3008, height: 2825 },
+      { src: "/images/particuliers/portrait-cap.webp", alt: "Graffiti portrait d'homme au béret sur fond rouge", width: 3008, height: 2825 },
     ],
     cover: 0,
   },
@@ -550,7 +550,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2024,
     location: "Rodez (12)",
     images: [
-      { src: "/images/particuliers/ophtalmo-femme.png", alt: "Fresque cabinet ophtalmologie — portrait lunettes colorées", width: 1201, height: 1600 },
+      { src: "/images/particuliers/ophtalmo-femme.webp", alt: "Fresque cabinet ophtalmologie — portrait lunettes colorées", width: 1201, height: 1600 },
     ],
     cover: 0,
   },
@@ -561,8 +561,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2023,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/WhatsApp Image 2023-07-05 at 12.33.42.jpeg", alt: "Fresque visage de femme — style pop art", width: 1500, height: 2000 },
-      { src: "/images/particuliers/WhatsApp Image 2023-07-05 at 12.34.12 (1).jpeg", alt: "Fresque intérieur — détail pop art", width: 1640, height: 1232 },
+      { src: "/images/particuliers/WhatsApp Image 2023-07-05 at 12.33.42.webp", alt: "Fresque visage de femme — style pop art", width: 1500, height: 2000 },
+      { src: "/images/particuliers/WhatsApp Image 2023-07-05 at 12.34.12 (1).webp", alt: "Fresque intérieur — détail pop art", width: 1640, height: 1232 },
     ],
     cover: 0,
   },
@@ -573,10 +573,10 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2025,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_028794ac.jpg", alt: "Fresque abstraite intérieur — couleurs vives", width: 1200, height: 1600 },
-      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_2dfe4ffa.jpg", alt: "Fresque abstraite — vue d'ensemble", width: 1200, height: 1600 },
-      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_2f1aa34c.jpg", alt: "Fresque abstraite — détail", width: 1600, height: 1201 },
-      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_be6338bd.jpg", alt: "Fresque nature — vue complète", width: 1200, height: 1600 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_028794ac.webp", alt: "Fresque abstraite intérieur — couleurs vives", width: 1200, height: 1600 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_2dfe4ffa.webp", alt: "Fresque abstraite — vue d'ensemble", width: 1200, height: 1600 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_2f1aa34c.webp", alt: "Fresque abstraite — détail", width: 1600, height: 1201 },
+      { src: "/images/particuliers/WhatsApp Image 2025-09-04 à 11.06.45_be6338bd.webp", alt: "Fresque nature — vue complète", width: 1200, height: 1600 },
     ],
     cover: 0,
   },
@@ -587,7 +587,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2021,
     location: "Tarn (81)",
     images: [
-      { src: "/images/particuliers/IMG-20210319-WA0008.jpg", alt: "Fresque piscine camping — décoration aquatique", width: 1600, height: 1046 },
+      { src: "/images/particuliers/IMG-20210319-WA0008.webp", alt: "Fresque piscine camping — décoration aquatique", width: 1600, height: 1046 },
     ],
     cover: 0,
   },
@@ -598,7 +598,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2018,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/biggy le krill 12 2018.jpg", alt: "Live painting Biggy Le Krill — performance artistique", width: 4032, height: 1960 },
+      { src: "/images/particuliers/biggy le krill 12 2018.webp", alt: "Live painting Biggy Le Krill — performance artistique", width: 4032, height: 1960 },
     ],
     cover: 0,
   },
@@ -703,7 +703,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     year: 2018,
     location: "Aveyron (12)",
     images: [
-      { src: "/images/particuliers/biggy le krill 12 2018.jpg", alt: "Live painting Biggy Le Krill — performance artistique", width: 4032, height: 1960 },
+      { src: "/images/particuliers/biggy le krill 12 2018.webp", alt: "Live painting Biggy Le Krill — performance artistique", width: 4032, height: 1960 },
     ],
     cover: 0,
   },
