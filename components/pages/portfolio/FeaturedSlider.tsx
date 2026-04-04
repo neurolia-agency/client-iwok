@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useImperativeHandle, forwardRef } from "react";
 import Link from "next/link";
-import { FEATURED_SLIDES } from "@/data/portfolio-projects";
+import { FEATURED_SLIDES, type FeaturedSlide } from "@/data/portfolio-projects";
 import * as THREE from "three";
 import gsap from "gsap";
 
@@ -52,7 +52,8 @@ void main() {
 }
 `;
 
-const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index: number) => void }>(function FeaturedSlider({ onSlideChange }, ref) {
+const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide[]; onSlideChange?: (index: number) => void }>(function FeaturedSlider({ slides: slidesProp, onSlideChange }, ref) {
+  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : FEATURED_SLIDES;
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
@@ -181,14 +182,14 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
   }, [render, getPreviewImgs, getTitleInner, onSlideChange]);
 
   const goPrev = useCallback(() => {
-    const prev = (currentRef.current - 1 + FEATURED_SLIDES.length) % FEATURED_SLIDES.length;
+    const prev = (currentRef.current - 1 + slides.length) % slides.length;
     goToSlide(prev);
-  }, [goToSlide]);
+  }, [goToSlide, slides.length]);
 
   const goNext = useCallback(() => {
-    const next = (currentRef.current + 1) % FEATURED_SLIDES.length;
+    const next = (currentRef.current + 1) % slides.length;
     goToSlide(next);
-  }, [goToSlide]);
+  }, [goToSlide, slides.length]);
 
   useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
 
@@ -225,10 +226,10 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
     disp.wrapS = THREE.RepeatWrapping;
     disp.wrapT = THREE.RepeatWrapping;
 
-    FEATURED_SLIDES.forEach((slide, i) => {
+    slides.forEach((slide, i) => {
       const tex = loader.load(slide.background, (t) => {
         loadedCount++;
-        if (loadedCount === FEATURED_SLIDES.length && matRef.current) {
+        if (loadedCount === slides.length && matRef.current) {
           matRef.current.uniforms.size.value = new THREE.Vector2(
             t.image.naturalWidth || 1600,
             t.image.naturalHeight || 1200
@@ -316,13 +317,13 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
 
       {/* Full-slide clickable link */}
       <Link
-        href={`/portfolio/${FEATURED_SLIDES[current].slug}`}
+        href={`/portfolio/${slides[current].slug}`}
         style={{ position: "absolute", inset: 0, zIndex: 5, cursor: "pointer" }}
-        aria-label={`Voir les projets ${FEATURED_SLIDES[current].category}`}
+        aria-label={`Voir les projets ${slides[current].category}`}
       />
 
       {/* Slides (preview images) — initial visibility set via inline styles */}
-      {FEATURED_SLIDES.map((slide, i) => (
+      {slides.map((slide, i) => (
         <div
           key={slide.category}
           ref={(el) => { previewRefs.current[i] = el; }}
@@ -387,7 +388,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
       ))}
 
       {/* Titles — only active slide visible, others hidden */}
-      {FEATURED_SLIDES.map((slide, i) => (
+      {slides.map((slide, i) => (
         <div
           key={`title-${slide.category}`}
           ref={(el) => { titleRefs.current[i] = el; }}
@@ -470,7 +471,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
             whiteSpace: "nowrap",
           }}
         >
-          {String(current + 1).padStart(2, "0")}/{String(FEATURED_SLIDES.length).padStart(2, "0")}
+          {String(current + 1).padStart(2, "0")}/{String(slides.length).padStart(2, "0")}
         </span>
         <button
           onClick={goNext}
@@ -505,7 +506,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
           display: "none",
         }}
       >
-        {FEATURED_SLIDES.map((slide, i) => (
+        {slides.map((slide, i) => (
           <button
             key={`bullet-${slide.category}`}
             onClick={() => goToSlide(i)}
@@ -548,7 +549,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
 
       {/* CTA — links to category page */}
       <Link
-        href={`/portfolio/${FEATURED_SLIDES[current].slug}`}
+        href={`/portfolio/${slides[current].slug}`}
         style={{
           position: "absolute",
           bottom: "clamp(1.5rem, 4vw, 3rem)",
@@ -572,7 +573,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { onSlideChange?: (index
           transition: "background 0.3s",
         }}
       >
-        Voir les projets {FEATURED_SLIDES[current].category}
+        Voir les projets {slides[current].category}
       </Link>
     </div>
   );

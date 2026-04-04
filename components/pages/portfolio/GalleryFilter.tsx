@@ -1,13 +1,15 @@
 "use client";
 
-import { FEATURED_SLIDES } from "@/data/portfolio-projects";
+import { FEATURED_SLIDES, type FeaturedSlide } from "@/data/portfolio-projects";
 
 interface GalleryFilterProps {
   activeIndex: number;
   onChange: (index: number) => void;
+  slides?: FeaturedSlide[];
 }
 
-export default function GalleryFilter({ activeIndex, onChange }: GalleryFilterProps) {
+export default function GalleryFilter({ activeIndex, onChange, slides: slidesProp }: GalleryFilterProps) {
+  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : FEATURED_SLIDES;
   return (
     <nav
       aria-label="Naviguer entre les catégories du portfolio"
@@ -31,7 +33,7 @@ export default function GalleryFilter({ activeIndex, onChange }: GalleryFilterPr
           alignItems: "center",
         }}
       >
-        {FEATURED_SLIDES.map((slide, i) => {
+        {slides.map((slide, i) => {
           const isActive = activeIndex === i;
           return (
             <button

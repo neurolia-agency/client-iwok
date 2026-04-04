@@ -120,32 +120,45 @@ function TestimonialCard({ quote, author, role, project, delay }: TestimonialPro
   );
 }
 
-export default function TestimonialsSection() {
+interface Testimonial {
+  quote: string;
+  author: string;
+  role: string;
+  project: string;
+}
+
+interface TestimonialsSectionProps {
+  testimonials?: Testimonial[];
+}
+
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
+  {
+    quote:
+      "De la première discussion à la fresque finale, Guillaume a su écouter et proposer exactement ce qu'on imaginait. Un résultat bluffant, qui fait l'unanimité parmi notre équipe.",
+    author: "Marc D.",
+    role: "Gérant de restaurant",
+    project: "Rodez (12) · Fresque intérieure restaurant",
+  },
+  {
+    quote:
+      "Le skate park avait besoin d'une identité visuelle forte. IWOK a créé quelque chose qui parle aux jeunes du quartier et dont toute la ville est fière aujourd'hui.",
+    author: "Service culturel",
+    role: "Mairie de Decazeville",
+    project: "(12) · Skate Park Decazeville 2024",
+  },
+  {
+    quote:
+      "On cherchait quelqu'un qui comprenne notre univers sans qu'on ait besoin de tout expliquer. Guillaume a capté exactement ce qu'on voulait — le résultat dépasse ce qu'on avait imaginé.",
+    author: "Famille Rousset",
+    role: "Toulouse",
+    project: "(31) · Chambre enfant",
+  },
+];
+
+export default function TestimonialsSection({ testimonials: testimonialsProp }: TestimonialsSectionProps) {
   const { ref: sectionRef } = useRevealOnScroll();
 
-  const testimonials = [
-    {
-      quote:
-        "De la première discussion à la fresque finale, Guillaume a su écouter et proposer exactement ce qu'on imaginait. Un résultat bluffant, qui fait l'unanimité parmi notre équipe.",
-      author: "Marc D.",
-      role: "Gérant de restaurant",
-      project: "Rodez (12) · Fresque intérieure restaurant",
-    },
-    {
-      quote:
-        "Le skate park avait besoin d'une identité visuelle forte. IWOK a créé quelque chose qui parle aux jeunes du quartier et dont toute la ville est fière aujourd'hui.",
-      author: "Service culturel",
-      role: "Mairie de Decazeville",
-      project: "(12) · Skate Park Decazeville 2024",
-    },
-    {
-      quote:
-        "On cherchait quelqu'un qui comprenne notre univers sans qu'on ait besoin de tout expliquer. Guillaume a capté exactement ce qu'on voulait — le résultat dépasse ce qu'on avait imaginé.",
-      author: "Famille Rousset",
-      role: "Toulouse",
-      project: "(31) · Chambre enfant",
-    },
-  ];
+  const testimonials = testimonialsProp && testimonialsProp.length > 0 ? testimonialsProp : DEFAULT_TESTIMONIALS;
 
   return (
     <section

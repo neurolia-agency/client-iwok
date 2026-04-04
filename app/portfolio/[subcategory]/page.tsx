@@ -7,6 +7,7 @@ import {
   type CategoryName,
   type PortfolioSectionSlug,
 } from "@/data/portfolio-projects";
+import { getProjectsBySection } from "@/lib/queries/portfolio";
 import SubcategoryGallery from "@/components/pages/portfolio/SubcategoryGallery";
 
 const SLUG_TO_CATEGORY: Record<string, { name: CategoryName; slug: PortfolioSectionSlug }> = Object.fromEntries(
@@ -48,7 +49,11 @@ export default async function SubcategoryPage({ params }: Props) {
     );
   }
 
-  const projects = PORTFOLIO_PROJECTS.filter((p) => p.section === entry.slug);
+  let projects = await getProjectsBySection(entry.slug);
+  if (projects.length === 0) {
+    // Fallback to hardcoded data
+    projects = PORTFOLIO_PROJECTS.filter((p) => p.section === entry.slug);
+  }
 
   return (
     <section className="container-custom" style={{ paddingTop: "7rem", paddingBottom: "var(--spacing-group)" }}>

@@ -23,7 +23,7 @@ interface Service {
   imageAlt: string;
 }
 
-const SERVICES: Service[] = [
+const DEFAULT_SERVICES: Service[] = [
   {
     id: "fresques-interieures",
     title: "Fresques Murales Intérieures",
@@ -126,7 +126,7 @@ const SERVICES: Service[] = [
   },
 ];
 
-const PROCESS_STEPS = [
+const DEFAULT_PROCESS_STEPS = [
   {
     number: "01",
     title: "Prise de contact",
@@ -536,7 +536,7 @@ function ServiceBlock({
    PROCESS SECTION — "De l'idée à la fresque"
    ═══════════════════════════════════════════════════════════ */
 
-function ProcessSection() {
+function ProcessSection({ steps }: { steps: { number: string; title: string; description: string }[] }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -639,7 +639,7 @@ function ProcessSection() {
 
         {/* ─── Desktop: 4-column horizontal timeline ─── */}
         <div className="hidden md:grid md:grid-cols-4 gap-8">
-          {PROCESS_STEPS.map((step) => (
+          {steps.map((step) => (
             <div
               key={step.number}
               className="proc-step"
@@ -723,14 +723,14 @@ function ProcessSection() {
             }}
           />
 
-          {PROCESS_STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <div
               key={step.number}
               className="proc-step"
               style={{
                 position: "relative",
                 paddingBottom:
-                  i < PROCESS_STEPS.length - 1 ? "2.5rem" : 0,
+                  i < steps.length - 1 ? "2.5rem" : 0,
               }}
             >
               {/* Dot */}
@@ -881,9 +881,17 @@ function ContactCta() {
    MAIN — ServicesContent
    ═══════════════════════════════════════════════════════════ */
 
-export default function ServicesContent() {
+interface ServicesContentProps {
+  services?: Service[];
+  processSteps?: { number: string; title: string; description: string }[];
+}
+
+export default function ServicesContent({ services: servicesProp, processSteps: processStepsProp }: ServicesContentProps) {
   const heroRef = useRef<HTMLElement>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const services = servicesProp && servicesProp.length > 0 ? servicesProp : DEFAULT_SERVICES;
+  const processSteps = processStepsProp && processStepsProp.length > 0 ? processStepsProp : DEFAULT_PROCESS_STEPS;
 
   /* Hero GSAP reveal */
   useEffect(() => {
@@ -1023,7 +1031,7 @@ export default function ServicesContent() {
       {/* ═══════════════════════════════════════════════
           SERVICES — Alternating zig-zag blocks
           ═══════════════════════════════════════════════ */}
-      {SERVICES.map((service, index) => (
+      {services.map((service, index) => (
         <ServiceBlock
           key={service.id}
           service={service}
@@ -1040,7 +1048,7 @@ export default function ServicesContent() {
       {/* ═══════════════════════════════════════════════
           PROCESS — "De l'idée à la fresque"
           ═══════════════════════════════════════════════ */}
-      <ProcessSection />
+      <ProcessSection steps={processSteps} />
 
       {/* ═══════════════════════════════════════════════
           CTA — Conversion
