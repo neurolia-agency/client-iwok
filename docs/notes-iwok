@@ -1,0 +1,33 @@
+## accueil 
+- logo guihome au chargement dun site : le client n'aime pas, on peut présenter le logo guihome sur un seul fond jaune, supprimer l'animation des différents backgrounds qui se succèdent et créer une animation du logo avec remotion (il faudra probablement convertir le logo en svg ?)
+
+## contenu photos dans section réalisation 
+- convertir en webp (préserver au maximum la qualité) toutes les photos, préserver l'architecture du dossier, supprimer les images originales
+dossier concerné : client-iwok/public/site communication
+
+
+## section Réalisations 
+- ajouter catégorie 'évènementiel'
+- mettre à jour les dossiers de catégorie avec wetransfert
+- carousel à l'ouverture d'une image avec toutes les images du projet
+
+## refonte formulaire de contact
+mettre placeholders dans input pour guider 
+inputs :
+- nom / prénom
+- téléphone 
+- mail
+- projet (entreprise, particulier ou autre)
+- nature, taille et etat du support
+- idées concrètes, insiprations
+- pièces jointes
+
+## général 
+- adapter 'coup de coeur' en comptablisant le nombre de clic. Créer aussi la possibilité de clique sur un icone 'coeur' sur chaque projet (déterminer un coefficient multiplicateur pour un projet noté coup de coeur, ça rend l'expérience ludique et ça permet au client d'avoir un visu sur ce qui plait le plus) 
+- ajouter section shop dans navbar, puis créer la page (vente en ligne)
+- logo navbar plus gros et contrasté selon le bg (actuellement blanc sur blanc parfois)
+
+## section services 
+- redondance extérieur (les deux premieres sections disent la meme chose, il faut une seule section 'extérieur')
+- 'en savoir plus' (toutes sections) : supprimer mais etoffer légèrement le texte expliquant le processus : de la rencontre à la réalisation, en passant par l'étude
+- section processus :  'de vos envies à la réalisation' + protection non systématique 

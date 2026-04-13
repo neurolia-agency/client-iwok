@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import LikeButton from "./LikeButton";
 import type { PortfolioProject } from "@/data/portfolio-projects";
 
 interface GalleryCardProps {
   project: PortfolioProject;
+  initialLikes?: number;
   onClick?: () => void;
 }
 
-export default function GalleryCard({ project, onClick }: GalleryCardProps) {
+export default function GalleryCard({ project, initialLikes = 0, onClick }: GalleryCardProps) {
   const coverImage = project.images[project.cover];
   const isPortrait = coverImage.height > coverImage.width;
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -106,6 +108,21 @@ export default function GalleryCard({ project, onClick }: GalleryCardProps) {
             )}
           </span>
         </div>
+      </div>
+
+      {/* Like button — toujours accessible, au-dessus de l'overlay */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "0.75rem",
+          right: "0.75rem",
+          zIndex: 5,
+          opacity: 0,
+          transition: "opacity 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        }}
+        className="group-hover:opacity-100"
+      >
+        <LikeButton projectId={project.id} initialCount={initialLikes} />
       </div>
     </button>
   );

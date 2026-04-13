@@ -303,32 +303,135 @@ function ContactHero() {
 }
 
 // ---------------------------------------------------------------------------
-// Section 2 — Formulaire callback (fond clair)
+// Section 2 — Formulaire de devis (fond clair)
 // ---------------------------------------------------------------------------
 type FormStatus = "idle" | "loading" | "success" | "error";
+
+const PROJECT_TYPES = [
+  "Fresque murale interieure",
+  "Fresque murale exterieure",
+  "Design mural sur mesure",
+  "Decoration tous supports",
+  "Animation evenementielle",
+  "Atelier participatif",
+  "Autre",
+];
+
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 Mo
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+function UploadIcon() {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={{ color: "var(--foreground-subtle)" }}
+    >
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="17 8 12 3 7 8" />
+      <line x1="12" x2="12" y1="3" y2="15" />
+    </svg>
+  );
+}
 
 function CallbackForm() {
   const { ref: sectionRef, isVisible } = useRevealOnScroll(0.1);
 
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
-  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const projectTypeRef = useRef<HTMLSelectElement>(null);
+  const surfaceRef = useRef<HTMLInputElement>(null);
+  const locationRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function validate(): boolean {
     const next: Record<string, string> = {};
     const name = nameRef.current?.value.trim() ?? "";
+    const email = emailRef.current?.value.trim() ?? "";
     const phone = phoneRef.current?.value.trim() ?? "";
+    const projectType = projectTypeRef.current?.value ?? "";
+    const location = locationRef.current?.value.trim() ?? "";
+    const description = descriptionRef.current?.value.trim() ?? "";
 
-    if (!name) next.name = "Merci d'indiquer votre nom.";
-    if (!phone) next.phone = "Merci d'indiquer votre numero.";
+    if (!name) next.name = "Merci d\u2019indiquer votre nom.";
+    if (!email) next.email = "Merci d\u2019indiquer votre email.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      next.email = "Ce format d\u2019email ne semble pas valide.";
+    if (!phone) next.phone = "Merci d\u2019indiquer votre numero.";
     else if (phone.replace(/\s/g, "").length < 8)
       next.phone = "Ce numero semble trop court.";
+    if (!projectType) next.projectType = "Merci de choisir un type de projet.";
+    if (!location) next.location = "Merci d\u2019indiquer le lieu d\u2019intervention.";
+    if (!description) next.description = "Merci de decrire votre projet.";
+    else if (description.length < 10)
+      next.description = "La description doit faire au moins 10 caracteres.";
 
     setErrors(next);
     return Object.keys(next).length === 0;
+  }
+
+  function addFiles(newFiles: File[]) {
+    const valid = newFiles.filter((f) => {
+      if (!ACCEPTED_TYPES.includes(f.type)) return false;
+      if (f.size > MAX_FILE_SIZE) return false;
+      return true;
+    });
+    const combined = [...files, ...valid].slice(0, MAX_FILES);
+    setFiles(combined);
+    const newPreviews = combined.map((f) => URL.createObjectURL(f));
+    setPreviews((prev) => {
+      prev.forEach((url) => URL.revokeObjectURL(url));
+      return newPreviews;
+    });
+  }
+
+  function removeFile(index: number) {
+    const newFiles = files.filter((_, i) => i !== index);
+    setFiles(newFiles);
+    URL.revokeObjectURL(previews[index]);
+    setPreviews(previews.filter((_, i) => i !== index));
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragOver(false);
+    const droppedFiles = Array.from(e.dataTransfer.files).filter((f) =>
+      f.type.startsWith("image/"),
+    );
+    addFiles(droppedFiles);
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragOver(true);
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragOver(false);
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      addFiles(Array.from(e.target.files));
+      e.target.value = "";
+    }
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -337,17 +440,23 @@ function CallbackForm() {
 
     setStatus("loading");
 
-    const payload = {
-      name: nameRef.current?.value.trim(),
-      phone: phoneRef.current?.value.trim(),
-      message: messageRef.current?.value.trim() || null,
-    };
+    const formData = new FormData();
+    formData.append("name", nameRef.current?.value.trim() ?? "");
+    formData.append("email", emailRef.current?.value.trim() ?? "");
+    formData.append("phone", phoneRef.current?.value.trim() ?? "");
+    formData.append("projectType", projectTypeRef.current?.value ?? "");
+    formData.append("surface", surfaceRef.current?.value.trim() ?? "");
+    formData.append("location", locationRef.current?.value.trim() ?? "");
+    formData.append("description", descriptionRef.current?.value.trim() ?? "");
+    files.forEach((f) => formData.append("files", f));
 
-    // TODO: remplacer par fetch('/api/contact', { method: 'POST', body: JSON.stringify(payload) })
-    console.log("Callback request:", payload);
-
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus("success");
+    try {
+      const res = await fetch("/api/contact", { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Erreur serveur");
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
   }
 
   // Shared inline style helpers
@@ -375,11 +484,53 @@ function CallbackForm() {
     transition: "border-color var(--transition-standard)",
   };
 
+  const selectStyle: React.CSSProperties = {
+    ...inputStyle,
+    appearance: "none" as const,
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%2378716C' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right 1rem center",
+    paddingRight: "2.5rem",
+  };
+
+  const dropZoneStyle: React.CSSProperties = {
+    border: `2px dashed ${isDragOver ? "var(--primary)" : "var(--border)"}`,
+    borderRadius: "var(--radius)",
+    padding: "2rem 1.5rem",
+    textAlign: "center" as const,
+    cursor: "pointer",
+    transition:
+      "border-color var(--transition-standard), background-color var(--transition-standard)",
+    backgroundColor: isDragOver ? "var(--primary-pale)" : "var(--background-alt)",
+  };
+
+  const errorTextStyle: React.CSSProperties = {
+    fontFamily: "var(--font-sans)",
+    fontSize: "var(--font-size-caption)",
+    color: "var(--error)",
+    marginTop: "0.375rem",
+    maxWidth: "none",
+  };
+
   const revealBase: React.CSSProperties = {
     transition:
       "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
     willChange: "opacity, transform",
   };
+
+  function focusHandler(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    e.currentTarget.style.borderColor = "var(--primary)";
+    e.currentTarget.style.outline = "2px solid var(--primary)";
+    e.currentTarget.style.outlineOffset = "2px";
+  }
+
+  function blurHandler(field?: string) {
+    return (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      e.currentTarget.style.borderColor =
+        field && errors[field] ? "var(--error)" : "var(--border)";
+      e.currentTarget.style.outline = "none";
+    };
+  }
 
   return (
     <section
@@ -389,7 +540,7 @@ function CallbackForm() {
     >
       <div
         style={{
-          maxWidth: 520,
+          maxWidth: 640,
           marginInline: "auto",
           paddingInline: "var(--container-padding)",
         }}
@@ -410,7 +561,7 @@ function CallbackForm() {
             ...revealBase,
           }}
         >
-          Je ne reponds pas&nbsp;?
+          Demande de devis
         </h2>
 
         <p
@@ -429,7 +580,7 @@ function CallbackForm() {
             transitionDelay: "100ms",
           }}
         >
-          Laissez vos coordonnees, je vous rappelle sous 24h.
+          Decrivez votre projet. Devis gratuit, reponse sous 48h.
         </p>
 
         {/* Success state */}
@@ -457,18 +608,18 @@ function CallbackForm() {
                 marginBottom: "0.75rem",
               }}
             >
-              Merci&nbsp;!
+              Demande envoyee&nbsp;!
             </h3>
             <p
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "var(--font-size-body)",
                 color: "var(--muted-foreground)",
-                maxWidth: "30ch",
+                maxWidth: "36ch",
                 marginInline: "auto",
               }}
             >
-              Je vous rappelle tres vite.
+              Merci pour votre demande. Je vous recontacte sous 48h pour en discuter.
             </p>
           </div>
         ) : (
@@ -486,120 +637,321 @@ function CallbackForm() {
               transitionDelay: "200ms",
             }}
           >
-            {/* Name */}
-            <div>
-              <label htmlFor="cb-name" style={labelStyle}>
-                Votre nom
-              </label>
-              <input
-                ref={nameRef}
-                id="cb-name"
-                type="text"
-                required
-                autoComplete="name"
-                placeholder="Prenom Nom"
+            {/* Error banner */}
+            {status === "error" && (
+              <div
                 style={{
-                  ...inputStyle,
-                  borderColor: errors.name ? "var(--error)" : undefined,
+                  padding: "1rem 1.25rem",
+                  borderRadius: "var(--radius)",
+                  backgroundColor: "oklch(0.95 0.04 30)",
+                  border: "1px solid var(--error)",
                 }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "var(--primary)";
-                  e.currentTarget.style.outline = "2px solid var(--primary)";
-                  e.currentTarget.style.outlineOffset = "2px";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = errors.name
-                    ? "var(--error)"
-                    : "var(--border)";
-                  e.currentTarget.style.outline = "none";
-                }}
-              />
-              {errors.name && (
+              >
                 <p
                   style={{
                     fontFamily: "var(--font-sans)",
-                    fontSize: "var(--font-size-caption)",
+                    fontSize: "var(--font-size-small)",
                     color: "var(--error)",
-                    marginTop: "0.375rem",
+                    margin: 0,
                     maxWidth: "none",
                   }}
                 >
-                  {errors.name}
+                  Une erreur est survenue. Veuillez reessayer ou nous appeler directement.
                 </p>
-              )}
+              </div>
+            )}
+
+            {/* Row 1: Nom + Email */}
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
+              <div>
+                <label htmlFor="cb-name" style={labelStyle}>
+                  Nom complet
+                </label>
+                <input
+                  ref={nameRef}
+                  id="cb-name"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  placeholder="Prenom Nom"
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.name ? "var(--error)" : undefined,
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("name")}
+                />
+                {errors.name && <p style={errorTextStyle}>{errors.name}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="cb-email" style={labelStyle}>
+                  Email
+                </label>
+                <input
+                  ref={emailRef}
+                  id="cb-email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="votre@email.com"
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.email ? "var(--error)" : undefined,
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("email")}
+                />
+                {errors.email && <p style={errorTextStyle}>{errors.email}</p>}
+              </div>
             </div>
 
-            {/* Phone */}
+            {/* Row 2: Telephone + Type de projet */}
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
+              <div>
+                <label htmlFor="cb-phone" style={labelStyle}>
+                  Telephone
+                </label>
+                <input
+                  ref={phoneRef}
+                  id="cb-phone"
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  placeholder="06 12 34 56 78"
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.phone ? "var(--error)" : undefined,
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("phone")}
+                />
+                {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="cb-projectType" style={labelStyle}>
+                  Type de projet
+                </label>
+                <select
+                  ref={projectTypeRef}
+                  id="cb-projectType"
+                  required
+                  style={{
+                    ...selectStyle,
+                    borderColor: errors.projectType ? "var(--error)" : undefined,
+                    color: projectTypeRef.current?.value
+                      ? "var(--foreground)"
+                      : "var(--foreground-subtle)",
+                  }}
+                  defaultValue=""
+                  onChange={(e) => {
+                    e.currentTarget.style.color = e.currentTarget.value
+                      ? "var(--foreground)"
+                      : "var(--foreground-subtle)";
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("projectType")}
+                >
+                  <option value="" disabled hidden>
+                    Choisissez un type de projet
+                  </option>
+                  {PROJECT_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                {errors.projectType && <p style={errorTextStyle}>{errors.projectType}</p>}
+              </div>
+            </div>
+
+            {/* Row 3: Surface + Lieu */}
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
+              <div>
+                <label htmlFor="cb-surface" style={labelStyle}>
+                  Surface estimee{" "}
+                  <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
+                    (facultatif)
+                  </span>
+                </label>
+                <input
+                  ref={surfaceRef}
+                  id="cb-surface"
+                  type="text"
+                  placeholder="Ex: 8m2, un mur de 3m x 2.5m"
+                  style={inputStyle}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler()}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="cb-location" style={labelStyle}>
+                  Lieu d&apos;intervention
+                </label>
+                <input
+                  ref={locationRef}
+                  id="cb-location"
+                  type="text"
+                  required
+                  autoComplete="address-level2"
+                  placeholder="Ville, departement"
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.location ? "var(--error)" : undefined,
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("location")}
+                />
+                {errors.location && <p style={errorTextStyle}>{errors.location}</p>}
+              </div>
+            </div>
+
+            {/* Description */}
             <div>
-              <label htmlFor="cb-phone" style={labelStyle}>
-                Votre numero de telephone
+              <label htmlFor="cb-description" style={labelStyle}>
+                Description du projet
               </label>
-              <input
-                ref={phoneRef}
-                id="cb-phone"
-                type="tel"
+              <textarea
+                ref={descriptionRef}
+                id="cb-description"
+                rows={5}
                 required
-                autoComplete="tel"
-                placeholder="06 12 34 56 78"
+                placeholder="Decrivez votre projet, vos envies, vos inspirations..."
                 style={{
                   ...inputStyle,
-                  borderColor: errors.phone ? "var(--error)" : undefined,
+                  resize: "vertical",
+                  minHeight: "7rem",
+                  borderColor: errors.description ? "var(--error)" : undefined,
                 }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "var(--primary)";
-                  e.currentTarget.style.outline = "2px solid var(--primary)";
-                  e.currentTarget.style.outlineOffset = "2px";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = errors.phone
-                    ? "var(--error)"
-                    : "var(--border)";
-                  e.currentTarget.style.outline = "none";
-                }}
+                onFocus={focusHandler}
+                onBlur={blurHandler("description")}
               />
-              {errors.phone && (
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "var(--font-size-caption)",
-                    color: "var(--error)",
-                    marginTop: "0.375rem",
-                    maxWidth: "none",
-                  }}
-                >
-                  {errors.phone}
-                </p>
-              )}
+              {errors.description && <p style={errorTextStyle}>{errors.description}</p>}
             </div>
 
-            {/* Message (optional) */}
+            {/* File upload zone */}
             <div>
-              <label htmlFor="cb-message" style={labelStyle}>
-                Un mot sur votre projet{" "}
+              <label style={labelStyle}>
+                Photos de reference{" "}
                 <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
                   (facultatif)
                 </span>
               </label>
-              <textarea
-                ref={messageRef}
-                id="cb-message"
-                rows={3}
-                placeholder="Fresque pour un restaurant, chambre d'enfant, facade..."
-                style={{
-                  ...inputStyle,
-                  resize: "vertical",
-                  minHeight: "5rem",
+              <div
+                style={dropZoneStyle}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onClick={() => fileInputRef.current?.click()}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
                 }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "var(--primary)";
-                  e.currentTarget.style.outline = "2px solid var(--primary)";
-                  e.currentTarget.style.outlineOffset = "2px";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.outline = "none";
-                }}
-              />
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  aria-label="Ajouter des photos"
+                />
+                <UploadIcon />
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "var(--font-size-small)",
+                    color: "var(--foreground-subtitle)",
+                    margin: "0.75rem 0 0.25rem",
+                    maxWidth: "none",
+                  }}
+                >
+                  Glissez vos photos ici ou cliquez pour parcourir
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "var(--font-size-caption)",
+                    color: "var(--foreground-subtle)",
+                    margin: 0,
+                    maxWidth: "none",
+                  }}
+                >
+                  JPG, PNG, WebP — max {MAX_FILES} fichiers, 10 Mo chacun
+                </p>
+              </div>
+
+              {/* Thumbnails */}
+              {previews.length > 0 && (
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
+                    gap: "0.75rem",
+                    marginTop: "1rem",
+                  }}
+                >
+                  {previews.map((src, i) => (
+                    <div
+                      key={src}
+                      style={{
+                        position: "relative",
+                        aspectRatio: "1",
+                        borderRadius: "var(--radius-subtle)",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={files[i]?.name ?? "Apercu"}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFile(i);
+                        }}
+                        aria-label={`Supprimer ${files[i]?.name}`}
+                        style={{
+                          position: "absolute",
+                          top: -4,
+                          right: -4,
+                          width: 22,
+                          height: 22,
+                          borderRadius: "50%",
+                          backgroundColor: "var(--error)",
+                          color: "#fff",
+                          border: "2px solid var(--background)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          fontSize: "12px",
+                          fontWeight: 700,
+                          lineHeight: 1,
+                          padding: 0,
+                        }}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Submit */}
@@ -615,7 +967,7 @@ function CallbackForm() {
                 marginTop: "0.5rem",
               }}
             >
-              {status === "loading" ? "Envoi en cours..." : "Demander un rappel"}
+              {status === "loading" ? "Envoi en cours..." : "Envoyer ma demande de devis"}
             </button>
           </form>
         )}

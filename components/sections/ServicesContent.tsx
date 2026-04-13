@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
@@ -25,38 +25,22 @@ interface Service {
 
 const DEFAULT_SERVICES: Service[] = [
   {
-    id: "fresques-interieures",
-    title: "Fresques Murales Intérieures",
-    tagline: "L\u2019intérieur qui raconte votre histoire",
-    tag: "Intérieur",
+    id: "fresques-murales",
+    title: "Fresques Murales",
+    tagline: "Intérieur, extérieur \u2014 vos murs prennent vie",
+    tag: "Intérieur & Extérieur",
     description:
-      "Création de fresques peintes pour vos espaces intérieurs \u2014 chambres d\u2019enfants, salons, halls d\u2019accueil, restaurants, commerces. Chaque fresque est conçue sur mesure après une phase d\u2019écoute et de proposition créative.",
+      "Création de fresques peintes pour tous vos espaces, intérieurs comme extérieurs. Chambres d\u2019enfants, salons, halls d\u2019accueil, façades, bâtiments publics. Chaque fresque est conçue sur mesure après une phase d\u2019écoute et de proposition créative. Peintures techniques adaptées au support et aux conditions (UV, intempéries, usure).",
     includes: [
       "Visite sur site et prise de mesures",
       "Proposition créative (croquis/maquette)",
       "Réalisation complète de la fresque",
       "Finitions et protection adaptées au support",
+      "Peintures techniques extérieures si nécessaire (anti-UV, intempéries)",
     ],
     image: "/images/section-grid-animate/wine.webp",
     imageAlt:
-      "Fresque murale intérieure \u2014 mains tenant des verres de vin, style réaliste",
-  },
-  {
-    id: "fresques-exterieures",
-    title: "Fresques Murales Extérieures",
-    tagline: "Donner une âme à vos façades",
-    tag: "Extérieur",
-    description:
-      "Fresques et peintures murales pour façades, murs extérieurs, bâtiments publics, structures urbaines. Peintures techniques résistantes aux intempéries et aux UV.",
-    includes: [
-      "Étude du support et des contraintes techniques",
-      "Maquette créative adaptée à l\u2019environnement",
-      "Réalisation avec peintures techniques extérieures",
-      "Finition anti-UV et protection longue durée",
-    ],
-    image: "/images/section-grid-animate/fire.webp",
-    imageAlt:
-      "Fresque murale extérieure \u2014 pompier en action, couleurs vibrantes",
+      "Fresque murale \u2014 mains tenant des verres de vin, style réaliste",
   },
   {
     id: "design-mural",
@@ -145,73 +129,9 @@ const DEFAULT_PROCESS_STEPS = [
   {
     number: "04",
     title: "Livraison",
-    description: "Finitions, protection, remise du support.",
+    description: "Finitions, nettoyage, remise du support. La protection (vernis, anti-UV) est proposée en option selon le support et l\u2019usage.",
   },
 ];
-
-/* ═══════════════════════════════════════════════════════════
-   CHEVRON ICON
-   ═══════════════════════════════════════════════════════════ */
-
-function ChevronDown({ isOpen }: { isOpen: boolean }) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{
-        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-        transition: "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-        flexShrink: 0,
-      }}
-    >
-      <path
-        d="M4 6L8 10L12 6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
-   ACCORDION PANEL
-   ═══════════════════════════════════════════════════════════ */
-
-function AccordionPanel({
-  isOpen,
-  children,
-}: {
-  isOpen: boolean;
-  children: React.ReactNode;
-}) {
-  const innerRef = useRef<HTMLDivElement>(null);
-  const [measuredHeight, setMeasuredHeight] = useState(0);
-
-  useEffect(() => {
-    if (innerRef.current) {
-      setMeasuredHeight(innerRef.current.scrollHeight);
-    }
-  }, [isOpen]);
-
-  return (
-    <div
-      style={{
-        maxHeight: isOpen ? `${measuredHeight}px` : "0px",
-        overflow: "hidden",
-        transition:
-          "max-height 450ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-      }}
-    >
-      <div ref={innerRef}>{children}</div>
-    </div>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════
    SERVICE BLOCK — Zig-zag layout
@@ -220,13 +140,9 @@ function AccordionPanel({
 function ServiceBlock({
   service,
   index,
-  isExpanded,
-  onToggle,
 }: {
   service: Service;
   index: number;
-  isExpanded: boolean;
-  onToggle: () => void;
 }) {
   const blockRef = useRef<HTMLElement>(null);
   const isImageRight = index % 2 === 1;
@@ -430,101 +346,75 @@ function ServiceBlock({
               {service.description}
             </p>
 
-            {/* Accordion toggle */}
-            <button
-              onClick={onToggle}
-              aria-expanded={isExpanded}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                alignSelf: "flex-start",
-                gap: "0.5rem",
-                fontFamily: "var(--font-sans)",
-                fontSize: "var(--font-size-small)",
-                fontWeight: 500,
-                color: "var(--primary)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: "0.375rem 0",
-                transition: "color var(--transition-standard)",
-              }}
-            >
-              {isExpanded ? "Réduire" : "En savoir plus"}
-              <ChevronDown isOpen={isExpanded} />
-            </button>
-
-            {/* Accordion content — "Inclus" */}
-            <AccordionPanel isOpen={isExpanded}>
-              <div style={{ paddingBlock: "0.75rem 0.5rem" }}>
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "0.6875rem",
-                    fontWeight: 600,
-                    color: "var(--foreground-subtitle)",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    marginBottom: "0.75rem",
-                    maxWidth: "none",
-                  }}
-                >
-                  Inclus dans la prestation
-                </p>
-                <ul
-                  style={{
-                    listStyle: "none",
-                    padding: 0,
-                    margin: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.5rem",
-                  }}
-                >
-                  {service.includes.map((item) => (
-                    <li
-                      key={item}
+            {/* Contenu "Inclus" — affichage direct */}
+            <div style={{ paddingTop: "0.75rem" }}>
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "0.6875rem",
+                  fontWeight: 600,
+                  color: "var(--foreground-subtitle)",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  marginBottom: "0.75rem",
+                  maxWidth: "none",
+                }}
+              >
+                Inclus dans la prestation
+              </p>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {service.includes.map((item) => (
+                  <li
+                    key={item}
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: "0.75rem",
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "var(--font-size-body)",
+                      lineHeight: 1.6,
+                      color: "var(--foreground-subtitle)",
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
                       style={{
-                        display: "flex",
-                        alignItems: "baseline",
-                        gap: "0.75rem",
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "var(--font-size-body)",
-                        lineHeight: 1.6,
-                        color: "var(--foreground-subtitle)",
+                        display: "inline-block",
+                        width: 5,
+                        height: 5,
+                        borderRadius: "50%",
+                        backgroundColor: "var(--primary)",
+                        flexShrink: 0,
+                        transform: "translateY(-2px)",
                       }}
-                    >
-                      <span
-                        aria-hidden="true"
-                        style={{
-                          display: "inline-block",
-                          width: 5,
-                          height: 5,
-                          borderRadius: "50%",
-                          backgroundColor: "var(--primary)",
-                          flexShrink: 0,
-                          transform: "translateY(-2px)",
-                        }}
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "var(--font-size-small)",
-                    fontStyle: "italic",
-                    color: "var(--muted-foreground)",
-                    marginTop: "1rem",
-                    maxWidth: "none",
-                  }}
-                >
-                  Tarif sur devis — selon surface, complexité et lieu
-                  d&apos;intervention
-                </p>
-              </div>
-            </AccordionPanel>
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "var(--font-size-small)",
+                  fontStyle: "italic",
+                  color: "var(--muted-foreground)",
+                  marginTop: "1rem",
+                  maxWidth: "none",
+                }}
+              >
+                Tarif sur devis — selon surface, complexité et lieu
+                d&apos;intervention
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -533,7 +423,7 @@ function ServiceBlock({
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PROCESS SECTION — "De l'idée à la fresque"
+   PROCESS SECTION — "De vos envies à la réalisation"
    ═══════════════════════════════════════════════════════════ */
 
 function ProcessSection({ steps }: { steps: { number: string; title: string; description: string }[] }) {
@@ -633,7 +523,7 @@ function ProcessSection({ steps }: { steps: { number: string; title: string; des
               margin: 0,
             }}
           >
-            De l&apos;idée à la fresque
+            De vos envies à la réalisation
           </h2>
         </div>
 
@@ -888,7 +778,6 @@ interface ServicesContentProps {
 
 export default function ServicesContent({ services: servicesProp, processSteps: processStepsProp }: ServicesContentProps) {
   const heroRef = useRef<HTMLElement>(null);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const services = servicesProp && servicesProp.length > 0 ? servicesProp : DEFAULT_SERVICES;
   const processSteps = processStepsProp && processStepsProp.length > 0 ? processStepsProp : DEFAULT_PROCESS_STEPS;
@@ -933,7 +822,7 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
       >
         {/* Background image */}
         <Image
-          src="/images/selection-gui-on-scope/007_GuiHome-enhanced-cinematic.png"
+          src="/images/selection-gui-on-scope/007_GuiHome Décoration © Franck Tourneret.webp"
           alt=""
           fill
           priority
@@ -1036,17 +925,11 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
           key={service.id}
           service={service}
           index={index}
-          isExpanded={expandedId === service.id}
-          onToggle={() =>
-            setExpandedId((prev) =>
-              prev === service.id ? null : service.id
-            )
-          }
         />
       ))}
 
       {/* ═══════════════════════════════════════════════
-          PROCESS — "De l'idée à la fresque"
+          PROCESS — "De vos envies à la réalisation"
           ═══════════════════════════════════════════════ */}
       <ProcessSection steps={processSteps} />
 

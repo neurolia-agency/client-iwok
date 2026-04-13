@@ -189,7 +189,7 @@ export default function ServicesPreview() {
     >
       {/* Background Image */}
       <Image
-        src="/images/selection-gui-on-scope/015_GuiHome%20D%C3%A9coration%20%C2%A9%20Franck%20Tourneret.jpg"
+        src="/images/selection-gui-on-scope/015_GuiHome Décoration © Franck Tourneret.webp"
         alt=""
         fill
         sizes="100vw"

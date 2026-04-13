@@ -27,6 +27,7 @@ export default function SubcategoryGallery({ projects }: SubcategoryGalleryProps
       {activeProject && (
         <Lightbox
           project={activeProject}
+          initialIndex={activeProject.cover}
           onClose={() => setActiveProject(null)}
         />
       )}

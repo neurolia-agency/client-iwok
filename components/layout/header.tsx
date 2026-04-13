@@ -9,6 +9,7 @@ import { MobileMenu } from "./mobile-menu";
 const NAV_LINKS = [
   { href: "/portfolio", label: "Réalisations" },
   { href: "/services", label: "Services" },
+  { href: "/shop", label: "Shop" },
   { href: "/a-propos", label: "À Propos" },
   { href: "/contact", label: "Contact" },
 ];
@@ -74,10 +75,13 @@ export default function Header() {
               height={48}
               priority
               style={{
-                height: "clamp(32px, 4vw, 44px)",
+                height: "clamp(40px, 5vw, 56px)",
                 width: "auto",
                 objectFit: "contain",
-                transition: "opacity var(--transition-standard)",
+                transition: "opacity var(--transition-standard), filter var(--transition-standard)",
+                filter: isDark
+                  ? "drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(0, 0, 0, 0.15))"
+                  : "none",
               }}
             />
           </Link>

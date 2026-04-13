@@ -445,19 +445,17 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
             justifyContent: "center",
             width: "3.25rem",
             height: "3.25rem",
-            background: "rgba(28, 25, 23, 0.55)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            border: "1.5px solid var(--primary)",
+            background: "linear-gradient(135deg, #d4a832 0%, #c8962d 50%, #b8861f 100%)",
+            border: "none",
             borderRadius: "50%",
             cursor: "pointer",
-            color: "var(--primary)",
+            color: "#1c1917",
             transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-            boxShadow: "0 0 16px rgba(200, 150, 45, 0.15)",
+            boxShadow: "0 0 18px rgba(200, 150, 45, 0.45), 0 0 40px rgba(200, 150, 45, 0.2), inset 0 1px 0 rgba(255,255,255,0.2)",
           }}
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.5 3.5L5.5 9L11.5 14.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M11.5 3.5L5.5 9L11.5 14.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
         <span
@@ -483,19 +481,17 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
             justifyContent: "center",
             width: "3.25rem",
             height: "3.25rem",
-            background: "rgba(28, 25, 23, 0.55)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            border: "1.5px solid var(--primary)",
+            background: "linear-gradient(135deg, #d4a832 0%, #c8962d 50%, #b8861f 100%)",
+            border: "none",
             borderRadius: "50%",
             cursor: "pointer",
-            color: "var(--primary)",
+            color: "#1c1917",
             transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-            boxShadow: "0 0 16px rgba(200, 150, 45, 0.15)",
+            boxShadow: "0 0 18px rgba(200, 150, 45, 0.45), 0 0 40px rgba(200, 150, 45, 0.2), inset 0 1px 0 rgba(255,255,255,0.2)",
           }}
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.5 3.5L12.5 9L6.5 14.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M6.5 3.5L12.5 9L6.5 14.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
