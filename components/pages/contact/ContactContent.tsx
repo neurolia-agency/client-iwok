@@ -308,12 +308,8 @@ function ContactHero() {
 type FormStatus = "idle" | "loading" | "success" | "error";
 
 const PROJECT_TYPES = [
-  "Fresque murale interieure",
-  "Fresque murale exterieure",
-  "Design mural sur mesure",
-  "Decoration tous supports",
-  "Animation evenementielle",
-  "Atelier participatif",
+  "Entreprise",
+  "Particulier",
   "Autre",
 ];
 
@@ -351,25 +347,29 @@ function CallbackForm() {
   const [previews, setPreviews] = useState<string[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const nameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const projectTypeRef = useRef<HTMLSelectElement>(null);
-  const surfaceRef = useRef<HTMLInputElement>(null);
+  const supportRef = useRef<HTMLTextAreaElement>(null);
   const locationRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const inspirationsRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function validate(): boolean {
     const next: Record<string, string> = {};
-    const name = nameRef.current?.value.trim() ?? "";
+    const lastName = lastNameRef.current?.value.trim() ?? "";
+    const firstName = firstNameRef.current?.value.trim() ?? "";
     const email = emailRef.current?.value.trim() ?? "";
     const phone = phoneRef.current?.value.trim() ?? "";
     const projectType = projectTypeRef.current?.value ?? "";
     const location = locationRef.current?.value.trim() ?? "";
     const description = descriptionRef.current?.value.trim() ?? "";
 
-    if (!name) next.name = "Merci d\u2019indiquer votre nom.";
+    if (!lastName) next.lastName = "Merci d\u2019indiquer votre nom.";
+    if (!firstName) next.firstName = "Merci d\u2019indiquer votre prenom.";
     if (!email) next.email = "Merci d\u2019indiquer votre email.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       next.email = "Ce format d\u2019email ne semble pas valide.";
@@ -441,13 +441,15 @@ function CallbackForm() {
     setStatus("loading");
 
     const formData = new FormData();
-    formData.append("name", nameRef.current?.value.trim() ?? "");
+    formData.append("lastName", lastNameRef.current?.value.trim() ?? "");
+    formData.append("firstName", firstNameRef.current?.value.trim() ?? "");
     formData.append("email", emailRef.current?.value.trim() ?? "");
     formData.append("phone", phoneRef.current?.value.trim() ?? "");
     formData.append("projectType", projectTypeRef.current?.value ?? "");
-    formData.append("surface", surfaceRef.current?.value.trim() ?? "");
+    formData.append("support", supportRef.current?.value.trim() ?? "");
     formData.append("location", locationRef.current?.value.trim() ?? "");
     formData.append("description", descriptionRef.current?.value.trim() ?? "");
+    formData.append("inspirations", inspirationsRef.current?.value.trim() ?? "");
     files.forEach((f) => formData.append("files", f));
 
     try {
@@ -661,27 +663,72 @@ function CallbackForm() {
               </div>
             )}
 
-            {/* Row 1: Nom + Email */}
+            {/* Row 1: Nom + Prenom */}
             <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
               <div>
-                <label htmlFor="cb-name" style={labelStyle}>
-                  Nom complet
+                <label htmlFor="cb-lastName" style={labelStyle}>
+                  Nom
                 </label>
                 <input
-                  ref={nameRef}
-                  id="cb-name"
+                  ref={lastNameRef}
+                  id="cb-lastName"
                   type="text"
                   required
-                  autoComplete="name"
-                  placeholder="Prenom Nom"
+                  autoComplete="family-name"
+                  placeholder="Votre nom"
                   style={{
                     ...inputStyle,
-                    borderColor: errors.name ? "var(--error)" : undefined,
+                    borderColor: errors.lastName ? "var(--error)" : undefined,
                   }}
                   onFocus={focusHandler}
-                  onBlur={blurHandler("name")}
+                  onBlur={blurHandler("lastName")}
                 />
-                {errors.name && <p style={errorTextStyle}>{errors.name}</p>}
+                {errors.lastName && <p style={errorTextStyle}>{errors.lastName}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="cb-firstName" style={labelStyle}>
+                  Prenom
+                </label>
+                <input
+                  ref={firstNameRef}
+                  id="cb-firstName"
+                  type="text"
+                  required
+                  autoComplete="given-name"
+                  placeholder="Votre prenom"
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.firstName ? "var(--error)" : undefined,
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("firstName")}
+                />
+                {errors.firstName && <p style={errorTextStyle}>{errors.firstName}</p>}
+              </div>
+            </div>
+
+            {/* Row 2: Telephone + Email */}
+            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
+              <div>
+                <label htmlFor="cb-phone" style={labelStyle}>
+                  Telephone
+                </label>
+                <input
+                  ref={phoneRef}
+                  id="cb-phone"
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  placeholder="06 12 34 56 78"
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.phone ? "var(--error)" : undefined,
+                  }}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler("phone")}
+                />
+                {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
               </div>
 
               <div>
@@ -706,32 +753,11 @@ function CallbackForm() {
               </div>
             </div>
 
-            {/* Row 2: Telephone + Type de projet */}
+            {/* Row 3: Type de projet + Lieu */}
             <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
               <div>
-                <label htmlFor="cb-phone" style={labelStyle}>
-                  Telephone
-                </label>
-                <input
-                  ref={phoneRef}
-                  id="cb-phone"
-                  type="tel"
-                  required
-                  autoComplete="tel"
-                  placeholder="06 12 34 56 78"
-                  style={{
-                    ...inputStyle,
-                    borderColor: errors.phone ? "var(--error)" : undefined,
-                  }}
-                  onFocus={focusHandler}
-                  onBlur={blurHandler("phone")}
-                />
-                {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
-              </div>
-
-              <div>
                 <label htmlFor="cb-projectType" style={labelStyle}>
-                  Type de projet
+                  Projet
                 </label>
                 <select
                   ref={projectTypeRef}
@@ -754,7 +780,7 @@ function CallbackForm() {
                   onBlur={blurHandler("projectType")}
                 >
                   <option value="" disabled hidden>
-                    Choisissez un type de projet
+                    Entreprise, particulier ou autre
                   </option>
                   {PROJECT_TYPES.map((type) => (
                     <option key={type} value={type}>
@@ -763,27 +789,6 @@ function CallbackForm() {
                   ))}
                 </select>
                 {errors.projectType && <p style={errorTextStyle}>{errors.projectType}</p>}
-              </div>
-            </div>
-
-            {/* Row 3: Surface + Lieu */}
-            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
-              <div>
-                <label htmlFor="cb-surface" style={labelStyle}>
-                  Surface estimee{" "}
-                  <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
-                    (facultatif)
-                  </span>
-                </label>
-                <input
-                  ref={surfaceRef}
-                  id="cb-surface"
-                  type="text"
-                  placeholder="Ex: 8m2, un mur de 3m x 2.5m"
-                  style={inputStyle}
-                  onFocus={focusHandler}
-                  onBlur={blurHandler()}
-                />
               </div>
 
               <div>
@@ -808,7 +813,30 @@ function CallbackForm() {
               </div>
             </div>
 
-            {/* Description */}
+            {/* Nature, taille et etat du support */}
+            <div>
+              <label htmlFor="cb-support" style={labelStyle}>
+                Nature, taille et etat du support{" "}
+                <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
+                  (facultatif)
+                </span>
+              </label>
+              <textarea
+                ref={supportRef}
+                id="cb-support"
+                rows={2}
+                placeholder="Ex: mur en beton de 3m x 2.5m, bon etat / facade crepi exterieur, 15m2"
+                style={{
+                  ...inputStyle,
+                  resize: "vertical",
+                  minHeight: "4rem",
+                }}
+                onFocus={focusHandler}
+                onBlur={blurHandler()}
+              />
+            </div>
+
+            {/* Description du projet */}
             <div>
               <label htmlFor="cb-description" style={labelStyle}>
                 Description du projet
@@ -816,19 +844,42 @@ function CallbackForm() {
               <textarea
                 ref={descriptionRef}
                 id="cb-description"
-                rows={5}
+                rows={4}
                 required
-                placeholder="Decrivez votre projet, vos envies, vos inspirations..."
+                placeholder="Decrivez votre projet : contexte, usage de l'espace, contraintes..."
                 style={{
                   ...inputStyle,
                   resize: "vertical",
-                  minHeight: "7rem",
+                  minHeight: "6rem",
                   borderColor: errors.description ? "var(--error)" : undefined,
                 }}
                 onFocus={focusHandler}
                 onBlur={blurHandler("description")}
               />
               {errors.description && <p style={errorTextStyle}>{errors.description}</p>}
+            </div>
+
+            {/* Idees concretes, inspirations */}
+            <div>
+              <label htmlFor="cb-inspirations" style={labelStyle}>
+                Idees concretes, inspirations{" "}
+                <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
+                  (facultatif)
+                </span>
+              </label>
+              <textarea
+                ref={inspirationsRef}
+                id="cb-inspirations"
+                rows={3}
+                placeholder="Couleurs, styles, references, images qui vous inspirent..."
+                style={{
+                  ...inputStyle,
+                  resize: "vertical",
+                  minHeight: "5rem",
+                }}
+                onFocus={focusHandler}
+                onBlur={blurHandler()}
+              />
             </div>
 
             {/* File upload zone */}
