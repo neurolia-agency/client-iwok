@@ -139,7 +139,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "aquasplash",
-    title: "Aquasplash",
+    title: "Aqua'Splash Pareloup",
     section: "entreprises",
     year: 2022,
     location: "Aveyron (12)",
@@ -176,7 +176,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "burger-factory-courchevel",
-    title: "Burger Factory Courchevel",
+    title: "The Burger Factory Courchevel",
     section: "entreprises",
     year: 2022,
     location: "Courchevel",
@@ -189,7 +189,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "buron-sistre-laguiole",
-    title: "Buron de la Sistre — Laguiole",
+    title: "Buron de la Sistre, Laguiole",
     section: "entreprises",
     year: 2023,
     location: "Laguiole (12)",
@@ -201,7 +201,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "buron-mobile-laguiole",
-    title: "Buron Mobile — Laguiole",
+    title: "Buron Mobile, Laguiole",
     section: "entreprises",
     year: 2023,
     location: "Laguiole (12)",
@@ -215,7 +215,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "cabinet-ophtalmologie-rodez",
-    title: "Cabinet d'Ophtalmologie — Rodez",
+    title: "Cabinet d'Ophtalmologie, Rodez",
     section: "entreprises",
     year: 2024,
     location: "Rodez (12)",
@@ -291,7 +291,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "ecole-tremouilles-facade",
-    title: "École Trémouilles — Façade",
+    title: "École Trémouilles, Façade",
     section: "entreprises",
     year: 2021,
     location: "Trémouilles (12)",
@@ -322,7 +322,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "garage-mecanique",
-    title: "Garage Mécanique",
+    title: "L'Atelier, Garage Mécanique",
     section: "entreprises",
     year: 2018,
     location: "Aveyron (12)",
@@ -347,7 +347,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "jolies-momes-castres",
-    title: "Jolies Mômes — Castres",
+    title: "Jolies Mômes, Castres",
     section: "entreprises",
     year: 2023,
     location: "Castres (81)",
@@ -359,7 +359,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "monastere-facade",
-    title: "Façade Le Monastère",
+    title: "\"Vue d'en haut\", Le Monastère",
     section: "entreprises",
     year: 2024,
     location: "Le Monastère (12)",
@@ -374,7 +374,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "petits-chevaux-tremouilles",
-    title: "Petits Chevaux — École Trémouilles",
+    title: "Petits Chevaux, École Trémouilles",
     section: "entreprises",
     year: 2025,
     location: "Trémouilles (12)",
@@ -388,7 +388,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "pont-bascule-flavin",
-    title: "Pont Bascule — Flavin",
+    title: "Pont Bascule, Flavin",
     section: "entreprises",
     year: 2023,
     location: "Flavin (12)",
@@ -401,7 +401,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "restaurant-bellevue-salles-curan",
-    title: "Restaurant Bellevue — Salles-Curan",
+    title: "Restaurant Bellevue, Salles-Curan",
     section: "entreprises",
     year: 2023,
     location: "Salles-Curan (12)",
@@ -413,7 +413,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "restaurant-bichette-rodez",
-    title: "Restaurant Bichette — Rodez",
+    title: "Restaurant Bichette, Rodez",
     section: "entreprises",
     year: 2025,
     location: "Rodez (12)",
@@ -432,7 +432,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "restaurant-chimeres-toulouse",
-    title: "Restaurant Les Chimères — Toulouse",
+    title: "Restaurant Les Chimères, Toulouse",
     section: "entreprises",
     year: 2019,
     location: "Toulouse (31)",
@@ -478,7 +478,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "salle-fetes-tremouilles",
-    title: "Salle des Fêtes — Trémouilles",
+    title: "Salle des Fêtes, Trémouilles",
     section: "entreprises",
     year: 2021,
     location: "Trémouilles (12)",
@@ -490,7 +490,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "salon-esthetique-rodez",
-    title: "Salon Esthétique — Rodez",
+    title: "Salon Esthétique, Rodez",
     section: "entreprises",
     year: 2023,
     location: "Rodez (12)",
@@ -503,7 +503,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "soudhydro-rodez",
-    title: "Soudhydro — Rodez",
+    title: "Soudhydro, Rodez",
     section: "entreprises",
     year: 2018,
     location: "Rodez (12)",
@@ -549,7 +549,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   /* --- Entreprises : fichiers isolés (hors sous-dossier) --- */
   {
     id: "salle-fetes-albi",
-    title: "Salle des Fêtes — Albi",
+    title: "Salle des Fêtes, Albi",
     section: "entreprises",
     year: 2021,
     location: "Albi (81)",
@@ -570,19 +570,8 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     cover: 0,
   },
   {
-    id: "nana-fresque",
-    title: "Fresque NANA",
-    section: "entreprises",
-    year: 2023,
-    location: "Aveyron (12)",
-    images: [
-      { src: "/images/site communication/entreprises collectivitées/NANA.webp", alt: "Fresque portrait NANA — style pop art", width: 1440, height: 1440 },
-    ],
-    cover: 0,
-  },
-  {
     id: "fresque-piscine-camping",
-    title: "Fresque Piscine — Camping",
+    title: "Aveyron Maçonnerie",
     section: "entreprises",
     year: 2021,
     location: "Aveyron (12)",
@@ -593,7 +582,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-murale-2021-1",
-    title: "Fresque Murale 2021",
+    title: "Trompe-l'œil Électricien",
     section: "entreprises",
     year: 2021,
     location: "Aveyron (12)",
@@ -609,7 +598,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
      ═══════════════════════════════════════════════ */
   {
     id: "fresque-surf",
-    title: "Fresque Surf",
+    title: "Surfeur sur la Vague",
     section: "particuliers",
     year: 2020,
     location: "Aveyron (12)",
@@ -620,7 +609,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "chambre-simon",
-    title: "Chambre Simon",
+    title: "Mur Éclaté Graffiti",
     section: "particuliers",
     year: 2021,
     location: "Aveyron (12)",
@@ -631,7 +620,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "decoration-exterieure",
-    title: "Décoration Extérieure",
+    title: "Shenron et Goku",
     section: "particuliers",
     year: 2019,
     location: "Aveyron (12)",
@@ -643,7 +632,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-basketball",
-    title: "Fresque Basketball",
+    title: "LeBron et Kobe",
     section: "particuliers",
     year: 2020,
     location: "Aveyron (12)",
@@ -658,7 +647,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-chambre-coloree",
-    title: "Fresque Chambre Colorée",
+    title: "Univers Super Mario",
     section: "particuliers",
     year: 2021,
     location: "Aveyron (12)",
@@ -669,7 +658,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-portrait-realiste",
-    title: "Portrait Réaliste",
+    title: "L'Arbre aux Mille Couleurs",
     section: "particuliers",
     year: 2021,
     location: "Aveyron (12)",
@@ -681,7 +670,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-lion-realiste",
-    title: "Fresque Lion Réaliste",
+    title: "Palmiers Noir et Blanc",
     section: "particuliers",
     year: 2021,
     location: "Aveyron (12)",
@@ -692,7 +681,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-personnage-bd",
-    title: "Personnage Style BD",
+    title: "Coco, le Pays des Morts",
     section: "particuliers",
     year: 2019,
     location: "Aveyron (12)",
@@ -704,7 +693,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "chambre-enfant-leny",
-    title: "Chambre Enfant Lény — Toulouse",
+    title: "Lionceau à la Couronne",
     section: "particuliers",
     year: 2021,
     location: "Toulouse (31)",
@@ -715,7 +704,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-gopro",
-    title: "Fresque Extérieure",
+    title: "Lettrage Tropical Guinness",
     section: "particuliers",
     year: 2020,
     location: "Aveyron (12)",
@@ -726,7 +715,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-anciennes",
-    title: "Fresques — Anciennes Réalisations",
+    title: "Roses Blanches, Just Married",
     section: "particuliers",
     year: 2018,
     location: "Aveyron (12)",
@@ -739,7 +728,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-interieure-2021",
-    title: "Fresque Intérieure 2021",
+    title: "Combi Volkswagen sous les Palmiers",
     section: "particuliers",
     year: 2021,
     location: "Aveyron (12)",
@@ -750,7 +739,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "portrait-mural",
-    title: "Portrait Mural",
+    title: "Naissance d'Esteban",
     section: "particuliers",
     year: 2021,
     location: "Aveyron (12)",
@@ -763,7 +752,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-chambre-2022",
-    title: "Fresque Chambre 2022",
+    title: "Lionceau Bohème",
     section: "particuliers",
     year: 2022,
     location: "Aveyron (12)",
@@ -775,7 +764,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-fleurs-2023",
-    title: "Fresque Florale",
+    title: "Prairie en Fleurs",
     section: "particuliers",
     year: 2023,
     location: "Aveyron (12)",
@@ -788,7 +777,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-tete-mort",
-    title: "Fresque Tête de Mort",
+    title: "Épis de Blé Dorés",
     section: "particuliers",
     year: 2023,
     location: "Aveyron (12)",
@@ -801,7 +790,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-chambre-2024-mars",
-    title: "Fresque Chambre — Mars 2024",
+    title: "Herbier Végétal Minimaliste",
     section: "particuliers",
     year: 2024,
     location: "Aveyron (12)",
@@ -813,7 +802,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-avril-2024",
-    title: "Fresque Avril 2024",
+    title: "Vaches au Pré",
     section: "particuliers",
     year: 2024,
     location: "Aveyron (12)",
@@ -828,7 +817,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-animaux-2024",
-    title: "Fresque Animaux",
+    title: "Le Paysan et sa Vache",
     section: "particuliers",
     year: 2024,
     location: "Aveyron (12)",
@@ -840,7 +829,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-mai-2025",
-    title: "Fresque Mai 2025",
+    title: "La Main du Jardinier",
     section: "particuliers",
     year: 2025,
     location: "Aveyron (12)",
@@ -852,7 +841,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-portrait-femme-2022",
-    title: "Portrait Femme — Commande 2022",
+    title: "Végétation Tropicale Monochrome",
     section: "particuliers",
     year: 2022,
     location: "Aveyron (12)",
@@ -864,7 +853,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-avril-2024-wa",
-    title: "Fresque Intérieure — Avril 2024",
+    title: "Vaches au Pâturage",
     section: "particuliers",
     year: 2024,
     location: "Aveyron (12)",
@@ -876,7 +865,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-visage-femme",
-    title: "Fresque Visage Femme",
+    title: "Lagon Tropical Bord de Piscine",
     section: "particuliers",
     year: 2023,
     location: "Aveyron (12)",
@@ -892,7 +881,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "fresque-abstraite",
-    title: "Fresque Abstraite",
+    title: "Galerie Pop Culture",
     section: "particuliers",
     year: 2025,
     location: "Aveyron (12)",
@@ -914,7 +903,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
      ═══════════════════════════════════════════════ */
   {
     id: "atelier-participatif-ecole-1",
-    title: "Atelier Fresque — École",
+    title: "Fresque Village de Saint-Maurice",
     section: "participatifs",
     year: 2022,
     location: "Aveyron (12)",
@@ -926,7 +915,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-nov-2023",
-    title: "Atelier Participatif — Novembre 2023",
+    title: "Paysage en Couleurs",
     section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
@@ -937,7 +926,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-participatif-noel",
-    title: "Atelier Fresque de Noël",
+    title: "Coccinelle et Marguerites",
     section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
@@ -949,7 +938,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-janvier-2024",
-    title: "Atelier Participatif — Janvier 2024",
+    title: "Fresque Nature en EHPAD",
     section: "participatifs",
     year: 2024,
     location: "Aveyron (12)",
@@ -962,7 +951,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-participatif-enfants",
-    title: "Atelier Enfants — Peinture Libre",
+    title: "Mésange Bleue en Maison de Retraite",
     section: "participatifs",
     year: 2024,
     location: "Aveyron (12)",
@@ -976,7 +965,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-fevrier-2024",
-    title: "Atelier Participatif — Février 2024",
+    title: "Martin-Pêcheur Abstrait",
     section: "participatifs",
     year: 2024,
     location: "Aveyron (12)",
@@ -988,7 +977,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-mars-2024",
-    title: "Atelier Participatif — Mars 2024",
+    title: "Peinture en Plein Air Inclusive",
     section: "participatifs",
     year: 2024,
     location: "Aveyron (12)",
@@ -1002,7 +991,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-avril-2025",
-    title: "Atelier Participatif — Avril 2025",
+    title: "Fresque Musicale en Grange",
     section: "participatifs",
     year: 2025,
     location: "Aveyron (12)",
@@ -1013,7 +1002,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atelier-participatif-asso",
-    title: "Fresque Associative",
+    title: "Façade MAS, Nature et Faune",
     section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
@@ -1025,7 +1014,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "participatif-groupe-1",
-    title: "Atelier Collectif — Été 2023",
+    title: "École de Trémouilles",
     section: "participatifs",
     year: 2023,
     location: "Aveyron (12)",
@@ -1045,7 +1034,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "participatif-groupe-2",
-    title: "Fresque Participative — Mur Collectif",
+    title: "École de Sébrazac",
     section: "participatifs",
     year: 2025,
     location: "Aveyron (12)",
@@ -1057,7 +1046,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "ateliers-camsp",
-    title: "Ateliers CAMSP — Centre d'Action Médico-Social Précoce",
+    title: "Mur Coloré au CAMSP",
     section: "participatifs",
     year: 2024,
     location: "Aveyron (12)",
@@ -1076,7 +1065,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
      ═══════════════════════════════════════════════ */
   {
     id: "caserne-millau",
-    title: "Caserne de Millau",
+    title: "Hommage aux Pompiers",
     section: "evenementiel",
     year: 2021,
     location: "Millau (12)",
@@ -1088,7 +1077,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "expo-salles-gosses-mjc-onet",
-    title: "Expo Salles Gosses — MJC Onet",
+    title: "Jet-ski Pop Art, Expo MJC",
     section: "evenementiel",
     year: 2018,
     location: "Onet-le-Château (12)",
@@ -1101,7 +1090,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "urban-fest-albi-event",
-    title: "Urban Fest Albi",
+    title: "Portrait Tropical, Urban Fest Albi",
     section: "evenementiel",
     year: 2021,
     location: "Albi (81)",
@@ -1113,7 +1102,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "live-painting-kerea",
-    title: "Live Painting KEREA",
+    title: "Visage Fleuri, Inauguration KEREA",
     section: "evenementiel",
     year: 2025,
     location: "Aveyron (12)",
@@ -1128,7 +1117,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "atout-aveyron-event",
-    title: "Atout Aveyron — Événement",
+    title: "Main Géante, Atout Aveyron",
     section: "evenementiel",
     year: 2019,
     location: "Aveyron (12)",
@@ -1139,7 +1128,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "biggy-le-krill-event",
-    title: "Biggy Le Krill — Concert Live Painting",
+    title: "Portrait Biggy Le Krill",
     section: "evenementiel",
     year: 2018,
     location: "Aveyron (12)",
@@ -1150,7 +1139,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "escape-game-agglobus",
-    title: "Escape Game Agglobus — Rodez",
+    title: "Escape Bus, Cathédrale de Rodez",
     section: "evenementiel",
     year: 2019,
     location: "Rodez (12)",
@@ -1161,7 +1150,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "live-painting-2022-fevrier",
-    title: "Live Painting — Février 2022",
+    title: "Aérosol Ailé",
     section: "evenementiel",
     year: 2022,
     location: "Aveyron (12)",
@@ -1172,7 +1161,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "live-painting-soiree-2022",
-    title: "Live Painting — Soirée 2022",
+    title: "Tournoi Basket 3x3 FFBB",
     section: "evenementiel",
     year: 2022,
     location: "Aveyron (12)",
@@ -1186,7 +1175,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "live-painting-expo-2023",
-    title: "Live Painting — Expo 2023",
+    title: "Femme Afro Pop, Soirée Privée",
     section: "evenementiel",
     year: 2023,
     location: "Aveyron (12)",
@@ -1198,7 +1187,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "live-painting-festival-2024",
-    title: "Live Painting — Festival 2024",
+    title: "Silhouettes Urbaines",
     section: "evenementiel",
     year: 2024,
     location: "Aveyron (12)",
@@ -1212,7 +1201,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "snapseed-event",
-    title: "Performance Live Painting",
+    title: "Portrait au Béret Rouge",
     section: "evenementiel",
     year: 2022,
     location: "Aveyron (12)",
@@ -1223,7 +1212,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "live-painting-evenements-2023",
-    title: "Live Painting — Événements 2023",
+    title: "Portraits Floraux, Guadeloupe",
     section: "evenementiel",
     year: 2023,
     location: "Aveyron (12)",
@@ -1237,7 +1226,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "kerea-reception-event",
-    title: "Réception KEREA — Événement 2025",
+    title: "Création en Direct, KEREA",
     section: "evenementiel",
     year: 2025,
     location: "Aveyron (12)",
@@ -1250,7 +1239,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "expo-vernissage",
-    title: "Vernissage — Exposition 2025",
+    title: "Vernissage Aérosy'l",
     section: "evenementiel",
     year: 2025,
     location: "Aveyron (12)",
@@ -1269,7 +1258,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
      ═══════════════════════════════════════════════ */
   {
     id: "coup-de-coeur-kerea",
-    title: "Live Painting KEREA",
+    title: "Visage Fleuri, Inauguration KEREA",
     section: "coups-de-coeur",
     year: 2025,
     location: "Aveyron (12)",
@@ -1305,7 +1294,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "coup-de-coeur-tete-mort",
-    title: "Fresque Tête de Mort",
+    title: "Épis de Blé Dorés",
     section: "coups-de-coeur",
     year: 2023,
     location: "Aveyron (12)",
@@ -1316,7 +1305,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   },
   {
     id: "coup-de-coeur-urban-fest",
-    title: "Urban Fest Albi",
+    title: "Portrait Tropical, Urban Fest Albi",
     section: "coups-de-coeur",
     year: 2021,
     location: "Albi (81)",
