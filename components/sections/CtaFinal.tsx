@@ -35,7 +35,13 @@ function useRevealOnScroll(threshold = 0.15) {
   return { ref, isVisible };
 }
 
-export default function CtaFinal() {
+import type { CtaFinalConfig } from "@/lib/queries/section-config";
+
+interface CtaFinalProps {
+  config?: CtaFinalConfig;
+}
+
+export default function CtaFinal({ config }: CtaFinalProps) {
   const { ref: sectionRef, isVisible } = useRevealOnScroll();
 
   return (
@@ -82,7 +88,7 @@ export default function CtaFinal() {
             willChange: "opacity, transform",
           }}
         >
-          Racontez-nous votre mur, on lui donne vie
+          {config?.title ?? "Racontez-nous votre mur, on lui donne vie"}
         </h2>
 
         {/* Subtitle */}
@@ -100,12 +106,12 @@ export default function CtaFinal() {
             willChange: "opacity, transform",
           }}
         >
-          Devis gratuit · Réponse sous 48h
+          {config?.subtitle ?? "Devis gratuit · Réponse sous 48h"}
         </p>
 
         {/* CTA Button */}
         <Link
-          href="/contact"
+          href={config?.ctaHref ?? "/contact"}
           style={{
             display: "inline-block",
             backgroundColor: "var(--primary)",
@@ -134,7 +140,7 @@ export default function CtaFinal() {
             e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          Parler de mon projet
+          {config?.ctaText ?? "Parler de mon projet"}
         </Link>
       </div>
     </section>

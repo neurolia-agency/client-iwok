@@ -102,27 +102,36 @@ function IconBrushLive() {
 
 /* ─── Service data ─── */
 
-const services = [
+import type { ServicePreviewItem } from "@/lib/queries/section-config";
+
+const DEFAULT_SERVICES = [
   {
     title: "Fresques Murales",
     description: "Intérieur, extérieur. Vos murs prennent vie.",
-    icon: <IconSprayCan />,
   },
   {
     title: "Design Sur Mesure",
     description: "Brief, croquis, réalisation. Chaque œuvre est unique.",
-    icon: <IconCompass />,
   },
   {
     title: "Animation Événementielle",
     description: "Live painting. L\u2019art se crée sous vos yeux.",
-    icon: <IconBrushLive />,
   },
 ];
 
+const ICONS = [<IconSprayCan key="spray" />, <IconCompass key="compass" />, <IconBrushLive key="brush" />];
+
 /* ─── Main component ─── */
 
-export default function ServicesPreview() {
+interface ServicesPreviewProps {
+  config?: ServicePreviewItem[];
+}
+
+export default function ServicesPreview({ config }: ServicesPreviewProps) {
+  const services = (config ?? DEFAULT_SERVICES).map((s, i) => ({
+    ...s,
+    icon: ICONS[i] ?? ICONS[0],
+  }));
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);

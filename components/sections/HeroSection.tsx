@@ -6,10 +6,15 @@ import Link from "next/link";
 import CtaSecondary from "@/components/ui/CtaSecondary";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { HeroConfig } from "@/lib/queries/section-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  config?: HeroConfig;
+}
+
+export default function HeroSection({ config }: HeroSectionProps) {
   const imageWrapperRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroImageRef = useRef<HTMLDivElement>(null);
@@ -224,7 +229,7 @@ export default function HeroSection() {
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", minHeight: 0 }}>
               {/* Eyebrow */}
               <p ref={eyebrowRef} style={{ fontFamily: "var(--font-sans)", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--primary)", marginBottom: "2rem", textAlign: "left", opacity: 0 }}>
-                Artiste muraliste
+                {config?.eyebrow ?? "Artiste muraliste"}
               </p>
 
               <h1 className="hero-h1-grid" style={{ fontFamily: "var(--font-heading)", color: "var(--foreground-on-dark)", lineHeight: 1.05, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", gap: "18vw", width: "100%" }}>
@@ -300,11 +305,11 @@ export default function HeroSection() {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", width: "100%", transform: `translateY(${heroBaselineShift})` }}>
               <div style={{ maxWidth: "var(--container-max)", width: "100%", margin: "0 auto",marginBottom: "2.5em" }}>
                 <p ref={baselineRef} style={{ fontFamily: "var(--font-body)", fontSize: "clamp(1rem, 1vw + 0.4rem, 1.1875rem)", lineHeight: "1.7", fontWeight: 300, letterSpacing: "0.01em", color: "var(--muted)", marginBottom: "1.5rem", maxWidth: "48ch", marginInline: "auto", opacity: 0 }}>
-                 L&apos;exigence de l&apos;artisan, l&apos;œil de l&apos;artiste.
+                 {config?.subtitle ?? "L\u2019exigence de l\u2019artisan, l\u2019\u0153il de l\u2019artiste."}
                 </p>
                 <div ref={ctasRef} className="hero-ctas-wrap" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "clamp(1rem, 3vw, 3rem)", opacity: 0 }}>
-                  <Link href="/contact" className="cta-primary">Parler de mon projet</Link>
-                  <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/fire.webp">Explorer la galerie <span aria-hidden="true"> →</span></CtaSecondary>
+                  <Link href={config?.ctaPrimaryHref ?? "/contact"} className="cta-primary">{config?.ctaPrimaryText ?? "Parler de mon projet"}</Link>
+                  <CtaSecondary href={config?.ctaSecondaryHref ?? "/portfolio"} peekImage="/images/section-grid-animate/fire.webp">{config?.ctaSecondaryText ?? "Explorer la galerie"} <span aria-hidden="true"> →</span></CtaSecondary>
                 </div>
               </div>
             </div>

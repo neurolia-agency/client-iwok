@@ -18,6 +18,10 @@ export async function POST(request: NextRequest) {
 
   for (const tag of tags) {
     revalidateTag(tag);
+    // Dashboard sends short tags ("settings"), site uses prefixed tags ("iwok-settings")
+    if (!tag.startsWith("iwok-")) {
+      revalidateTag(`iwok-${tag}`);
+    }
   }
 
   return NextResponse.json({ revalidated: true, tags });
