@@ -46,17 +46,11 @@ export default function LikeButton({ projectId, initialCount = 0 }: LikeButtonPr
     likedProjects.push(projectId);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(likedProjects));
 
-    // Appel API
-    try {
-      const res = await fetch(`/api/projects/${projectId}/like`, { method: "POST" });
-      if (!res.ok) throw new Error("Like failed");
-    } catch {
-      // Rollback en cas d'erreur
-      setLiked(false);
-      setCount((c) => c - 1);
-      const rollback = getLikedProjects().filter((id) => id !== projectId);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(rollback));
-    }
+    // Appel API (fire-and-forget — le localStorage est la source de vérité)
+    fetch(`/api/projects/${projectId}/like`, { method: "POST" }).catch(() => {
+      // L'API Supabase peut échouer si les colonnes n'existent pas encore.
+      // Le like reste persisté en localStorage.
+    });
   }
 
   return (

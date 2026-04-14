@@ -842,6 +842,29 @@
   .footer-legal-link:hover { color: var(--muted-foreground); }
 
   /* ============================================
+     PORTFOLIO — Gallery Card hover
+     ============================================ */
+  .gallery-card-overlay,
+  .gallery-card-like {
+    opacity: 0;
+    transition: opacity 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .gallery-card:hover .gallery-card-overlay,
+  .gallery-card:hover .gallery-card-like {
+    opacity: 1;
+  }
+
+  .gallery-card-text {
+    transform: translateY(6px);
+    transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .gallery-card:hover .gallery-card-text {
+    transform: translateY(0);
+  }
+
+  /* ============================================
      PORTFOLIO — Masonry Grid
      ============================================ */
   .masonry-grid {
@@ -859,5 +882,174 @@
     .masonry-grid {
       columns: 1;
     }
+  }
+
+  /* ============================================
+     COUPS DE COEUR — Podium
+     ============================================ */
+  .podium-container {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .podium-card {
+    position: relative;
+    flex: 1;
+    max-width: 340px;
+    border-radius: var(--radius-standard);
+    overflow: hidden;
+    background: var(--card);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 300ms ease;
+  }
+
+  .podium-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Gold — rank 1 (tallest) */
+  .podium-card--gold {
+    border: 2px solid var(--primary);
+  }
+  .podium-card--gold .podium-card-image { aspect-ratio: 3 / 4; }
+  .podium-card--gold .podium-card-badge {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  /* Silver — rank 2 */
+  .podium-card--silver {
+    border: 2px solid #9CA3AF;
+  }
+  .podium-card--silver .podium-card-image { aspect-ratio: 4 / 4; }
+  .podium-card--silver .podium-card-badge {
+    background: #9CA3AF;
+    color: #fff;
+  }
+
+  /* Bronze — rank 3 */
+  .podium-card--bronze {
+    border: 2px solid var(--accent);
+  }
+  .podium-card--bronze .podium-card-image { aspect-ratio: 4 / 4; }
+  .podium-card--bronze .podium-card-badge {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  /* Empty placeholder */
+  .podium-card--empty {
+    border: 2px dashed var(--border);
+  }
+  .podium-card--empty .podium-card-image { aspect-ratio: 4 / 4; }
+
+  .podium-card-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 3;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .podium-card-image {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--background-alt);
+  }
+
+  .podium-card-image--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+  }
+
+  .podium-card-info {
+    padding: 0.875rem 1rem 0.5rem;
+  }
+
+  .podium-card-title {
+    font-family: var(--font-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .podium-card-meta {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin-top: 0.25rem;
+  }
+
+  .podium-card-like {
+    padding: 0 1rem 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .podium-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .podium-card {
+      max-width: none;
+      order: unset !important;
+    }
+
+    .podium-card--gold .podium-card-image,
+    .podium-card--silver .podium-card-image,
+    .podium-card--bronze .podium-card-image {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  /* ============================================
+     COUPS DE COEUR — Empty State
+     ============================================ */
+  .coups-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 1rem;
+    gap: 1rem;
+  }
+
+  .coups-empty-icon {
+    margin-bottom: 0.5rem;
+    opacity: 0.3;
+  }
+
+  .coups-empty-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0;
+  }
+
+  .coups-empty-text {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-body);
+    color: var(--muted-foreground);
+    max-width: 28rem;
+    margin: 0 0 1rem;
+    line-height: var(--line-height-normal);
   }
 }

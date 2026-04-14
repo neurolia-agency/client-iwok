@@ -17,10 +17,12 @@ export default function GalleryCard({ project, initialLikes = 0, onClick }: Gall
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
-    <button
-      type="button"
-      className="group"
+    <div
+      role="button"
+      tabIndex={0}
+      className="gallery-card"
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick?.(); } }}
       aria-label={`Voir le projet : ${project.title}`}
       style={{
         display: "block",
@@ -58,28 +60,19 @@ export default function GalleryCard({ project, initialLikes = 0, onClick }: Gall
 
       {/* Hover overlay */}
       <div
-        className="group-hover:opacity-100"
+        className="gallery-card-overlay"
         style={{
           position: "absolute",
           inset: 0,
           background:
             "linear-gradient(to top, rgba(28,25,23,0.92) 0%, rgba(28,25,23,0.3) 50%, transparent 100%)",
-          opacity: 0,
-          transition: "opacity 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
           display: "flex",
           alignItems: "flex-end",
           padding: "1.25rem",
         }}
         aria-hidden="true"
       >
-        <div
-          style={{
-            transform: "translateY(6px)",
-            transition:
-              "transform 350ms cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-          className="group-hover:[transform:translateY(0)]"
-        >
+        <div className="gallery-card-text">
           <p
             style={{
               color: "var(--foreground-on-dark)",
@@ -112,18 +105,16 @@ export default function GalleryCard({ project, initialLikes = 0, onClick }: Gall
 
       {/* Like button — toujours accessible, au-dessus de l'overlay */}
       <div
+        className="gallery-card-like"
         style={{
           position: "absolute",
           bottom: "0.75rem",
           right: "0.75rem",
           zIndex: 5,
-          opacity: 0,
-          transition: "opacity 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         }}
-        className="group-hover:opacity-100"
       >
         <LikeButton projectId={project.id} initialCount={initialLikes} />
       </div>
-    </button>
+    </div>
   );
 }
