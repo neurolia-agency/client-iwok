@@ -347,14 +347,14 @@ function CallbackForm() {
   const [previews, setPreviews] = useState<string[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
 
+  const [projectType, setProjectType] = useState("");
+  const [otherProjectType, setOtherProjectType] = useState("");
+
   const lastNameRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
-  const projectTypeRef = useRef<HTMLSelectElement>(null);
   const supportRef = useRef<HTMLTextAreaElement>(null);
-  const locationRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const inspirationsRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -364,23 +364,18 @@ function CallbackForm() {
     const firstName = firstNameRef.current?.value.trim() ?? "";
     const email = emailRef.current?.value.trim() ?? "";
     const phone = phoneRef.current?.value.trim() ?? "";
-    const projectType = projectTypeRef.current?.value ?? "";
-    const location = locationRef.current?.value.trim() ?? "";
-    const description = descriptionRef.current?.value.trim() ?? "";
 
     if (!lastName) next.lastName = "Merci d\u2019indiquer votre nom.";
-    if (!firstName) next.firstName = "Merci d\u2019indiquer votre prenom.";
+    if (!firstName) next.firstName = "Merci d\u2019indiquer votre pr\u00e9nom.";
+    if (!phone) next.phone = "Merci d\u2019indiquer votre num\u00e9ro.";
+    else if (phone.replace(/\s/g, "").length < 8)
+      next.phone = "Ce num\u00e9ro semble trop court.";
     if (!email) next.email = "Merci d\u2019indiquer votre email.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       next.email = "Ce format d\u2019email ne semble pas valide.";
-    if (!phone) next.phone = "Merci d\u2019indiquer votre numero.";
-    else if (phone.replace(/\s/g, "").length < 8)
-      next.phone = "Ce numero semble trop court.";
     if (!projectType) next.projectType = "Merci de choisir un type de projet.";
-    if (!location) next.location = "Merci d\u2019indiquer le lieu d\u2019intervention.";
-    if (!description) next.description = "Merci de decrire votre projet.";
-    else if (description.length < 10)
-      next.description = "La description doit faire au moins 10 caracteres.";
+    if (projectType === "Autre" && !otherProjectType.trim())
+      next.otherProjectType = "Merci de pr\u00e9ciser votre type de projet.";
 
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -443,12 +438,10 @@ function CallbackForm() {
     const formData = new FormData();
     formData.append("lastName", lastNameRef.current?.value.trim() ?? "");
     formData.append("firstName", firstNameRef.current?.value.trim() ?? "");
-    formData.append("email", emailRef.current?.value.trim() ?? "");
     formData.append("phone", phoneRef.current?.value.trim() ?? "");
-    formData.append("projectType", projectTypeRef.current?.value ?? "");
+    formData.append("email", emailRef.current?.value.trim() ?? "");
+    formData.append("projectType", projectType === "Autre" ? `Autre : ${otherProjectType.trim()}` : projectType);
     formData.append("support", supportRef.current?.value.trim() ?? "");
-    formData.append("location", locationRef.current?.value.trim() ?? "");
-    formData.append("description", descriptionRef.current?.value.trim() ?? "");
     formData.append("inspirations", inspirationsRef.current?.value.trim() ?? "");
     files.forEach((f) => formData.append("files", f));
 
@@ -484,15 +477,6 @@ function CallbackForm() {
     padding: "0.875rem 1rem",
     outline: "none",
     transition: "border-color var(--transition-standard)",
-  };
-
-  const selectStyle: React.CSSProperties = {
-    ...inputStyle,
-    appearance: "none" as const,
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%2378716C' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "right 1rem center",
-    paddingRight: "2.5rem",
   };
 
   const dropZoneStyle: React.CSSProperties = {
@@ -688,7 +672,7 @@ function CallbackForm() {
 
               <div>
                 <label htmlFor="cb-firstName" style={labelStyle}>
-                  Prenom
+                  Pr&eacute;nom
                 </label>
                 <input
                   ref={firstNameRef}
@@ -696,7 +680,7 @@ function CallbackForm() {
                   type="text"
                   required
                   autoComplete="given-name"
-                  placeholder="Votre prenom"
+                  placeholder="Votre pr&eacute;nom"
                   style={{
                     ...inputStyle,
                     borderColor: errors.firstName ? "var(--error)" : undefined,
@@ -708,170 +692,151 @@ function CallbackForm() {
               </div>
             </div>
 
-            {/* Row 2: Telephone + Email */}
-            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
-              <div>
-                <label htmlFor="cb-phone" style={labelStyle}>
-                  Telephone
-                </label>
-                <input
-                  ref={phoneRef}
-                  id="cb-phone"
-                  type="tel"
-                  required
-                  autoComplete="tel"
-                  placeholder="06 12 34 56 78"
-                  style={{
-                    ...inputStyle,
-                    borderColor: errors.phone ? "var(--error)" : undefined,
-                  }}
-                  onFocus={focusHandler}
-                  onBlur={blurHandler("phone")}
-                />
-                {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="cb-email" style={labelStyle}>
-                  Email
-                </label>
-                <input
-                  ref={emailRef}
-                  id="cb-email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  placeholder="votre@email.com"
-                  style={{
-                    ...inputStyle,
-                    borderColor: errors.email ? "var(--error)" : undefined,
-                  }}
-                  onFocus={focusHandler}
-                  onBlur={blurHandler("email")}
-                />
-                {errors.email && <p style={errorTextStyle}>{errors.email}</p>}
-              </div>
+            {/* Row 2: Telephone */}
+            <div>
+              <label htmlFor="cb-phone" style={labelStyle}>
+                T&eacute;l&eacute;phone
+              </label>
+              <input
+                ref={phoneRef}
+                id="cb-phone"
+                type="tel"
+                required
+                autoComplete="tel"
+                placeholder="06 00 00 00 00"
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.phone ? "var(--error)" : undefined,
+                }}
+                onFocus={focusHandler}
+                onBlur={blurHandler("phone")}
+              />
+              {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
             </div>
 
-            {/* Row 3: Type de projet + Lieu */}
-            <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "1.5rem" }}>
-              <div>
-                <label htmlFor="cb-projectType" style={labelStyle}>
-                  Projet
-                </label>
-                <select
-                  ref={projectTypeRef}
-                  id="cb-projectType"
-                  required
-                  style={{
-                    ...selectStyle,
-                    borderColor: errors.projectType ? "var(--error)" : undefined,
-                    color: projectTypeRef.current?.value
-                      ? "var(--foreground)"
-                      : "var(--foreground-subtle)",
-                  }}
-                  defaultValue=""
-                  onChange={(e) => {
-                    e.currentTarget.style.color = e.currentTarget.value
-                      ? "var(--foreground)"
-                      : "var(--foreground-subtle)";
-                  }}
-                  onFocus={focusHandler}
-                  onBlur={blurHandler("projectType")}
-                >
-                  <option value="" disabled hidden>
-                    Entreprise, particulier ou autre
-                  </option>
-                  {PROJECT_TYPES.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-                {errors.projectType && <p style={errorTextStyle}>{errors.projectType}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="cb-location" style={labelStyle}>
-                  Lieu d&apos;intervention
-                </label>
-                <input
-                  ref={locationRef}
-                  id="cb-location"
-                  type="text"
-                  required
-                  autoComplete="address-level2"
-                  placeholder="Ville, departement"
-                  style={{
-                    ...inputStyle,
-                    borderColor: errors.location ? "var(--error)" : undefined,
-                  }}
-                  onFocus={focusHandler}
-                  onBlur={blurHandler("location")}
-                />
-                {errors.location && <p style={errorTextStyle}>{errors.location}</p>}
-              </div>
+            {/* Row 3: Email */}
+            <div>
+              <label htmlFor="cb-email" style={labelStyle}>
+                Email
+              </label>
+              <input
+                ref={emailRef}
+                id="cb-email"
+                type="email"
+                required
+                autoComplete="email"
+                placeholder="votre@email.com"
+                style={{
+                  ...inputStyle,
+                  borderColor: errors.email ? "var(--error)" : undefined,
+                }}
+                onFocus={focusHandler}
+                onBlur={blurHandler("email")}
+              />
+              {errors.email && <p style={errorTextStyle}>{errors.email}</p>}
             </div>
 
-            {/* Nature, taille et etat du support */}
+            {/* Row 4: Type de projet */}
+            <div>
+              <label htmlFor="cb-projectType" style={labelStyle}>
+                Type de projet
+              </label>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                {PROJECT_TYPES.map((type) => (
+                  <label
+                    key={type}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "var(--font-size-body)",
+                      color: projectType === type ? "var(--foreground)" : "var(--muted-foreground)",
+                      cursor: "pointer",
+                      padding: "0.75rem 1.25rem",
+                      borderRadius: "var(--radius)",
+                      border: `1.5px solid ${projectType === type ? "var(--primary)" : "var(--border)"}`,
+                      backgroundColor: projectType === type ? "var(--primary-pale)" : "var(--card)",
+                      transition: "all var(--transition-standard)",
+                      userSelect: "none",
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="projectType"
+                      value={type}
+                      checked={projectType === type}
+                      onChange={(e) => {
+                        setProjectType(e.target.value);
+                        if (e.target.value !== "Autre") setOtherProjectType("");
+                      }}
+                      style={{
+                        accentColor: "var(--primary)",
+                        width: 16,
+                        height: 16,
+                        margin: 0,
+                        cursor: "pointer",
+                      }}
+                    />
+                    {type}
+                  </label>
+                ))}
+              </div>
+              {errors.projectType && <p style={errorTextStyle}>{errors.projectType}</p>}
+
+              {/* Champ conditionnel "Autre" */}
+              {projectType === "Autre" && (
+                <div style={{ marginTop: "0.75rem" }}>
+                  <input
+                    id="cb-otherProjectType"
+                    type="text"
+                    value={otherProjectType}
+                    onChange={(e) => setOtherProjectType(e.target.value)}
+                    placeholder="Pr&eacute;cisez votre type de projet"
+                    style={{
+                      ...inputStyle,
+                      borderColor: errors.otherProjectType ? "var(--error)" : undefined,
+                    }}
+                    onFocus={focusHandler}
+                    onBlur={blurHandler("otherProjectType")}
+                  />
+                  {errors.otherProjectType && (
+                    <p style={errorTextStyle}>{errors.otherProjectType}</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Row 5: Nature, taille et etat du support */}
             <div>
               <label htmlFor="cb-support" style={labelStyle}>
-                Nature, taille et etat du support{" "}
-                <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
-                  (facultatif)
-                </span>
+                Nature, taille et &eacute;tat du support
               </label>
               <textarea
                 ref={supportRef}
                 id="cb-support"
-                rows={2}
-                placeholder="Ex: mur en beton de 3m x 2.5m, bon etat / facade crepi exterieur, 15m2"
+                rows={3}
+                placeholder="D&eacute;crivez le support : mur int&eacute;rieur/ext&eacute;rieur, surface approximative, &eacute;tat actuel..."
                 style={{
                   ...inputStyle,
                   resize: "vertical",
-                  minHeight: "4rem",
+                  minHeight: "5rem",
                 }}
                 onFocus={focusHandler}
                 onBlur={blurHandler()}
               />
             </div>
 
-            {/* Description du projet */}
-            <div>
-              <label htmlFor="cb-description" style={labelStyle}>
-                Description du projet
-              </label>
-              <textarea
-                ref={descriptionRef}
-                id="cb-description"
-                rows={4}
-                required
-                placeholder="Decrivez votre projet : contexte, usage de l'espace, contraintes..."
-                style={{
-                  ...inputStyle,
-                  resize: "vertical",
-                  minHeight: "6rem",
-                  borderColor: errors.description ? "var(--error)" : undefined,
-                }}
-                onFocus={focusHandler}
-                onBlur={blurHandler("description")}
-              />
-              {errors.description && <p style={errorTextStyle}>{errors.description}</p>}
-            </div>
-
-            {/* Idees concretes, inspirations */}
+            {/* Row 6: Idees concretes, inspirations */}
             <div>
               <label htmlFor="cb-inspirations" style={labelStyle}>
-                Idees concretes, inspirations{" "}
-                <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
-                  (facultatif)
-                </span>
+                Id&eacute;es concr&egrave;tes, inspirations
               </label>
               <textarea
                 ref={inspirationsRef}
                 id="cb-inspirations"
                 rows={3}
-                placeholder="Couleurs, styles, references, images qui vous inspirent..."
+                placeholder="D&eacute;crivez vos envies, partagez des r&eacute;f&eacute;rences ou des inspirations..."
                 style={{
                   ...inputStyle,
                   resize: "vertical",
@@ -885,9 +850,9 @@ function CallbackForm() {
             {/* File upload zone */}
             <div>
               <label style={labelStyle}>
-                Photos de reference{" "}
+                Pi&egrave;ces jointes{" "}
                 <span style={{ fontWeight: 400, color: "var(--foreground-subtle)" }}>
-                  (facultatif)
+                  (facultatif &mdash; photos du support, inspirations visuelles...)
                 </span>
               </label>
               <div

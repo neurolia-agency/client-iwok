@@ -95,7 +95,7 @@ export default function GalleryCard({ project, initialLikes = 0, onClick }: Gall
               marginTop: "0.25rem",
             }}
           >
-            {project.location} — {project.year}
+            {project.location} &mdash; {project.year}
             {project.images.length > 1 && (
               <> &middot; {project.images.length} photos</>
             )}
@@ -103,7 +103,7 @@ export default function GalleryCard({ project, initialLikes = 0, onClick }: Gall
         </div>
       </div>
 
-      {/* Like button — toujours accessible, au-dessus de l'overlay */}
+      {/* Like button */}
       <div
         className="gallery-card-like"
         style={{

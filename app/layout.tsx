@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s — IWOK",
   },
   description:
-    "Designer mural professionnel, +15 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
+    "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
   openGraph: {
     siteName: "IWOK — GuiHome Décoration",
     locale: "fr_FR",

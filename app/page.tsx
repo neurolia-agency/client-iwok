@@ -10,7 +10,7 @@ import { getHeroConfig, getServicesPreviewConfig, getCtaFinalConfig } from "@/li
 export const metadata = {
   title: "IWOK — Fresques murales sur mesure en Occitanie",
   description:
-    "Designer mural professionnel, +15 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
+    "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
 };
 
 export default async function HomePage() {

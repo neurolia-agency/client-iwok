@@ -53,7 +53,8 @@ export async function incrementLike(projectId: string): Promise<boolean> {
 /* ─── getPopularProjects ──────────────────────────────── */
 /* Retourne les projets classés par score de popularité */
 
-const ARTIST_FAVORITE_COEFFICIENT = 50;
+/** Multiplicateur pour les coups de coeur de l'artiste (coherent avec le front) */
+const ARTIST_FAVORITE_COEFFICIENT = 3;
 
 interface PopularProject {
   id: string;
@@ -85,8 +86,8 @@ export async function getPopularProjects(
       likes: (p.likes as number) || 0,
       is_artist_favorite: (p.is_artist_favorite as boolean) || false,
       score:
-        ((p.likes as number) || 0) +
-        (p.is_artist_favorite ? ARTIST_FAVORITE_COEFFICIENT : 0),
+        ((p.likes as number) || 0) *
+        (p.is_artist_favorite ? ARTIST_FAVORITE_COEFFICIENT : 1),
     }))
     .sort((a, b) => b.score - a.score);
 }

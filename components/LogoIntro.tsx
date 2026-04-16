@@ -6,13 +6,13 @@ import { gsap } from "gsap";
 
 export default function LogoIntro() {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const logoNoirRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const [removed, setRemoved] = useState(false);
 
   useEffect(() => {
-    if (!overlayRef.current) return;
+    if (!overlayRef.current || !logoRef.current) return;
 
-    // Lock scroll on both html and body for cross-browser reliability
+    // Lock scroll during intro
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
@@ -25,22 +25,20 @@ export default function LogoIntro() {
         },
       });
 
-      // Phase 1 (0–0.8s): Black logo scales in + fades in on ocre bg
-      if (logoNoirRef.current) {
-        tl.fromTo(
-          logoNoirRef.current,
-          { scale: 0.7, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out" },
-          0
-        );
-      }
+      // Logo fades in + subtle scale (0.85 → 1) over 0.9s
+      tl.fromTo(
+        logoRef.current,
+        { scale: 0.85, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.9, ease: "power3.out" },
+        0
+      );
 
-      // Phase 2 (1.2s): Overlay fades out after a short pause
+      // Hold for a beat, then fade the whole overlay out
       tl.to(overlayRef.current, {
         opacity: 0,
-        duration: 0.5,
+        duration: 0.6,
         ease: "power2.inOut",
-      }, 1.2);
+      }, 1.6);
     });
 
     return () => {
@@ -59,7 +57,7 @@ export default function LogoIntro() {
         position: "fixed",
         inset: 0,
         zIndex: 9999,
-        backgroundColor: "#C8962D",
+        backgroundColor: "var(--primary)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -69,24 +67,21 @@ export default function LogoIntro() {
       aria-hidden="true"
     >
       <div
+        ref={logoRef}
         style={{
           position: "relative",
           width: "clamp(100px, 18vw, 180px)",
           aspectRatio: "1",
+          opacity: 0,
         }}
       >
-        <div
-          ref={logoNoirRef}
-          style={{ position: "absolute", inset: 0, opacity: 0 }}
-        >
-          <Image
-            src="/images/logo/logo-noir.png"
-            alt=""
-            fill
-            style={{ objectFit: "contain" }}
-            priority
-          />
-        </div>
+        <Image
+          src="/images/logo/logo-noir.png"
+          alt=""
+          fill
+          style={{ objectFit: "contain" }}
+          priority
+        />
       </div>
     </div>
   );

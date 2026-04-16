@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { PageHeroConfig } from "@/lib/queries/section-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,52 +28,54 @@ const DEFAULT_SERVICES: Service[] = [
   {
     id: "fresques-murales",
     title: "Fresques Murales",
-    tagline: "Intérieur, extérieur \u2014 vos murs prennent vie",
+    tagline: "Intérieur, extérieur — vos murs prennent vie",
     tag: "Intérieur & Extérieur",
     description:
-      "Création de fresques peintes pour tous vos espaces, intérieurs comme extérieurs. Chambres d\u2019enfants, salons, halls d\u2019accueil, façades, bâtiments publics. Chaque fresque est conçue sur mesure après une phase d\u2019écoute et de proposition créative. Peintures techniques adaptées au support et aux conditions (UV, intempéries, usure).",
+      "Création de fresques peintes pour tous vos espaces, intérieurs comme extérieurs. Chambres d\u2019enfants, salons, halls d\u2019accueil, façades, bâtiments publics. Fort de plus de 20 ans d\u2019expérience, chaque projet commence par une rencontre pour comprendre vos envies et votre univers. Vient ensuite l\u2019étude du lieu, la proposition créative avec croquis et maquette, puis la réalisation sur site. Du premier échange au dernier coup de pinceau, chaque étape est pensée en collaboration avec vous. Peintures techniques adaptées au support et aux conditions.",
     includes: [
+      "Rencontre et échange sur votre projet",
       "Visite sur site et prise de mesures",
       "Proposition créative (croquis/maquette)",
       "Réalisation complète de la fresque",
-      "Finitions et protection adaptées au support",
-      "Peintures techniques extérieures si nécessaire (anti-UV, intempéries)",
+      "Finitions soignées et nettoyage du chantier",
     ],
     image: "/images/section-grid-animate/wine.webp",
     imageAlt:
-      "Fresque murale \u2014 mains tenant des verres de vin, style réaliste",
+      "Fresque murale — mains tenant des verres de vin, style réaliste",
   },
   {
-    id: "design-mural",
-    title: "Design Mural Sur Mesure",
+    id: "sur-mesure",
+    title: "Sur Mesure",
     tagline: "Votre vision, notre trait",
     tag: "Sur mesure",
     description:
-      "Conception et réalisation de design mural personnalisé pour tout type d\u2019espace. Du brief créatif au dernier coup de pinceau, chaque étape est pensée en collaboration avec le client.",
+      "Conception et réalisation de design mural entièrement personnalisé pour tout type d\u2019espace. Avec plus de 20 ans de pratique, chaque projet suit un processus éprouvé : une première rencontre pour recueillir vos envies, une phase de recherches graphiques et de propositions visuelles, puis la mise en peinture sur site. Le résultat est une œuvre unique, pensée pour votre lieu et réalisée dans les règles de l\u2019art.",
     includes: [
       "Brief créatif et recueil de vos envies",
-      "Recherches graphiques et propositions",
-      "Réalisation et mise en peinture",
+      "Recherches graphiques et propositions visuelles",
+      "Validation avant mise en peinture",
+      "Réalisation sur site et finitions",
     ],
     image: "/images/section-grid-animate/african-wife.webp",
     imageAlt:
-      "Portrait mural sur mesure \u2014 femme africaine, couleurs vives et détails réalistes",
+      "Portrait mural sur mesure — femme africaine, couleurs vives et détails réalistes",
   },
   {
-    id: "tous-supports",
-    title: "Décoration Tous Supports",
+    id: "tout-support",
+    title: "Tout Support",
     tagline: "Pas seulement les murs",
-    tag: "Tous supports",
+    tag: "Tout support",
     description:
-      "Peinture artistique sur supports atypiques \u2014 véhicules, containers, sols, mobilier, structures métalliques. La même exigence créative, adaptée à des surfaces non-conventionnelles.",
+      "Peinture artistique sur supports atypiques : véhicules, containers, sols, mobilier, structures métalliques. Plus de 20 ans d\u2019expérience permettent d\u2019adapter la technique à chaque surface, même la plus inattendue. Le processus reste le même : échange sur le projet, étude du support, proposition créative, puis réalisation avec des peintures spécifiquement choisies pour garantir la tenue dans le temps.",
     includes: [
-      "Étude du support et traitement de surface",
-      "Proposition créative",
-      "Réalisation avec peintures adaptées",
+      "Étude du support et de ses contraintes",
+      "Proposition créative adaptée",
+      "Réalisation avec peintures techniques appropriées",
+      "Finitions et conseils d\u2019entretien",
     ],
     image: "/images/section-grid-animate/beer-cow.webp",
     imageAlt:
-      "Fresque pop art sur support atypique \u2014 deux vaches colorées aux lunettes de soleil",
+      "Fresque pop art sur support atypique — deux vaches colorées aux lunettes de soleil",
   },
   {
     id: "animation-evenementielle",
@@ -80,16 +83,16 @@ const DEFAULT_SERVICES: Service[] = [
     tagline: "L\u2019art en direct, devant vos yeux",
     tag: "Événementiel",
     description:
-      "Live painting lors d\u2019événements et démonstrations artistiques. Créez un moment fort avec la réalisation d\u2019une fresque en direct \u2014 de la toile blanche à l\u2019\u0153uvre finie sous les yeux du public.",
+      "Live painting lors d\u2019événements, festivals et soirées privées. Avec plus de 20 ans de scène, chaque performance est préparée en amont : choix du thème, du support et du format en fonction de votre événement. Le jour J, l\u2019œuvre prend vie sous les yeux du public, de la toile blanche au résultat final. Un moment fort qui marque les esprits.",
     includes: [
-      "Préparation de la performance (thème, support, durée)",
-      "Matériel de peinture",
+      "Échange préalable sur le thème et le format",
+      "Préparation du support et du matériel",
       "Réalisation live devant le public",
-      "L\u2019\u0153uvre finale (offerte ou sur arrangement)",
+      "L\u2019œuvre finale (offerte ou sur arrangement)",
     ],
     image: "/images/section-grid-animate/kerea.webp",
     imageAlt:
-      "Live painting au centre KEREA \u2014 artiste peignant un portrait coloré en direct",
+      "Live painting au centre KEREA — artiste peignant un portrait coloré en direct",
   },
   {
     id: "ateliers-participatifs",
@@ -97,39 +100,16 @@ const DEFAULT_SERVICES: Service[] = [
     tagline: "Créer ensemble, peindre ensemble",
     tag: "Participatif",
     description:
-      "Ateliers de création murale participatifs encadrés par un artiste professionnel. Idéal pour fédérer un groupe \u2014 écoles, centres sociaux, entreprises, festivals.",
+      "Ateliers de création murale encadrés par un artiste professionnel fort de plus de 20 ans d\u2019expérience. Idéal pour fédérer un groupe : écoles, centres sociaux, entreprises, festivals. Le projet est conçu en amont avec les organisateurs, puis chaque participant contribue à la fresque collective sous la direction artistique de l\u2019artiste. Un moment de partage qui laisse une trace durable.",
     includes: [
-      "Conception du projet participatif",
+      "Conception du projet avec les organisateurs",
       "Encadrement artistique et technique",
-      "Matériel de peinture",
-      "Fresque collective finalisée",
+      "Matériel de peinture fourni",
+      "Fresque collective finalisée par l\u2019artiste",
     ],
     image: "/images/section-grid-animate/colors.webp",
     imageAlt:
-      "Atelier participatif \u2014 fresque géométrique multicolore, vue aérienne",
-  },
-];
-
-const DEFAULT_PROCESS_STEPS = [
-  {
-    number: "01",
-    title: "Prise de contact",
-    description: "Échange sur votre projet, vos envies, vos contraintes.",
-  },
-  {
-    number: "02",
-    title: "Proposition créative",
-    description: "Visite sur site, croquis et maquette sur mesure.",
-  },
-  {
-    number: "03",
-    title: "Réalisation",
-    description: "La fresque prend vie sur votre mur, sous vos yeux.",
-  },
-  {
-    number: "04",
-    title: "Livraison",
-    description: "Finitions, nettoyage, remise du support. La protection (vernis, anti-UV) est proposée en option selon le support et l\u2019usage.",
+      "Atelier participatif — fresque géométrique multicolore, vue aérienne",
   },
 ];
 
@@ -423,272 +403,6 @@ function ServiceBlock({
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PROCESS SECTION — "De vos envies à la réalisation"
-   ═══════════════════════════════════════════════════════════ */
-
-function ProcessSection({ steps }: { steps: { number: string; title: string; description: string }[] }) {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const heading = sectionRef.current!.querySelector(".proc-head");
-      const steps = sectionRef.current!.querySelectorAll(".proc-step");
-
-      if (heading) gsap.set(heading, { opacity: 0, y: 30 });
-      steps.forEach((s) => gsap.set(s, { opacity: 0, y: 35 }));
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current!,
-          start: "top 65%",
-          once: true,
-        },
-      });
-
-      if (heading)
-        tl.to(
-          heading,
-          { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
-          0
-        );
-      if (steps.length)
-        tl.to(
-          steps,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.15,
-            ease: "power2.out",
-          },
-          0.3
-        );
-    }, sectionRef.current);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section
-      ref={sectionRef}
-      className="dark-section"
-      style={{
-        paddingBlock: "var(--spacing-section-inner)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        className="grain-overlay"
-        aria-hidden="true"
-        style={{ zIndex: 1 }}
-      />
-
-      <div
-        className="container-custom"
-        style={{ position: "relative", zIndex: 2 }}
-      >
-        {/* Heading */}
-        <div
-          className="proc-head"
-          style={{
-            textAlign: "center",
-            marginBottom: "clamp(3.5rem, 7vw, 5.5rem)",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "0.6875rem",
-              fontWeight: 500,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "var(--primary)",
-              marginBottom: "1.25rem",
-              maxWidth: "none",
-            }}
-          >
-            Processus
-          </p>
-          <h2
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "var(--font-size-h2)",
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: "var(--letter-spacing-tight)",
-              color: "var(--foreground-on-dark)",
-              margin: 0,
-            }}
-          >
-            De vos envies à la réalisation
-          </h2>
-        </div>
-
-        {/* ─── Desktop: 4-column horizontal timeline ─── */}
-        <div className="hidden md:grid md:grid-cols-4 gap-8">
-          {steps.map((step) => (
-            <div
-              key={step.number}
-              className="proc-step"
-              style={{ textAlign: "center" }}
-            >
-              {/* Number */}
-              <span
-                style={{
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "clamp(2.5rem, 4vw, 3.5rem)",
-                  fontWeight: 800,
-                  lineHeight: 1,
-                  color: "var(--primary)",
-                  letterSpacing: "-0.02em",
-                  display: "block",
-                  marginBottom: "1rem",
-                }}
-              >
-                {step.number}
-              </span>
-
-              {/* Small Ocre dash */}
-              <div
-                aria-hidden="true"
-                style={{
-                  width: 24,
-                  height: 1,
-                  backgroundColor: "var(--primary)",
-                  opacity: 0.4,
-                  margin: "0 auto 1.25rem",
-                }}
-              />
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontFamily: "var(--font-heading)",
-                  fontSize: "var(--font-size-h5)",
-                  fontWeight: 600,
-                  color: "var(--foreground-on-dark)",
-                  marginBottom: "0.5rem",
-                  letterSpacing: "var(--letter-spacing-tight)",
-                }}
-              >
-                {step.title}
-              </h3>
-
-              {/* Description */}
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "var(--font-size-body)",
-                  lineHeight: "var(--line-height-relaxed)",
-                  color: "var(--muted-foreground)",
-                  margin: "0 auto",
-                  maxWidth: "24ch",
-                }}
-              >
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* ─── Mobile: vertical timeline ─── */}
-        <div
-          className="md:hidden"
-          style={{ position: "relative", paddingLeft: "2.5rem" }}
-        >
-          {/* Vertical line */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              left: 5,
-              top: 8,
-              bottom: 8,
-              width: 1,
-              backgroundColor: "var(--primary)",
-              opacity: 0.25,
-            }}
-          />
-
-          {steps.map((step, i) => (
-            <div
-              key={step.number}
-              className="proc-step"
-              style={{
-                position: "relative",
-                paddingBottom:
-                  i < steps.length - 1 ? "2.5rem" : 0,
-              }}
-            >
-              {/* Dot */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  left: "-2.2rem",
-                  top: 5,
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  backgroundColor: "var(--primary)",
-                }}
-              />
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "0.75rem",
-                  marginBottom: "0.375rem",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-heading)",
-                    fontSize: "0.8125rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    color: "var(--primary)",
-                  }}
-                >
-                  {step.number}
-                </span>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-heading)",
-                    fontSize: "var(--font-size-h5)",
-                    fontWeight: 600,
-                    color: "var(--foreground-on-dark)",
-                    margin: 0,
-                  }}
-                >
-                  {step.title}
-                </h3>
-              </div>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "var(--font-size-body)",
-                  lineHeight: "var(--line-height-relaxed)",
-                  color: "var(--muted-foreground)",
-                  margin: 0,
-                  maxWidth: "36ch",
-                }}
-              >
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
    CONTACT CTA
    ═══════════════════════════════════════════════════════════ */
 
@@ -773,14 +487,13 @@ function ContactCta() {
 
 interface ServicesContentProps {
   services?: Service[];
-  processSteps?: { number: string; title: string; description: string }[];
+  heroConfig?: PageHeroConfig;
 }
 
-export default function ServicesContent({ services: servicesProp, processSteps: processStepsProp }: ServicesContentProps) {
+export default function ServicesContent({ services: servicesProp, heroConfig }: ServicesContentProps) {
   const heroRef = useRef<HTMLElement>(null);
 
   const services = servicesProp && servicesProp.length > 0 ? servicesProp : DEFAULT_SERVICES;
-  const processSteps = processStepsProp && processStepsProp.length > 0 ? processStepsProp : DEFAULT_PROCESS_STEPS;
 
   /* Hero GSAP reveal */
   useEffect(() => {
@@ -822,7 +535,7 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
       >
         {/* Background image */}
         <Image
-          src="/images/selection-gui-on-scope/007_GuiHome Décoration © Franck Tourneret.webp"
+          src={heroConfig?.backgroundImage ?? "/images/selection-gui-on-scope/007_GuiHome Décoration © Franck Tourneret.webp"}
           alt=""
           fill
           priority
@@ -868,7 +581,7 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
               maxWidth: "none",
             }}
           >
-            Savoir-faire
+            {heroConfig?.eyebrow ?? "Savoir-faire"}
           </p>
 
           {/* H1 */}
@@ -884,7 +597,7 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
               marginBottom: "1.5rem",
             }}
           >
-            Services
+            {heroConfig?.title ?? "Services"}
           </h1>
 
           {/* Accent line */}
@@ -911,8 +624,7 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
               margin: 0,
             }}
           >
-            Fresques murales, design sur mesure, animation événementielle
-            — sur tous les supports, pour tous les projets.
+            {heroConfig?.subtitle ?? "Plus de 20 ans d\u2019expérience en fresques murales, design sur mesure et animation événementielle, sur tous les supports."}
           </p>
         </div>
       </section>
@@ -927,11 +639,6 @@ export default function ServicesContent({ services: servicesProp, processSteps: 
           index={index}
         />
       ))}
-
-      {/* ═══════════════════════════════════════════════
-          PROCESS — "De vos envies à la réalisation"
-          ═══════════════════════════════════════════════ */}
-      <ProcessSection steps={processSteps} />
 
       {/* ═══════════════════════════════════════════════
           CTA — Conversion

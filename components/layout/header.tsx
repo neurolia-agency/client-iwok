@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -17,7 +17,9 @@ const NAV_LINKS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sectionIsDark, setSectionIsDark] = useState(true);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 48);
@@ -31,11 +33,100 @@ export default function Header() {
     setMenuOpen(false);
   }, [pathname]);
 
-  const isDark = !scrolled || menuOpen;
+  // Détecter si la section derrière la navbar est sombre via IntersectionObserver
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const intersectingDarkSections = useRef<Set<Element>>(new Set());
+
+  const setupObserver = useCallback(() => {
+    // Nettoyer l'ancien observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    intersectingDarkSections.current.clear();
+
+    // Hauteur de la navbar (~80px), observer uniquement cette bande
+    const navHeight = 80;
+
+    // Observer : rootMargin coupe le viewport pour ne garder que la bande du header
+    // top: 0, bottom: -(viewport - navHeight) → on observe seulement les 80px du haut
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            intersectingDarkSections.current.add(entry.target);
+          } else {
+            intersectingDarkSections.current.delete(entry.target);
+          }
+        }
+        setSectionIsDark(intersectingDarkSections.current.size > 0);
+      },
+      {
+        // On réduit la zone d'observation au bandeau du header
+        rootMargin: `0px 0px -${window.innerHeight - navHeight}px 0px`,
+        threshold: 0,
+      }
+    );
+
+    // Collecter toutes les sections sombres du DOM
+    const darkElements = new Set<Element>();
+
+    // Par classe CSS
+    document.querySelectorAll(".dark-section, .homepage-hero").forEach((el) => {
+      darkElements.add(el);
+    });
+
+    // Par style inline (backgrounds sombres)
+    document.querySelectorAll("section").forEach((section) => {
+      const style = section.getAttribute("style") || "";
+      if (
+        style.includes("background-dark") ||
+        style.includes("#1C1917") ||
+        style.includes("1c1917") ||
+        style.includes("C8962D") ||
+        style.includes("c8962d")
+      ) {
+        darkElements.add(section);
+      }
+    });
+
+    // Observer chaque section sombre
+    darkElements.forEach((el) => observer.observe(el));
+
+    // Si aucune section sombre trouvée, le fond est clair
+    if (darkElements.size === 0) {
+      setSectionIsDark(false);
+    }
+
+    observerRef.current = observer;
+  }, []);
+
+  useEffect(() => {
+    // Petit délai pour laisser le DOM se construire après navigation
+    const timer = setTimeout(setupObserver, 100);
+    return () => {
+      clearTimeout(timer);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [pathname, setupObserver]);
+
+  // Recalculer l'observer au resize (le rootMargin dépend de innerHeight)
+  useEffect(() => {
+    const handleResize = () => setupObserver();
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setupObserver]);
+
+  // Quand le header est scrolled, il a son propre fond clair → logo sombre
+  // Quand pas scrolled, on se fie à la section derrière
+  // Quand le menu est ouvert, toujours logo blanc (fond sombre du menu)
+  const isDark = menuOpen || (!scrolled && sectionIsDark);
 
   return (
     <>
       <header
+        ref={headerRef}
         style={{
           position: "fixed",
           insetInline: 0,
@@ -62,26 +153,53 @@ export default function Header() {
             justifyContent: "space-between",
           }}
         >
-          {/* Logo */}
+          {/* Logo — crossfade entre blanc et noir pour transition fluide */}
           <Link
             href="/"
             aria-label="IWOK / GuiHome Décoration — Retour à l'accueil"
-            style={{ display: "inline-flex", alignItems: "center", flexShrink: 0 }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              flexShrink: 0,
+              position: "relative",
+              height: "clamp(52px, 6.5vw, 72px)",
+            }}
           >
+            {/* Logo blanc (fond sombre) */}
             <Image
-              src={isDark ? "/images/logo/logo-blanc.png" : "/images/logo/logo-noir.png"}
+              src="/images/logo/logo-blanc.png"
               alt="IWOK — GuiHome Décoration"
-              width={120}
-              height={48}
+              width={180}
+              height={72}
               priority
               style={{
-                height: "clamp(40px, 5vw, 56px)",
+                height: "clamp(52px, 6.5vw, 72px)",
                 width: "auto",
                 objectFit: "contain",
-                transition: "opacity var(--transition-standard), filter var(--transition-standard)",
+                transition: "opacity 400ms ease, filter 400ms ease",
+                opacity: isDark ? 1 : 0,
                 filter: isDark
                   ? "drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(0, 0, 0, 0.15))"
                   : "none",
+              }}
+            />
+            {/* Logo noir (fond clair) — positionné par-dessus */}
+            <Image
+              src="/images/logo/logo-noir.png"
+              alt=""
+              width={180}
+              height={72}
+              priority
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                height: "clamp(52px, 6.5vw, 72px)",
+                width: "auto",
+                objectFit: "contain",
+                transition: "opacity 400ms ease",
+                opacity: isDark ? 0 : 1,
               }}
             />
           </Link>

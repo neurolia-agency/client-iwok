@@ -3,8 +3,13 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import type { PageHeroConfig } from "@/lib/queries/section-config";
 
-export default function PortfolioHero() {
+interface PortfolioHeroProps {
+  config?: PageHeroConfig;
+}
+
+export default function PortfolioHero({ config }: PortfolioHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -57,7 +62,7 @@ export default function PortfolioHero() {
     >
       {/* Background image */}
       <Image
-        src="/images/selection-gui-on-scope/08122021-2.webp"
+        src={config?.backgroundImage ?? "/images/selection-gui-on-scope/08122021-2.webp"}
         alt=""
         fill
         priority
@@ -118,7 +123,7 @@ export default function PortfolioHero() {
             maxWidth: "none",
           }}
         >
-          Portfolio
+          {config?.eyebrow ?? "Portfolio"}
         </p>
 
         {/* Title */}
@@ -134,7 +139,7 @@ export default function PortfolioHero() {
             maxWidth: "18ch",
           }}
         >
-          Réalisations
+          {config?.title ?? "Réalisations"}
         </h1>
 
         {/* Separator */}
@@ -163,7 +168,9 @@ export default function PortfolioHero() {
             maxWidth: "52ch",
           }}
         >
-          15 années de savoir-faire.<br />Des centaines de murs réveillés.<br /> Pour les particuliers comme pour les communes, chaque œuvre est une pièce unique.
+          {(config?.subtitle ?? "15 années de savoir-faire.\nDes centaines de murs réveillés.\nPour les particuliers comme pour les communes, chaque œuvre est une pièce unique.").split("\n").map((line, i, arr) => (
+            <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+          ))}
         </p>
       </div>
     </section>

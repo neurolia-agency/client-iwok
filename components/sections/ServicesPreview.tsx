@@ -110,7 +110,7 @@ const DEFAULT_SERVICES = [
     description: "Intérieur, extérieur. Vos murs prennent vie.",
   },
   {
-    title: "Design Sur Mesure",
+    title: "Sur Mesure",
     description: "Brief, croquis, réalisation. Chaque œuvre est unique.",
   },
   {

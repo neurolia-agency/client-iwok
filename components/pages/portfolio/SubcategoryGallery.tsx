@@ -29,6 +29,7 @@ export default function SubcategoryGallery({ projects }: SubcategoryGalleryProps
           project={activeProject}
           initialIndex={activeProject.cover}
           onClose={() => setActiveProject(null)}
+          allProjects={projects}
         />
       )}
     </>

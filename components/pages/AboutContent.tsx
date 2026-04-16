@@ -12,16 +12,10 @@ gsap.registerPlugin(ScrollTrigger);
    DATA
    ────────────────────────────────────────────── */
 
-interface Chapter {
-  number: string;
-  title: string;
-  text: string;
-  image: string;
-  imageAlt: string;
-  bg: "dark" | "light" | "alt";
-}
+import type { Chapter, Metric } from "@/lib/queries/about";
+import type { PageHeroConfig } from "@/lib/queries/section-config";
 
-const CHAPTERS: Chapter[] = [
+const DEFAULT_CHAPTERS: Chapter[] = [
   {
     number: "01",
     title: "Le graffiti, les murs, la rue",
@@ -49,24 +43,15 @@ const CHAPTERS: Chapter[] = [
   {
     number: "04",
     title: "IWOK, l\u2019artiste et la marque",
-    text: "Aujourd\u2019hui, IWOK porte 15 ans de murs dans les mains. L\u2019identit\u00e9 est claire : un designer mural complet, de la premi\u00e8re esquisse au dernier coup de pinceau. L\u2019Aveyron comme base, la France enti\u00e8re comme terrain.",
+    text: "Aujourd\u2019hui, IWOK porte plus de 20 ans de murs dans les mains. L\u2019identit\u00e9 est claire : un designer mural complet, de la premi\u00e8re esquisse au dernier coup de pinceau. L\u2019Aveyron comme base, la France enti\u00e8re comme terrain.",
     image: "/images/about/gui-atelier.webp",
     imageAlt: "Guillaume Jeanjean, artiste muraliste IWOK",
     bg: "dark",
   },
 ];
 
-interface Metric {
-  value: number;
-  prefix: string;
-  suffix: string;
-  label: string;
-  isText?: boolean;
-  textValue?: string;
-}
-
-const METRICS: Metric[] = [
-  { value: 15, prefix: "+", suffix: " ans", label: "d\u2019exp\u00e9rience" },
+const DEFAULT_METRICS: Metric[] = [
+  { value: 20, prefix: "+", suffix: " ans", label: "d\u2019exp\u00e9rience" },
   { value: 100, prefix: "+", suffix: "", label: "projets r\u00e9alis\u00e9s" },
   { value: 4, prefix: "", suffix: " types", label: "de client\u00e8le" },
   {
@@ -108,7 +93,19 @@ function getMutedColor(bg: Chapter["bg"]) {
    COMPONENT
    ────────────────────────────────────────────── */
 
-export default function AboutContent() {
+interface AboutContentProps {
+  chapters?: Chapter[];
+  metrics?: Metric[];
+  heroConfig?: PageHeroConfig;
+}
+
+export default function AboutContent({
+  chapters: chaptersProp,
+  metrics: metricsProp,
+  heroConfig,
+}: AboutContentProps) {
+  const CHAPTERS = chaptersProp && chaptersProp.length > 0 ? chaptersProp : DEFAULT_CHAPTERS;
+  const METRICS = metricsProp && metricsProp.length > 0 ? metricsProp : DEFAULT_METRICS;
   // Section 1 refs
   const heroRef = useRef<HTMLElement>(null);
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
@@ -448,7 +445,7 @@ export default function AboutContent() {
                   lineHeight: 1,
                 }}
               >
-                A propos
+                {heroConfig?.eyebrow ?? "A propos"}
               </p>
 
               {/* H1 — split text */}
@@ -465,7 +462,7 @@ export default function AboutContent() {
                   marginBottom: "1.75rem",
                 }}
               >
-                {["Guillaume", "Jeanjean"].map((word) => (
+                {(heroConfig?.title ?? "Guillaume Jeanjean").split(" ").slice(0, 2).map((word) => (
                   <span
                     key={word}
                     style={{
@@ -520,10 +517,9 @@ export default function AboutContent() {
                   margin: 0,
                 }}
               >
-                Du graffiti au design mural — 15 ans de murs dans les mains.
-                <br />
-                L&apos;exigence de l&apos;artisan, l&apos;&oelig;il de
-                l&apos;artiste.
+                {(heroConfig?.subtitle ?? "Du graffiti au design mural — plus de 20 ans de murs dans les mains.\nL\u2019exigence de l\u2019artisan, l\u2019\u0153il de l\u2019artiste.").split("\n").map((line, i, arr) => (
+                  <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+                ))}
               </p>
             </div>
 
@@ -539,8 +535,8 @@ export default function AboutContent() {
               }}
             >
               <Image
-                src="/images/selection-gui-on-scope/portrait-gui-masque.webp"
-                alt="Guillaume Jeanjean, artiste muraliste IWOK"
+                src={heroConfig?.backgroundImage ?? "/images/selection-gui-on-scope/portrait-gui-masque.webp"}
+                alt={heroConfig?.title ? `${heroConfig.title}, artiste muraliste IWOK` : "Guillaume Jeanjean, artiste muraliste IWOK"}
                 fill
                 priority
                 sizes="(max-width: 640px) 100vw, 40vw"

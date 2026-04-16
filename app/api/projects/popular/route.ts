@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-const ARTIST_FAVORITE_COEFFICIENT = 50;
+/** Coefficient multiplicateur pour les projets coups de coeur de l'artiste */
+const ARTIST_FAVORITE_COEFFICIENT = 3;
 
 export async function GET() {
   const { data, error } = await supabase
@@ -18,9 +19,7 @@ export async function GET() {
   const scored = (data || [])
     .map((p) => ({
       ...p,
-      score:
-        (p.likes || 0) +
-        (p.is_artist_favorite ? ARTIST_FAVORITE_COEFFICIENT : 0),
+      score: (p.likes || 0) * (p.is_artist_favorite ? ARTIST_FAVORITE_COEFFICIENT : 1),
     }))
     .sort((a, b) => b.score - a.score);
 
