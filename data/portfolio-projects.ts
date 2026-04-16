@@ -83,16 +83,16 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
     category: "Particuliers",
     slug: "particuliers",
-    background: "/images/site communication/particuliers/IMG_20231102_132957.webp",
-    preview1: "/images/site communication/particuliers/WhatsApp Image 2023-07-05 at 12.33.42.webp",
-    preview2: "/images/site communication/particuliers/IMG_20240412_121039.webp",
+    background: "/images/particuliers/ble.webp",
+    preview1: "/images/particuliers/daft-punk.webp",
+    preview2: "/images/particuliers/basketteurs.webp",
   },
   {
     category: "Entreprises et Collectivités",
     slug: "entreprises",
-    background: "/images/site communication/entreprises collectivitées/skate parc decazeville 12 2024/Skate Park Decaze - Guillaume 2024-4.webp",
-    preview1: "/images/site communication/entreprises collectivitées/restaurant Bichette rodez 12 wc 2025/WhatsApp Image 2025-09-04 à 13.47.04_e2b04b2c.webp",
-    preview2: "/images/site communication/entreprises collectivitées/révélation cransac 12 2021/Cransac 12.webp",
+    background: "/images/entreprises/Skate Park Decaze - Guillaume 2024-4.webp",
+    preview1: "/images/entreprises/johnny-depp.webp",
+    preview2: "/images/entreprises/façade-jaune.webp",
   },
   {
     category: "Participatifs",
@@ -104,9 +104,9 @@ export const FEATURED_SLIDES: FeaturedSlide[] = [
   {
     category: "Événementiel",
     slug: "evenementiel",
-    background: "/images/site communication/événementiel expo/Kerea reception-09.webp",
-    preview1: "/images/site communication/événementiel expo/urban fest albi 2021/IMG_20210829_104235.webp",
-    preview2: "/images/site communication/événementiel expo/IMG_20220618_160655.webp",
+    background: "/images/evenementiel/kerea-gui-on-scope.webp",
+    preview1: "/images/evenementiel/urban-fest-albi-104235.webp",
+    preview2: "/images/evenementiel/rider.webp",
   },
   {
     category: "Coups de cœur",
