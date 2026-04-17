@@ -5,6 +5,7 @@ import Image from "next/image";
 import CtaSecondary from "@/components/ui/CtaSecondary";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { PortfolioPreviewConfig } from "@/lib/queries/section-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -252,7 +253,11 @@ function ScrollColumn({
 
 /* ─── Main component ─────────────────────────────────────── */
 
-export default function PortfolioPreview() {
+interface PortfolioPreviewProps {
+  config?: PortfolioPreviewConfig;
+}
+
+export default function PortfolioPreview({ config }: PortfolioPreviewProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -430,7 +435,7 @@ export default function PortfolioPreview() {
                     maxWidth: "none",
                   }}
                 >
-                  Portfolio
+                  {config?.eyebrow ?? "Portfolio"}
                 </p>
 
                 {/* Monumental title block — grid ensures "100" and subtitle share the same width */}
@@ -451,7 +456,7 @@ export default function PortfolioPreview() {
                       marginBottom: "-0.15em",
                     }}
                   >
-                    plus de
+                    {config?.statPrefix ?? "plus de"}
                   </span>
                   <span
                     id="portfolio-preview-heading"
@@ -465,7 +470,7 @@ export default function PortfolioPreview() {
                       width: "100%",
                     }}
                   >
-                    100
+                    {config?.statNumber ?? "100"}
                   </span>
                   <p
                     style={{
@@ -486,7 +491,7 @@ export default function PortfolioPreview() {
                         color: "var(--foreground-on-dark)",
                       }}
                     >
-                      fresques,
+                      {config?.statLabel ?? "fresques,"}
                     </span>
                     <span
                       style={{
@@ -498,7 +503,7 @@ export default function PortfolioPreview() {
                         lineHeight: 1.3,
                       }}
                     >
-                      chacune unique
+                      {config?.statTagline ?? "chacune unique"}
                     </span>
                   </p>
                 </div>
@@ -526,13 +531,12 @@ export default function PortfolioPreview() {
                     maxWidth: "32ch",
                   }}
                 >
-                  Un commerce local. Une façade publique. L&apos;intimité d&apos;une maison.
-                  À chaque espace sa propre empreinte visuelle.
+                  {config?.description ?? "Un commerce local. Une façade publique. L\u2019intimité d\u2019une maison. À chaque espace sa propre empreinte visuelle."}
                 </p>
 
                 {/* CTA */}
-                <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/ophtalmo-femme.webp">
-                  Voir toutes les réalisations <span aria-hidden="true">→</span>
+                <CtaSecondary href={config?.ctaHref ?? "/portfolio"} peekImage="/images/section-grid-animate/ophtalmo-femme.webp">
+                  {config?.ctaText ?? "Voir toutes les réalisations"} <span aria-hidden="true">→</span>
                 </CtaSecondary>
               </div>
             </div>
@@ -571,7 +575,7 @@ export default function PortfolioPreview() {
                   maxWidth: "none",
                 }}
               >
-                Portfolio
+                {config?.eyebrow ?? "Portfolio"}
               </p>
 
               <h2
@@ -590,7 +594,7 @@ export default function PortfolioPreview() {
                     color: "var(--foreground-on-dark)",
                   }}
                 >
-                  plus de
+                  {config?.statPrefix ?? "plus de"}
                 </span>
                 <span
                   style={{
@@ -603,7 +607,7 @@ export default function PortfolioPreview() {
                     color: "var(--primary)",
                   }}
                 >
-                  100
+                  {config?.statNumber ?? "100"}
                 </span>
                 <span
                   style={{
@@ -615,7 +619,7 @@ export default function PortfolioPreview() {
                     color: "var(--foreground-on-dark)",
                   }}
                 >
-                  fresques
+                  {config?.statLabel ?? "fresques,"}
                 </span>
               </h2>
 
@@ -631,7 +635,7 @@ export default function PortfolioPreview() {
                   lineHeight: 1.3,
                 }}
               >
-                chacune unique
+                {config?.statTagline ?? "chacune unique"}
               </p>
 
               <div
@@ -655,8 +659,7 @@ export default function PortfolioPreview() {
                   maxWidth: "52ch",
                 }}
               >
-                Un commerce local. Une façade publique. L&apos;intimité d&apos;une maison.
-                À chaque espace sa propre empreinte visuelle.
+                {config?.description ?? "Un commerce local. Une façade publique. L\u2019intimité d\u2019une maison. À chaque espace sa propre empreinte visuelle."}
               </p>
             </header>
 
@@ -676,8 +679,8 @@ export default function PortfolioPreview() {
 
             {/* Mobile CTA */}
             <div style={{ textAlign: "center", marginTop: "2rem" }}>
-              <CtaSecondary href="/portfolio" peekImage="/images/section-grid-animate/ophtalmo-femme.webp">
-                Voir toutes les réalisations <span aria-hidden="true">→</span>
+              <CtaSecondary href={config?.ctaHref ?? "/portfolio"} peekImage="/images/section-grid-animate/ophtalmo-femme.webp">
+                {config?.ctaText ?? "Voir toutes les réalisations"} <span aria-hidden="true">→</span>
               </CtaSecondary>
             </div>
           </div>

@@ -5,7 +5,7 @@ import ServicesPreview from "@/components/sections/ServicesPreview";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CtaFinal from "@/components/sections/CtaFinal";
 import { getTestimonials } from "@/lib/queries/testimonials";
-import { getHeroConfig, getServicesPreviewConfig, getCtaFinalConfig } from "@/lib/queries/section-config";
+import { getHeroConfig, getServicesPreviewConfig, getCtaFinalConfig, getPortfolioPreviewConfig } from "@/lib/queries/section-config";
 
 export const metadata = {
   title: "IWOK — Fresques murales sur mesure en Occitanie",
@@ -14,18 +14,19 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [testimonials, heroConfig, servicesPreviewConfig, ctaConfig] = await Promise.all([
+  const [testimonials, heroConfig, servicesPreviewConfig, ctaConfig, portfolioPreviewConfig] = await Promise.all([
     getTestimonials(),
     getHeroConfig(),
     getServicesPreviewConfig(),
     getCtaFinalConfig(),
+    getPortfolioPreviewConfig(),
   ]);
 
   return (
     <>
       <LogoIntro />
       <HeroSection config={heroConfig} />
-      <PortfolioPreview />
+      <PortfolioPreview config={portfolioPreviewConfig} />
       <ServicesPreview config={servicesPreviewConfig} />
       <TestimonialsSection testimonials={testimonials.length > 0 ? testimonials : undefined} />
       <CtaFinal config={ctaConfig} />

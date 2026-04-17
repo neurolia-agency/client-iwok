@@ -79,6 +79,57 @@ export const getServicesPreviewConfig = unstable_cache(
   { tags: ["iwok-services"], revalidate: 3600 }
 );
 
+/* ─── Portfolio preview config ─────────────────────────────── */
+
+export interface PortfolioPreviewConfig {
+  eyebrow: string;
+  statPrefix: string;
+  statNumber: string;
+  statLabel: string;
+  statTagline: string;
+  description: string;
+  ctaText: string;
+  ctaHref: string;
+}
+
+const DEFAULT_PORTFOLIO_PREVIEW: PortfolioPreviewConfig = {
+  eyebrow: "Portfolio",
+  statPrefix: "plus de",
+  statNumber: "100",
+  statLabel: "fresques,",
+  statTagline: "chacune unique",
+  description:
+    "Un commerce local. Une façade publique. L\u2019intimité d\u2019une maison. À chaque espace sa propre empreinte visuelle.",
+  ctaText: "Voir toutes les réalisations",
+  ctaHref: "/portfolio",
+};
+
+export const getPortfolioPreviewConfig = unstable_cache(
+  async (): Promise<PortfolioPreviewConfig> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "portfolio_preview")
+      .single();
+
+    if (error || !data?.value) return DEFAULT_PORTFOLIO_PREVIEW;
+
+    const raw = data.value as Record<string, string>;
+    return {
+      eyebrow: raw.eyebrow || DEFAULT_PORTFOLIO_PREVIEW.eyebrow,
+      statPrefix: raw.stat_prefix || DEFAULT_PORTFOLIO_PREVIEW.statPrefix,
+      statNumber: raw.stat_number || DEFAULT_PORTFOLIO_PREVIEW.statNumber,
+      statLabel: raw.stat_label || DEFAULT_PORTFOLIO_PREVIEW.statLabel,
+      statTagline: raw.stat_tagline || DEFAULT_PORTFOLIO_PREVIEW.statTagline,
+      description: raw.description || DEFAULT_PORTFOLIO_PREVIEW.description,
+      ctaText: raw.cta_text || DEFAULT_PORTFOLIO_PREVIEW.ctaText,
+      ctaHref: raw.cta_href || DEFAULT_PORTFOLIO_PREVIEW.ctaHref,
+    };
+  },
+  ["iwok-portfolio-preview-config"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);
+
 /* ─── CTA final config ──────────────────────────────────────── */
 
 export interface CtaFinalConfig {
