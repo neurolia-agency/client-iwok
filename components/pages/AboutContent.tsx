@@ -42,10 +42,10 @@ const DEFAULT_CHAPTERS: Chapter[] = [
   },
   {
     number: "04",
-    title: "IWOK, l\u2019artiste et la marque",
-    text: "Aujourd\u2019hui, IWOK porte plus de 20 ans de murs dans les mains. L\u2019identit\u00e9 est claire : un designer mural complet, de la premi\u00e8re esquisse au dernier coup de pinceau. L\u2019Aveyron comme base, la France enti\u00e8re comme terrain.",
+    title: "GUIHOME, l\u2019artiste et la marque",
+    text: "Aujourd\u2019hui, GUIHOME porte plus de 20 ans de murs dans les mains. L\u2019identit\u00e9 est claire : un designer mural complet, de la premi\u00e8re esquisse au dernier coup de pinceau. L\u2019Aveyron comme base, la France enti\u00e8re comme terrain.",
     image: "/images/about/gui-atelier.webp",
-    imageAlt: "Guillaume Jeanjean, artiste muraliste IWOK",
+    imageAlt: "Guillaume Jeanjean, artiste muraliste GUIHOME",
     bg: "dark",
   },
 ];
@@ -500,7 +500,7 @@ export default function AboutContent({
                       fontStyle: "italic",
                     }}
                   >
-                    IWOK
+                    GUIHOME
                   </span>
                 </span>
               </h1>
@@ -536,7 +536,7 @@ export default function AboutContent({
             >
               <Image
                 src={heroConfig?.backgroundImage ?? "/images/selection-gui-on-scope/portrait-gui-masque.webp"}
-                alt={heroConfig?.title ? `${heroConfig.title}, artiste muraliste IWOK` : "Guillaume Jeanjean, artiste muraliste IWOK"}
+                alt={heroConfig?.title ? `${heroConfig.title}, artiste muraliste GUIHOME` : "Guillaume Jeanjean, artiste muraliste GUIHOME"}
                 fill
                 priority
                 sizes="(max-width: 640px) 100vw, 40vw"

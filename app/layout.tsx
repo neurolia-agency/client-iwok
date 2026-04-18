@@ -28,13 +28,13 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: {
-    default: "IWOK — Fresques murales sur mesure en Occitanie",
-    template: "%s — IWOK",
+    default: "GUIHOME — Fresques murales sur mesure en Occitanie",
+    template: "%s — GUIHOME",
   },
   description:
     "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
   openGraph: {
-    siteName: "IWOK — GuiHome Décoration",
+    siteName: "GUIHOME — GuiHome Décoration",
     locale: "fr_FR",
     type: "website",
   },

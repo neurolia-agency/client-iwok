@@ -141,7 +141,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "Le skate park avait besoin d'une identité visuelle forte. IWOK a créé quelque chose qui parle aux jeunes du quartier et dont toute la ville est fière aujourd'hui.",
+      "Le skate park avait besoin d'une identité visuelle forte. GUIHOME a créé quelque chose qui parle aux jeunes du quartier et dont toute la ville est fière aujourd'hui.",
     author: "Service culturel",
     role: "Mairie de Decazeville",
     project: "(12) · Skate Park Decazeville 2024",

@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const entry = SLUG_TO_CATEGORY[slug];
   const name = entry?.name ?? slug;
   return {
-    title: `${name} — Portfolio IWOK | Fresques murales`,
-    description: `Découvrez les projets ${typeof name === "string" ? name.toLowerCase() : slug} réalisés par IWOK — fresques murales sur mesure.`,
+    title: `${name} — Portfolio GUIHOME | Fresques murales`,
+    description: `Découvrez les projets ${typeof name === "string" ? name.toLowerCase() : slug} réalisés par GUIHOME — fresques murales sur mesure.`,
   };
 }
 

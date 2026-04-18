@@ -4,7 +4,7 @@ import { getAboutChapters, getMetrics } from "@/lib/queries/about";
 import { getAboutHeroConfig } from "@/lib/queries/section-config";
 
 export const metadata: Metadata = {
-  title: "A propos — IWOK | Guillaume Jeanjean, designer mural",
+  title: "A propos — GUIHOME | Guillaume Jeanjean, designer mural",
   description:
     "Du graffiti au design mural professionnel. Decouvrez le parcours de Guillaume Jeanjean, artiste muraliste avec plus de 20 ans d'experience en Aveyron et au-dela.",
 };

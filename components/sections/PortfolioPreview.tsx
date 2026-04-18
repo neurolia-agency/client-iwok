@@ -268,23 +268,27 @@ export default function PortfolioPreview({ config }: PortfolioPreviewProps) {
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
-        const pinArea = section.querySelector<HTMLElement>(".portfolio-pin-area");
         const grid = section.querySelector<HTMLElement>(".portfolio-columns");
-        if (!pinArea || !grid) return;
+        if (!grid) return;
 
         const boxes = Array.from(
           grid.querySelectorAll<HTMLElement>(".col-scroll__box")
         );
 
+        /* Multiplicateurs de vitesse par colonne — varier donne 3 profondeurs
+           parallax distinctes au lieu de 3 colonnes synchrones */
+        const speedByIndex = [0.9, 0.7, 0.9];
+
         const columns = boxes
-          .map((box) => {
+          .map((box, index) => {
             const list = box.querySelector<HTMLElement>(".col-scroll__list");
             if (!list) return null;
 
             const isReverse = box.dataset.reverse === "true";
-            /* Images are duplicated 2x — travel exactly one original set
-               (half the total scrollHeight) for a seamless visual loop */
-            const travelPx = Math.max(list.scrollHeight / 2, 0);
+            const speed = speedByIndex[index] ?? 0.8;
+            /* Images dupliquées 2x : une période = scrollHeight/2.
+               On en parcourt une fraction pour une vitesse confortable */
+            const travelPx = Math.max((list.scrollHeight / 2) * speed, 0);
 
             return { list, isReverse, travelPx };
           })
@@ -296,20 +300,12 @@ export default function PortfolioPreview({ config }: PortfolioPreviewProps) {
           gsap.set(list, { y: isReverse ? -travelPx : 0 });
         });
 
-        const maxTravelPx = Math.max(
-          ...columns.map((column) => column.travelPx),
-          0
-        );
-        const pinDistance = Math.max(window.innerHeight * 0.9, maxTravelPx * 2.2);
-
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: pinArea,
-            start: "top 12%",
-            end: `+=${pinDistance}`,
-            scrub: 1.2,
-            pin: true,
-            anticipatePin: 1,
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
           },
         });
 

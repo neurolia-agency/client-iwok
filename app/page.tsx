@@ -8,7 +8,7 @@ import { getTestimonials } from "@/lib/queries/testimonials";
 import { getHeroConfig, getServicesPreviewConfig, getCtaFinalConfig, getPortfolioPreviewConfig } from "@/lib/queries/section-config";
 
 export const metadata = {
-  title: "IWOK — Fresques murales sur mesure en Occitanie",
+  title: "GUIHOME — Fresques murales sur mesure en Occitanie",
   description:
     "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
 };

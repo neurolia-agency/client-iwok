@@ -22,7 +22,7 @@ export default function Header() {
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 48);
+    const handleScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // État initial
     return () => window.removeEventListener("scroll", handleScroll);
@@ -44,8 +44,8 @@ export default function Header() {
     }
     intersectingDarkSections.current.clear();
 
-    // Hauteur de la navbar (~80px), observer uniquement cette bande
-    const navHeight = 80;
+    // Hauteur de la navbar réduite (~60px), observer uniquement cette bande
+    const navHeight = 60;
 
     // Observer : rootMargin coupe le viewport pour ne garder que la bande du header
     // top: 0, bottom: -(viewport - navHeight) → on observe seulement les 80px du haut
@@ -127,27 +127,40 @@ export default function Header() {
     <>
       <header
         ref={headerRef}
+        className={scrolled && !menuOpen ? "header-frosted" : undefined}
         style={{
           position: "fixed",
           insetInline: 0,
           top: 0,
           zIndex: 50,
-          transition: "background-color 500ms ease, box-shadow 500ms ease",
+          willChange: "background-color, backdrop-filter",
+          transform: "translateZ(0)",
+          transition:
+            "background-color 420ms cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 420ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 420ms ease, border-color 420ms ease",
           backgroundColor: menuOpen
             ? "transparent"
             : scrolled
-              ? "color-mix(in oklch, var(--background) 92%, transparent)"
+              ? "color-mix(in oklch, var(--background) 88%, transparent)"
               : "transparent",
-          backdropFilter: scrolled && !menuOpen ? "blur(12px)" : "none",
-          WebkitBackdropFilter: scrolled && !menuOpen ? "blur(12px)" : "none",
-          boxShadow: scrolled && !menuOpen ? "var(--shadow-subtle)" : "none",
+          backdropFilter:
+            scrolled && !menuOpen ? "blur(14px)" : "none",
+          WebkitBackdropFilter:
+            scrolled && !menuOpen ? "blur(14px)" : "none",
+          borderBottom:
+            scrolled && !menuOpen
+              ? "1px solid color-mix(in oklch, var(--foreground) 6%, transparent)"
+              : "1px solid transparent",
+          boxShadow:
+            scrolled && !menuOpen
+              ? "0 1px 16px -14px color-mix(in oklch, var(--foreground) 25%, transparent)"
+              : "none",
         }}
       >
         <div
           style={{
             maxWidth: "var(--container-max)",
             margin: "0 auto",
-            padding: "1.25rem var(--container-padding)",
+            padding: "0.75rem var(--container-padding)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -156,24 +169,24 @@ export default function Header() {
           {/* Logo — crossfade entre blanc et noir pour transition fluide */}
           <Link
             href="/"
-            aria-label="IWOK / GuiHome Décoration — Retour à l'accueil"
+            aria-label="GUIHOME / GuiHome Décoration — Retour à l'accueil"
             style={{
               display: "inline-flex",
               alignItems: "center",
               flexShrink: 0,
               position: "relative",
-              height: "clamp(52px, 6.5vw, 72px)",
+              height: "clamp(44px, 5vw, 56px)",
             }}
           >
             {/* Logo blanc (fond sombre) */}
             <Image
               src="/images/logo/logo-blanc.png"
-              alt="IWOK — GuiHome Décoration"
+              alt="GUIHOME — GuiHome Décoration"
               width={180}
               height={72}
               priority
               style={{
-                height: "clamp(52px, 6.5vw, 72px)",
+                height: "clamp(44px, 5vw, 56px)",
                 width: "auto",
                 objectFit: "contain",
                 transition: "opacity 400ms ease, filter 400ms ease",
@@ -195,7 +208,7 @@ export default function Header() {
                 position: "absolute",
                 top: 0,
                 left: 0,
-                height: "clamp(52px, 6.5vw, 72px)",
+                height: "clamp(44px, 5vw, 56px)",
                 width: "auto",
                 objectFit: "contain",
                 transition: "opacity 400ms ease",

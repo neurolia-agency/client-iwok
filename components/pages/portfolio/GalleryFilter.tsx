@@ -14,12 +14,6 @@ export default function GalleryFilter({ activeIndex, onChange, slides: slidesPro
     <nav
       aria-label="Naviguer entre les catégories du portfolio"
       style={{
-        position: "sticky",
-        top: "4.5rem",
-        zIndex: 40,
-        backgroundColor: "color-mix(in oklch, var(--background) 92%, transparent)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
         borderBottom: "1px solid var(--border)",
         padding: "1rem 0",
       }}

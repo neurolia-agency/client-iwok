@@ -39,8 +39,15 @@ export default function HeroSection({ config }: HeroSectionProps) {
   const lineR2Ref = useRef<HTMLDivElement>(null); // UNIQUE.
 
   const [scrollIndicatorVisible, setScrollIndicatorVisible] = useState(true);
+  const [videoFailed, setVideoFailed] = useState(false);
   const heroBaselineShift = "clamp(0rem, 0.8vh, 0.75rem)";
   const heroBottomSafeSpace = "calc(5.5rem + env(safe-area-inset-bottom))";
+
+  const showFallbackImage = () => {
+    if (heroImageRef.current) {
+      gsap.to(heroImageRef.current, { opacity: 1, duration: 0.6, ease: "power2.out" });
+    }
+  };
 
   const handleVideoEnded = () => {
     if (heroImageRef.current) {
@@ -55,6 +62,25 @@ export default function HeroSection({ config }: HeroSectionProps) {
       });
     }
   };
+
+  const handleVideoError = () => {
+    setVideoFailed(true);
+    showFallbackImage();
+  };
+
+  // iOS : autoPlay peut échouer silencieusement (low-power mode, iOS restrictions).
+  // On tente un play() explicite et on bascule sur l'image si la promesse rejette.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {
+        setVideoFailed(true);
+        showFallbackImage();
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollIndicatorVisible(window.scrollY <= 50);
@@ -180,7 +206,7 @@ export default function HeroSection({ config }: HeroSectionProps) {
 
       <section
         style={{ position: "relative", minHeight: "100svh", overflow: "hidden", backgroundColor: "#C8962D" }}
-        aria-label="Section principale — IWOK Designer mural"
+        aria-label="Section principale — GUIHOME Designer mural"
       >
         {/* Logo de fond */}
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
@@ -197,12 +223,25 @@ export default function HeroSection({ config }: HeroSectionProps) {
             muted
             autoPlay
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster="/images/hero/hero-main.webp"
             onEnded={handleVideoEnded}
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", zIndex: 0 }}
+            onError={handleVideoError}
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+              zIndex: 0,
+              opacity: videoFailed ? 0 : 1,
+              transition: "opacity 300ms ease",
+            }}
           />
           <div ref={heroImageRef} style={{ position: "absolute", inset: 0, opacity: 0, zIndex: 1 }}>
-            <Image src="/images/hero/hero-main.webp" alt="Fresque murale réalisée par IWOK" fill priority style={{ objectFit: "cover", objectPosition: "center" }} sizes="100vw" />
+            <Image src="/images/hero/hero-main.webp" alt="Fresque murale réalisée par GUIHOME" fill priority style={{ objectFit: "cover", objectPosition: "center" }} sizes="100vw" />
           </div>
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(28,25,23,0.4) 0%, transparent 40%, transparent 60%, rgba(28,25,23,0.8) 100%)", zIndex: 2 }} />
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(28,25,23,0.7) 0%, transparent 40%), linear-gradient(to left, rgba(28,25,23,0.7) 0%, transparent 40%)", zIndex: 2 }} />

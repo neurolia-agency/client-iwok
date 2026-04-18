@@ -223,18 +223,77 @@
     overflow-x: hidden; /* Empêche le scroll horizontal parasite */
   }
 
-  /* Masque la scrollbar native tout en conservant le scroll actif */
-  html,
-  body {
-    -ms-overflow-style: none; /* IE / Edge legacy */
-    scrollbar-width: none; /* Firefox */
+  /* === Scrollbar brandée GuiHome — minimaliste, à droite === */
+  /* Firefox */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--primary) 55%, transparent) transparent;
   }
 
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none; /* Chrome, Safari, Edge */
+  /* Webkit — Chrome, Safari, Edge */
+  html::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklch, var(--primary) 55%, transparent);
+    border-radius: 3px;
+    transition: background-color 200ms ease;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary);
+  }
+
+  html::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  /* Masquer sur touch devices (évite le double scrollbar iOS/Android) */
+  @media (pointer: coarse) {
+    html {
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  /* === Header — verre dépoli (frosted glass) === */
+  /* Grain subtil via SVG turbulence, posé au-dessus du backdrop-filter.
+     Reproduit la granulosité d'un vrai verre dépoli sans charger d'image. */
+  .header-frosted::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  }
+
+  /* Fallback : si backdrop-filter indisponible (vieux Firefox), fond plus opaque. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .header-frosted {
+      background-color: color-mix(in oklch, var(--background) 95%, transparent) !important;
+    }
+  }
+
+  /* Accessibilité : si l'utilisateur a demandé moins de transparence, on opacifie. */
+  @media (prefers-reduced-transparency: reduce) {
+    .header-frosted {
+      background-color: var(--background) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    .header-frosted::before {
+      display: none;
+    }
   }
 
   body {

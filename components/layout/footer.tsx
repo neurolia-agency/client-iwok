@@ -27,10 +27,10 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Colonne 1 — Identité */}
           <div className="footer-col">
-            <Link href="/" aria-label="IWOK / GuiHome Décoration — Retour à l'accueil" style={{ display: "inline-flex" }}>
+            <Link href="/" aria-label="GUIHOME / GuiHome Décoration — Retour à l'accueil" style={{ display: "inline-flex" }}>
               <Image
                 src="/images/logo/logo-blanc.png"
-                alt="IWOK — GuiHome Décoration"
+                alt="GUIHOME — GuiHome Décoration"
                 width={110}
                 height={44}
                 style={{ height: "36px", width: "auto", objectFit: "contain" }}
@@ -106,7 +106,7 @@ export default function Footer() {
         {/* Bas de page */}
         <div className="footer-bottom">
           <p className="footer-copyright">
-            © {year} GuiHome Décoration — IWOK. Tous droits réservés.
+            © {year} GuiHome Décoration — GUIHOME. Tous droits réservés.
           </p>
           <Link href="/mentions-legales" className="footer-legal-link">
             Mentions légales
