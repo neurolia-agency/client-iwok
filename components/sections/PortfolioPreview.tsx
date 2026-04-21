@@ -372,7 +372,7 @@ export default function PortfolioPreview({ config }: PortfolioPreviewProps) {
           }}
         >
           <Image
-            src="/images/selection-gui-on-scope/portrait-gui-masque.webp"
+            src="/images/selection-gui-on-scope/gui-badass.webp"
             alt=""
             width={1024}
             height={1536}
