@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  PORTFOLIO_PROJECTS,
   SECTIONS,
   CATEGORY_SLUGS,
   type CategoryName,
   type PortfolioSectionSlug,
 } from "@/data/portfolio-projects";
+import { getProjectsBySection } from "@/lib/queries/portfolio";
 import SubcategoryGallery from "@/components/pages/portfolio/SubcategoryGallery";
 
 const SLUG_TO_CATEGORY: Record<string, { name: CategoryName; slug: PortfolioSectionSlug }> = Object.fromEntries(
@@ -48,7 +48,7 @@ export default async function SubcategoryPage({ params }: Props) {
     );
   }
 
-  const projects = PORTFOLIO_PROJECTS.filter((p) => p.section === entry.slug);
+  const projects = await getProjectsBySection(entry.slug);
 
   return (
     <section className="container-custom" style={{ paddingTop: "7rem", paddingBottom: "var(--spacing-group)" }}>

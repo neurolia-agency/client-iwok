@@ -17,6 +17,8 @@ export default function ProjectsGallery({ slides }: ProjectsGalleryProps) {
   const sliderRef = useRef<FeaturedSliderHandle>(null);
 
   const handleFilterChange = useCallback((index: number) => {
+    // Update visuel immediat du bouton actif (sans attendre la fin de l'animation du slider)
+    setActiveSlide(index);
     sliderRef.current?.goToSlide(index);
   }, []);
 

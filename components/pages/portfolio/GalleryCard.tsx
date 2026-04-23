@@ -12,9 +12,11 @@ interface GalleryCardProps {
 }
 
 export default function GalleryCard({ project, initialLikes = 0, onClick }: GalleryCardProps) {
-  const coverImage = project.images[project.cover];
-  const isPortrait = coverImage.height > coverImage.width;
+  const coverImage =
+    project.images[project.cover] ?? project.images[0];
   const [imgLoaded, setImgLoaded] = useState(false);
+  if (!coverImage) return null;
+  const isPortrait = coverImage.height > coverImage.width;
 
   return (
     <div
@@ -113,7 +115,7 @@ export default function GalleryCard({ project, initialLikes = 0, onClick }: Gall
           zIndex: 5,
         }}
       >
-        <LikeButton projectId={project.id} initialCount={initialLikes} />
+        <LikeButton projectId={project.id} initialCount={project.likes ?? initialLikes} />
       </div>
     </div>
   );

@@ -25,6 +25,8 @@ export interface PortfolioProject {
   location: string;
   images: ProjectImage[];
   cover: number;
+  /** Nombre de likes cote serveur (0 si non fourni) */
+  likes?: number;
 }
 
 export interface PortfolioSection {

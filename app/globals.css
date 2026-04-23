@@ -947,17 +947,28 @@
      COUPS DE COEUR — Podium
      ============================================ */
   .podium-container {
-    display: flex;
-    gap: 1.25rem;
-    align-items: flex-end;
-    justify-content: center;
-    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+    --podium-h: clamp(240px, 50vw, 360px);
+  }
+
+  @media (min-width: 900px) {
+    .podium-container {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      --podium-h: clamp(380px, 38vw, 520px);
+      max-width: 1100px;
+      margin-inline: auto;
+    }
   }
 
   .podium-card {
     position: relative;
-    flex: 1;
-    max-width: 340px;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radius-standard);
     overflow: hidden;
     background: var(--card);
@@ -970,58 +981,33 @@
     box-shadow: var(--shadow-hover);
   }
 
-  /* Gold — rank 1 (tallest) */
-  .podium-card--gold {
-    border: 2px solid var(--primary);
+  /* Heights by rank — podium effect */
+  .podium-card--rank-1 {
+    grid-column: 1 / -1;
+    height: var(--podium-h);
   }
-  .podium-card--gold .podium-card-image { aspect-ratio: 3 / 4; }
-  .podium-card--gold .podium-card-badge {
-    background: var(--primary);
-    color: var(--primary-foreground);
-  }
+  .podium-card--rank-2 { height: calc(var(--podium-h) * 0.85); }
+  .podium-card--rank-3 { height: calc(var(--podium-h) * 0.72); }
 
-  /* Silver — rank 2 */
-  .podium-card--silver {
-    border: 2px solid #9CA3AF;
-  }
-  .podium-card--silver .podium-card-image { aspect-ratio: 4 / 4; }
-  .podium-card--silver .podium-card-badge {
-    background: #9CA3AF;
-    color: #fff;
-  }
-
-  /* Bronze — rank 3 */
-  .podium-card--bronze {
-    border: 2px solid var(--accent);
-  }
-  .podium-card--bronze .podium-card-image { aspect-ratio: 4 / 4; }
-  .podium-card--bronze .podium-card-badge {
-    background: var(--accent);
-    color: var(--accent-foreground);
-  }
-
-  /* Empty placeholder */
-  .podium-card--empty {
-    border: 2px dashed var(--border);
-  }
-  .podium-card--empty .podium-card-image { aspect-ratio: 4 / 4; }
-
-  .podium-card-badge {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    z-index: 3;
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+  @media (min-width: 900px) {
+    .podium-card--rank-1 {
+      grid-column: 2 / 3;
+      grid-row: 1;
+    }
+    .podium-card--rank-2 {
+      grid-column: 1 / 2;
+      grid-row: 1;
+    }
+    .podium-card--rank-3 {
+      grid-column: 3 / 4;
+      grid-row: 1;
+    }
   }
 
   .podium-card-image {
     position: relative;
-    width: 100%;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
     cursor: pointer;
     background: var(--background-alt);
@@ -1034,48 +1020,131 @@
     cursor: default;
   }
 
+  /* Bottom third — metallic medal band */
   .podium-card-info {
-    padding: 0.875rem 1rem 0.5rem;
+    position: relative;
+    flex-shrink: 0;
+    padding: 0.75rem 1rem 0.625rem;
+    color: rgba(15, 15, 20, 0.92);
+    font-family: var(--font-heading);
+    overflow: hidden;
+    min-height: 28%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+
+  /* Gold — rank 1 */
+  .podium-card--rank-1 .podium-card-info {
+    background: linear-gradient(135deg,
+      #8a6410 0%,
+      #b8860b 35%,
+      #f3d05a 68%,
+      #a97a0d 100%);
+  }
+
+  /* Silver — rank 2 */
+  .podium-card--rank-2 .podium-card-info {
+    background: linear-gradient(135deg,
+      #5a6270 0%,
+      #8b929d 35%,
+      #dde1e8 68%,
+      #737984 100%);
+  }
+
+  /* Bronze — rank 3 */
+  .podium-card--rank-3 .podium-card-info {
+    background: linear-gradient(135deg,
+      #5a2d0f 0%,
+      #8e4718 35%,
+      #dd9d56 68%,
+      #74381a 100%);
+  }
+
+  /* Medaille plate gravee — coin haut-gauche de chaque carte */
+  .podium-card-medal {
+    position: absolute;
+    top: 0.875rem;
+    left: 0.875rem;
+    z-index: 3;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-feature-settings: "lnum" 1;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(20, 18, 10, 0.88);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+    /* Ombre portee + double liseret grave (sombre puis clair) pour l'effet medaille */
+    box-shadow:
+      0 2px 5px rgba(0, 0, 0, 0.35),
+      inset 0 0 0 1.5px rgba(0, 0, 0, 0.35),
+      inset 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Or */
+  .podium-card-medal--rank-1 {
+    background: linear-gradient(135deg,
+      #e6bc2a 0%,
+      #f3d05a 45%,
+      #b8860b 100%);
+  }
+
+  /* Argent */
+  .podium-card-medal--rank-2 {
+    background: linear-gradient(135deg,
+      #adb3bd 0%,
+      #dde1e8 45%,
+      #7b8292 100%);
+  }
+
+  /* Bronze */
+  .podium-card-medal--rank-3 {
+    background: linear-gradient(135deg,
+      #a86128 0%,
+      #dd9d56 45%,
+      #6e371a 100%);
   }
 
   .podium-card-title {
-    font-family: var(--font-heading);
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--foreground);
+    position: relative;
+    z-index: 1;
+    font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
+    font-weight: 700;
     margin: 0;
-    line-height: 1.3;
+    line-height: 1.2;
     letter-spacing: -0.01em;
+    color: inherit;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .podium-card-meta {
+    position: relative;
+    z-index: 1;
     display: block;
     font-family: var(--font-sans);
-    font-size: 0.75rem;
-    color: var(--muted-foreground);
-    margin-top: 0.25rem;
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+    color: rgba(15, 15, 20, 0.68);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .podium-card-like {
-    padding: 0 1rem 0.875rem;
-  }
-
-  @media (max-width: 768px) {
-    .podium-container {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .podium-card {
-      max-width: none;
-      order: unset !important;
-    }
-
-    .podium-card--gold .podium-card-image,
-    .podium-card--silver .podium-card-image,
-    .podium-card--bronze .podium-card-image {
-      aspect-ratio: 16 / 9;
-    }
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    z-index: 4;
   }
 
   /* ============================================
