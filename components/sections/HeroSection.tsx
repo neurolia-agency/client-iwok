@@ -38,6 +38,10 @@ export default function HeroSection({ config }: HeroSectionProps) {
   const lineR1Ref = useRef<HTMLDivElement>(null); // À L'ŒUVRE
   const lineR2Ref = useRef<HTMLDivElement>(null); // UNIQUE.
 
+  // Refs colonnes pour clamp à la largeur disponible
+  const colLeftRef = useRef<HTMLDivElement>(null);
+  const colRightRef = useRef<HTMLDivElement>(null);
+
   const [scrollIndicatorVisible, setScrollIndicatorVisible] = useState(true);
   const [videoFailed, setVideoFailed] = useState(false);
   const heroBaselineShift = "clamp(0rem, 0.8vh, 0.75rem)";
@@ -89,35 +93,42 @@ export default function HeroSection({ config }: HeroSectionProps) {
   }, []);
 
   // Égalisation des largeurs : MUR s'adapte à DU SIMPLE, UNIQUE. s'adapte à À L'ŒUVRE
+  // + clamp à la largeur disponible de la colonne pour éviter le débordement
   useLayoutEffect(() => {
     const equalize = () => {
-      // Colonne gauche
-      if (lineL1Ref.current && lineL2Ref.current) {
-        // MUR s'adapte à la largeur totale de "DU SIMPLE"
-        lineL2Ref.current.style.fontSize = getComputedStyle(lineL1Ref.current).fontSize;
+      const fitColumn = (
+        line1: HTMLDivElement | null,
+        line2: HTMLDivElement | null,
+        col: HTMLDivElement | null
+      ) => {
+        if (!line1 || !line2 || !col) return;
 
-        const w1 = lineL1Ref.current.getBoundingClientRect().width;
-        const w2 = lineL2Ref.current.getBoundingClientRect().width;
+        // Reset à la taille de base (valeur du CSS clamp)
+        line1.style.fontSize = "";
+        line2.style.fontSize = getComputedStyle(line1).fontSize;
 
-        if (w1 > 0 && w2 > 0) {
-          const baseSize = parseFloat(getComputedStyle(lineL1Ref.current).fontSize);
-          lineL2Ref.current.style.fontSize = `${baseSize * (w1 / w2)}px`;
+        const baseSize = parseFloat(getComputedStyle(line1).fontSize);
+        const w1 = line1.getBoundingClientRect().width;
+        const w2 = line2.getBoundingClientRect().width;
+        const colWidth = col.getBoundingClientRect().width;
+
+        if (w1 <= 0 || w2 <= 0 || colWidth <= 0) return;
+
+        // Étape 1 : line2 prend la même largeur que line1
+        let targetSize = baseSize * (w1 / w2);
+
+        // Étape 2 : si line1 (donc aussi line2 après scale) déborde la colonne, on rétrécit les deux
+        if (w1 > colWidth) {
+          const shrink = colWidth / w1;
+          line1.style.fontSize = `${baseSize * shrink}px`;
+          targetSize = targetSize * shrink;
         }
-      }
 
-      // Colonne droite
-      if (lineR1Ref.current && lineR2Ref.current) {
-        // UNIQUE. s'adapte à la largeur totale de "À L'ŒUVRE"
-        lineR2Ref.current.style.fontSize = getComputedStyle(lineR1Ref.current).fontSize;
+        line2.style.fontSize = `${targetSize}px`;
+      };
 
-        const w1 = lineR1Ref.current.getBoundingClientRect().width;
-        const w2 = lineR2Ref.current.getBoundingClientRect().width;
-
-        if (w1 > 0 && w2 > 0) {
-          const baseSize = parseFloat(getComputedStyle(lineR1Ref.current).fontSize);
-          lineR2Ref.current.style.fontSize = `${baseSize * (w1 / w2)}px`;
-        }
-      }
+      fitColumn(lineL1Ref.current, lineL2Ref.current, colLeftRef.current);
+      fitColumn(lineR1Ref.current, lineR2Ref.current, colRightRef.current);
     };
 
     equalize();
@@ -271,10 +282,10 @@ export default function HeroSection({ config }: HeroSectionProps) {
                 {config?.eyebrow ?? "Artiste muraliste"}
               </p>
 
-              <h1 className="hero-h1-grid" style={{ fontFamily: "var(--font-heading)", color: "var(--foreground-on-dark)", lineHeight: 1.05, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", gap: "18vw", width: "100%" }}>
+              <h1 className="hero-h1-grid" style={{ fontFamily: "var(--font-heading)", color: "var(--foreground-on-dark)", lineHeight: 1.05, margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center", gap: "clamp(2rem, 12vw, 14rem)", width: "100%" }}>
 
                 {/* Colonne gauche : DU SIMPLE / MUR */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                <div ref={colLeftRef} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", minWidth: 0 }}>
 
                   {/* Ligne 1 : DU SIMPLE */}
                   <div
@@ -306,7 +317,7 @@ export default function HeroSection({ config }: HeroSectionProps) {
                 </div>
 
                 {/* Colonne droite : À L'ŒUVRE / UNIQUE. */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                <div ref={colRightRef} style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", minWidth: 0 }}>
 
                   {/* Ligne 1 : À L'ŒUVRE */}
                   <div
