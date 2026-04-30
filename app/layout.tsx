@@ -27,6 +27,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://guihomedecoration.com"),
   title: {
     default: "GUIHOME — Fresques murales sur mesure en Occitanie",
     template: "%s — GUIHOME",
@@ -34,10 +35,18 @@ export const metadata: Metadata = {
   description:
     "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
   openGraph: {
-    siteName: "GUIHOME — GuiHome Décoration",
+    siteName: "Guihome-art / IWOK",
     locale: "fr_FR",
     type: "website",
   },
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Guihome-art",
+  alternateName: "IWOK",
+  url: "https://guihomedecoration.com",
 };
 
 export default function RootLayout({
@@ -48,6 +57,12 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${syne.variable} ${inter.variable} ${fraunces.variable}`}>
       <body>
+        {/* JSON-LD WebSite : valeurs constantes définies en code, aucune donnée utilisateur, aucun risque XSS */}
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd).replace(/</g, "\\u003c") }}
+        />
         <SmoothScrollProvider>
           <Header />
           <main id="main-content">{children}</main>
