@@ -43,6 +43,7 @@ const header = { alg: "HS256", typ: "JWT" };
 const payload = {
   role: "iwok_app",
   iss: "supabase",
+  ref: "gvpgddzgutmlsdmthesn",
   iat: now,
   exp: now + tenYears,
 };

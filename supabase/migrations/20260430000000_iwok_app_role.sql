@@ -80,9 +80,26 @@ BEGIN
   END LOOP;
 END $$;
 
--- 6. Permission sur la RPC `increment_project_likes`
---    Si la fonction porte plusieurs signatures, ajuster en spécifiant les types.
-GRANT EXECUTE ON FUNCTION public.increment_project_likes TO iwok_app;
+-- 6. Permission sur la RPC `increment_project_likes` (toutes signatures)
+DO $$
+DECLARE
+  r record;
+BEGIN
+  FOR r IN
+    SELECT n.nspname AS schema_name,
+           p.proname AS func_name,
+           pg_get_function_identity_arguments(p.oid) AS args
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND p.proname = 'increment_project_likes'
+  LOOP
+    EXECUTE format(
+      'GRANT EXECUTE ON FUNCTION %I.%I(%s) TO iwok_app',
+      r.schema_name, r.func_name, r.args
+    );
+  END LOOP;
+END $$;
 
 -- 7. Vérification : lister ce qui est accessible au rôle iwok_app
 --    (à exécuter manuellement après la migration pour valider)
