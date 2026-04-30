@@ -7,6 +7,8 @@ import CtaFinal from "@/components/sections/CtaFinal";
 import { getTestimonials } from "@/lib/queries/testimonials";
 import { getHeroConfig, getServicesPreviewConfig, getCtaFinalConfig, getPortfolioPreviewConfig } from "@/lib/queries/section-config";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: "GUIHOME — Fresques murales sur mesure en Occitanie",
   description:

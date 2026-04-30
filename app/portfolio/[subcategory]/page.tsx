@@ -17,6 +17,8 @@ interface Props {
   params: Promise<{ subcategory: string }>;
 }
 
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return SECTIONS.map((s) => ({ subcategory: s.slug }));
 }

@@ -3,6 +3,8 @@ import ServicesContent from "@/components/sections/ServicesContent";
 import { getServices } from "@/lib/queries/services";
 import { getServicesHeroConfig } from "@/lib/queries/section-config";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Services",
   description:

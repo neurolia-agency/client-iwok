@@ -5,6 +5,8 @@ import CtaContextuel from "@/components/pages/portfolio/CtaContextuel";
 import { getPortfolioHeroConfig } from "@/lib/queries/section-config";
 import { getFeaturedSlides } from "@/lib/queries/portfolio";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Portfolio — GUIHOME | Fresques murales sur mesure",
   description:

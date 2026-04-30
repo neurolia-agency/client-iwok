@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import CoupsDeCoeurContent from "@/components/pages/portfolio/CoupsDeCoeurContent";
 import { getTopLikedProjects } from "@/lib/queries/portfolio";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Coups de cœur — Portfolio GUIHOME | Fresques murales",
   description:

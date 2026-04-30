@@ -5,7 +5,6 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/services", label: "Services" },
-  { href: "/shop", label: "Shop" },
   { href: "/a-propos", label: "À Propos" },
   { href: "/contact", label: "Contact" },
 ];
@@ -94,8 +93,9 @@ export default function Footer() {
                 <br />
                 12510 Olemps (Aveyron)
               </p>
-              <p className="footer-text footer-placeholder">[Email à confirmer]</p>
-              <p className="footer-text footer-placeholder">[Téléphone à confirmer]</p>
+              <p className="footer-text" style={{ lineHeight: 1.6 }}>
+                <a href="tel:+33683867693" className="footer-link">06 83 86 76 93</a>
+              </p>
             </address>
           </div>
         </div>

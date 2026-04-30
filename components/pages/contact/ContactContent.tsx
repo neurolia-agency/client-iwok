@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 
-const PHONE = "06 XX XX XX XX";
-const PHONE_TEL = "tel:+33XXXXXXXXXX";
+const PHONE = "06 83 86 76 93";
+const PHONE_TEL = "tel:+33683867693";
 
 // ---------------------------------------------------------------------------
 // Hook: scroll‑triggered reveal (mirrors CtaFinal.tsx pattern)

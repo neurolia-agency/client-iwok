@@ -3,6 +3,8 @@ import AboutContent from "@/components/pages/AboutContent";
 import { getAboutChapters, getMetrics } from "@/lib/queries/about";
 import { getAboutHeroConfig } from "@/lib/queries/section-config";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "A propos — GUIHOME | Guillaume Jeanjean, designer mural",
   description:
