@@ -232,13 +232,6 @@ export default function HeroSection({ config }: HeroSectionProps) {
 
   return (
     <>
-      <style>{`
-        @keyframes iwok-bounce {
-          0%, 100% { transform: translateY(0); opacity: 0.6; }
-          50% { transform: translateY(6px); opacity: 1; }
-        }
-      `}</style>
-
       <section
         style={{ position: "relative", minHeight: "100svh", overflow: "hidden", backgroundColor: "#C8962D" }}
         aria-label="Section principale — GUIHOME Designer mural"
@@ -278,9 +271,9 @@ export default function HeroSection({ config }: HeroSectionProps) {
           <div ref={heroImageRef} style={{ position: "absolute", inset: 0, opacity: 0, zIndex: 1 }}>
             <Image src="/images/hero/hero-main.webp" alt="Fresque murale réalisée par GUIHOME" fill priority style={{ objectFit: "cover", objectPosition: "center" }} sizes="100vw" />
           </div>
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(28,25,23,0.4) 0%, transparent 40%, transparent 60%, rgba(28,25,23,0.8) 100%)", zIndex: 2 }} />
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(28,25,23,0.7) 0%, transparent 40%), linear-gradient(to left, rgba(28,25,23,0.7) 0%, transparent 40%)", zIndex: 2 }} />
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 30%, rgba(28,25,23,0.4) 100%)", zIndex: 2, mixBlendMode: "multiply" }} />
+          <div aria-hidden="true" className="hero-overlay hero-overlay-vertical" />
+          <div aria-hidden="true" className="hero-overlay hero-overlay-horizontal" />
+          <div aria-hidden="true" className="hero-overlay hero-overlay-radial" />
           <div
             ref={darkenOverlayRef}
             aria-hidden="true"
@@ -394,10 +387,11 @@ export default function HeroSection({ config }: HeroSectionProps) {
         <div
           ref={scrollIndicatorRef}
           aria-hidden="true"
-          style={{ position: "absolute", bottom: "2.5rem", left: "50%", transform: "translateX(-50%)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", opacity: scrollIndicatorVisible ? 1 : 0, transition: "opacity 400ms ease", pointerEvents: "none" }}
+          className="hero-scroll-indicator"
+          style={{ opacity: scrollIndicatorVisible ? 1 : 0 }}
         >
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "0.625rem", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--foreground-subtle)" }}>Découvrir</span>
-          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ animation: "iwok-bounce 2s ease-in-out infinite", color: "var(--primary)" }}>
+          <span className="hero-scroll-indicator__label">Découvrir</span>
+          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero-scroll-indicator__arrow">
             <path d="M8 2L8 18M8 18L2 12M8 18L14 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
