@@ -741,16 +741,15 @@ export default function AboutContent({
                     lineHeight: 1.05,
                     letterSpacing: "var(--letter-spacing-tight)",
                     color: "var(--primary)",
-                    // Réserve la hauteur de 2 lignes (2 × 1.05) sur tous les
-                    // metrics, et aligne le contenu en bas. Résultat : les
-                    // valeurs courtes (1 ligne) et longues (2 lignes) ont
-                    // leur baseline alignée → les labels en dessous se
-                    // retrouvent eux aussi sur la même y.
+                    // Réserve la hauteur de 2 lignes — fixée en rem (basée
+                    // sur la taille max des chiffres, lineHeight 1.05) pour
+                    // que les metrics texte (font plus petite) et numériques
+                    // partagent le même bounding box. 2.1 × clamp(2rem, 3vw+0.5rem, 3.25rem).
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "flex-end",
                     alignItems: "center",
-                    minHeight: "2.1em",
+                    minHeight: "clamp(4.2rem, 6.3vw + 1.05rem, 6.825rem)",
                     maxInlineSize: "100%",
                     wordBreak: "keep-all",
                     overflowWrap: "normal",
