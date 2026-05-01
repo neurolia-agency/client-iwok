@@ -768,6 +768,14 @@ export default function AboutContent({
                     fontSize: "var(--font-size-body)",
                     lineHeight: "var(--line-height-relaxed)",
                     color: "var(--foreground-subtle)",
+                    // Réserve la hauteur de 2 lignes pour que les labels
+                    // courts (1 ligne) et longs (2 lignes : "murs, façades,
+                    // sols, véhicules") aient la même bounding box → la
+                    // composition globale reste alignée.
+                    minHeight: "calc(var(--line-height-relaxed) * 2em)",
+                    display: "block",
+                    textAlign: "center",
+                    textWrap: "balance",
                   }}
                 >
                   {metric.label}
