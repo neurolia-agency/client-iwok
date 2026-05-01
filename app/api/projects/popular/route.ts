@@ -13,7 +13,11 @@ export async function GET() {
     .limit(20);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("[popular] supabase error:", error);
+    return NextResponse.json(
+      { error: "Erreur de chargement des projets populaires" },
+      { status: 500 }
+    );
   }
 
   const scored = (data || [])

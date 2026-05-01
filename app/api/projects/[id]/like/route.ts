@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
+import { z } from "zod";
 import { supabase } from "@/lib/supabase";
+
+const ProjectIdSchema = z.string().uuid();
 
 function getClientIp(req: NextRequest): string {
   const xff = req.headers.get("x-forwarded-for");
@@ -14,11 +17,12 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-
-  if (!id) {
-    return NextResponse.json({ error: "ID manquant" }, { status: 400 });
+  const { id: rawId } = await params;
+  const parsed = ProjectIdSchema.safeParse(rawId);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "ID invalide" }, { status: 400 });
   }
+  const id = parsed.data;
 
   const ip = getClientIp(req);
 
@@ -28,23 +32,22 @@ export async function POST(
     .insert({ project_id: id, ip_address: ip });
 
   if (lockError) {
-    // 23505 = unique_violation : cette IP a deja like ce projet
     if (lockError.code === "23505") {
       return NextResponse.json({ success: true, alreadyLiked: true });
     }
+    console.error("[like] insert error:", lockError);
     return NextResponse.json(
-      { error: lockError.message },
+      { error: "Erreur lors du like" },
       { status: 500 }
     );
   }
 
-  // Incremente le compteur atomiquement + stamp last_liked_at
   const { error: rpcError } = await supabase.rpc("increment_project_likes", {
     project_id: id,
   });
 
   if (rpcError) {
-    // Fallback : update direct
+    console.error("[like] rpc error, fallback to direct update:", rpcError);
     const { data: project } = await supabase
       .from("iwok_projects")
       .select("likes")
@@ -67,6 +70,7 @@ export async function POST(
       .eq("id", id);
 
     if (updateError) {
+      console.error("[like] update error:", updateError);
       return NextResponse.json(
         { error: "Erreur lors du like" },
         { status: 500 }
@@ -74,7 +78,6 @@ export async function POST(
     }
   }
 
-  // Invalide le cache du podium pour rafraichir le classement
   revalidateTag("iwok-projects");
 
   return NextResponse.json({ success: true });
@@ -84,14 +87,15 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  if (!id) {
-    return NextResponse.json({ error: "ID manquant" }, { status: 400 });
+  const { id: rawId } = await params;
+  const parsed = ProjectIdSchema.safeParse(rawId);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "ID invalide" }, { status: 400 });
   }
+  const id = parsed.data;
 
   const ip = getClientIp(req);
 
-  // Supprime l'enregistrement IP->projet. Si aucune ligne matche, pas d'erreur.
   const { error: deleteError, count } = await supabase
     .from("iwok_project_likes_by_ip")
     .delete({ count: "exact" })
@@ -99,18 +103,17 @@ export async function DELETE(
     .eq("ip_address", ip);
 
   if (deleteError) {
+    console.error("[unlike] delete error:", deleteError);
     return NextResponse.json(
-      { error: deleteError.message },
+      { error: "Erreur lors du unlike" },
       { status: 500 }
     );
   }
 
-  // Rien n'a ete supprime : cette IP n'avait pas like ce projet → no-op.
   if (!count || count === 0) {
     return NextResponse.json({ success: true, wasLiked: false });
   }
 
-  // Decremente le compteur (sans descendre sous 0)
   const { data: project } = await supabase
     .from("iwok_projects")
     .select("likes")

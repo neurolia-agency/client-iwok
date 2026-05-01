@@ -429,11 +429,14 @@ function CallbackForm() {
     }
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!validate()) return;
 
     setStatus("loading");
+
+    // Récupère le honeypot via DOM (input hidden anti-bot)
+    const honeypot = (e.currentTarget.elements.namedItem("website") as HTMLInputElement | null)?.value ?? "";
 
     const formData = new FormData();
     formData.append("lastName", lastNameRef.current?.value.trim() ?? "");
@@ -443,6 +446,7 @@ function CallbackForm() {
     formData.append("projectType", projectType === "Autre" ? `Autre : ${otherProjectType.trim()}` : projectType);
     formData.append("support", supportRef.current?.value.trim() ?? "");
     formData.append("inspirations", inspirationsRef.current?.value.trim() ?? "");
+    formData.append("website", honeypot);
     files.forEach((f) => formData.append("files", f));
 
     try {
@@ -625,6 +629,22 @@ function CallbackForm() {
               transitionDelay: "200ms",
             }}
           >
+            {/* Honeypot anti-bot — caché aux humains, rempli par les bots */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                width: "1px",
+                height: "1px",
+                opacity: 0,
+                pointerEvents: "none",
+              }}
+            />
             {/* Error banner */}
             {status === "error" && (
               <div
