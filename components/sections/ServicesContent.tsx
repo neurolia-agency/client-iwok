@@ -129,6 +129,9 @@ function ServiceBlock({
 
   useEffect(() => {
     if (!blockRef.current) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const img = blockRef.current!.querySelector(".svc-img");
@@ -411,6 +414,9 @@ function ContactCta() {
 
   useEffect(() => {
     if (!ctaRef.current) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const els = ctaRef.current!.querySelectorAll(".cta-el");

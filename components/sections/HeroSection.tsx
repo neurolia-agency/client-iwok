@@ -140,8 +140,26 @@ export default function HeroSection({ config }: HeroSectionProps) {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
+      // Bypass animations si l'utilisateur préfère le mouvement réduit :
+      // on rend simplement visible tout le contenu initialement masqué.
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        const part1Refs = part1WordRefs.current.filter(Boolean);
+        const part2Refs = part2WordRefs.current.filter(Boolean);
+        const uniqueRefs = uniqueCharRefs.current.filter(Boolean);
+        const allRefs = [...part1Refs, ...part2Refs, ...uniqueRefs];
+        if (allRefs.length > 0) gsap.set(allRefs, { visibility: "visible", y: 0, rotate: 0, skewX: 0 });
+        const contentEls = [
+          eyebrowRef.current,
+          baselineRef.current,
+          ctasRef.current,
+          scrollIndicatorRef.current,
+          imageWrapperRef.current,
+        ].filter(Boolean);
+        if (contentEls.length > 0) gsap.set(contentEls, { opacity: 1, clearProps: "clipPath,scale" });
+      });
+
       // Desktop + tablette
-      mm.add("(min-width: 640px)", () => {
+      mm.add("(min-width: 640px) and (prefers-reduced-motion: no-preference)", () => {
         const part1Refs = part1WordRefs.current.filter(Boolean);
         const part2Refs = part2WordRefs.current.filter(Boolean);
         const uniqueRefs = uniqueCharRefs.current.filter(Boolean);
@@ -187,7 +205,7 @@ export default function HeroSection({ config }: HeroSectionProps) {
       });
 
       // Mobile
-      mm.add("(max-width: 639px)", () => {
+      mm.add("(max-width: 639px) and (prefers-reduced-motion: no-preference)", () => {
         const allWordRefs = [...part1WordRefs.current, ...part2WordRefs.current].filter(Boolean);
         const uniqueRefs = uniqueCharRefs.current.filter(Boolean);
 

@@ -572,6 +572,8 @@ function CallbackForm() {
         {/* Success state */}
         {status === "success" ? (
           <div
+            role="status"
+            aria-live="polite"
             style={{
               textAlign: "center",
               padding: "3rem 1.5rem",
@@ -626,6 +628,8 @@ function CallbackForm() {
             {/* Error banner */}
             {status === "error" && (
               <div
+                role="alert"
+                aria-live="assertive"
                 style={{
                   padding: "1rem 1.25rem",
                   borderRadius: "var(--radius)",
@@ -660,6 +664,8 @@ function CallbackForm() {
                   required
                   autoComplete="family-name"
                   placeholder="Votre nom"
+                  aria-invalid={!!errors.lastName}
+                  aria-describedby={errors.lastName ? "cb-lastName-error" : undefined}
                   style={{
                     ...inputStyle,
                     borderColor: errors.lastName ? "var(--error)" : undefined,
@@ -667,7 +673,7 @@ function CallbackForm() {
                   onFocus={focusHandler}
                   onBlur={blurHandler("lastName")}
                 />
-                {errors.lastName && <p style={errorTextStyle}>{errors.lastName}</p>}
+                {errors.lastName && <p id="cb-lastName-error" style={errorTextStyle}>{errors.lastName}</p>}
               </div>
 
               <div>
@@ -681,6 +687,8 @@ function CallbackForm() {
                   required
                   autoComplete="given-name"
                   placeholder="Votre pr&eacute;nom"
+                  aria-invalid={!!errors.firstName}
+                  aria-describedby={errors.firstName ? "cb-firstName-error" : undefined}
                   style={{
                     ...inputStyle,
                     borderColor: errors.firstName ? "var(--error)" : undefined,
@@ -688,7 +696,7 @@ function CallbackForm() {
                   onFocus={focusHandler}
                   onBlur={blurHandler("firstName")}
                 />
-                {errors.firstName && <p style={errorTextStyle}>{errors.firstName}</p>}
+                {errors.firstName && <p id="cb-firstName-error" style={errorTextStyle}>{errors.firstName}</p>}
               </div>
             </div>
 
@@ -704,6 +712,8 @@ function CallbackForm() {
                 required
                 autoComplete="tel"
                 placeholder="06 00 00 00 00"
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "cb-phone-error" : undefined}
                 style={{
                   ...inputStyle,
                   borderColor: errors.phone ? "var(--error)" : undefined,
@@ -711,7 +721,7 @@ function CallbackForm() {
                 onFocus={focusHandler}
                 onBlur={blurHandler("phone")}
               />
-              {errors.phone && <p style={errorTextStyle}>{errors.phone}</p>}
+              {errors.phone && <p id="cb-phone-error" style={errorTextStyle}>{errors.phone}</p>}
             </div>
 
             {/* Row 3: Email */}
@@ -726,6 +736,8 @@ function CallbackForm() {
                 required
                 autoComplete="email"
                 placeholder="votre@email.com"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "cb-email-error" : undefined}
                 style={{
                   ...inputStyle,
                   borderColor: errors.email ? "var(--error)" : undefined,
@@ -733,14 +745,20 @@ function CallbackForm() {
                 onFocus={focusHandler}
                 onBlur={blurHandler("email")}
               />
-              {errors.email && <p style={errorTextStyle}>{errors.email}</p>}
+              {errors.email && <p id="cb-email-error" style={errorTextStyle}>{errors.email}</p>}
             </div>
 
             {/* Row 4: Type de projet */}
-            <div>
-              <label htmlFor="cb-projectType" style={labelStyle}>
-                Type de projet
-              </label>
+            <fieldset
+              style={{
+                border: "none",
+                padding: 0,
+                margin: 0,
+                minInlineSize: 0,
+              }}
+              aria-describedby={errors.projectType ? "cb-projectType-error" : undefined}
+            >
+              <legend style={{ ...labelStyle, padding: 0 }}>Type de projet</legend>
               <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                 {PROJECT_TYPES.map((type) => (
                   <label
@@ -782,7 +800,7 @@ function CallbackForm() {
                   </label>
                 ))}
               </div>
-              {errors.projectType && <p style={errorTextStyle}>{errors.projectType}</p>}
+              {errors.projectType && <p id="cb-projectType-error" style={errorTextStyle}>{errors.projectType}</p>}
 
               {/* Champ conditionnel "Autre" */}
               {projectType === "Autre" && (
@@ -793,6 +811,8 @@ function CallbackForm() {
                     value={otherProjectType}
                     onChange={(e) => setOtherProjectType(e.target.value)}
                     placeholder="Pr&eacute;cisez votre type de projet"
+                    aria-invalid={!!errors.otherProjectType}
+                    aria-describedby={errors.otherProjectType ? "cb-otherProjectType-error" : undefined}
                     style={{
                       ...inputStyle,
                       borderColor: errors.otherProjectType ? "var(--error)" : undefined,
@@ -801,11 +821,11 @@ function CallbackForm() {
                     onBlur={blurHandler("otherProjectType")}
                   />
                   {errors.otherProjectType && (
-                    <p style={errorTextStyle}>{errors.otherProjectType}</p>
+                    <p id="cb-otherProjectType-error" style={errorTextStyle}>{errors.otherProjectType}</p>
                   )}
                 </div>
               )}
-            </div>
+            </fieldset>
 
             {/* Row 5: Nature, taille et etat du support */}
             <div>

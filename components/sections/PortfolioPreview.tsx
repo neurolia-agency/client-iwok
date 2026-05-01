@@ -263,6 +263,9 @@ export default function PortfolioPreview({ config }: PortfolioPreviewProps) {
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();

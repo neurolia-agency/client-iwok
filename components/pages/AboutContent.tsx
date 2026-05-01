@@ -157,6 +157,11 @@ export default function AboutContent({
 
   /* ── GSAP Animations ── */
   useEffect(() => {
+    // Bypass complet si l'utilisateur préfère le mouvement réduit :
+    // les éléments commencent visibles (aucun gsap.set n'est appliqué).
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
