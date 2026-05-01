@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { Resend } from "resend";
 
 // ─── Rate-limit en mémoire (best-effort, mono-instance) ────────────────
 // Pour un site vitrine sur Vercel mono-région c'est suffisant. À remplacer
@@ -82,27 +81,26 @@ export async function POST(req: NextRequest) {
     const files = formData.getAll("files") as File[];
     const data = parsed.data;
 
-    // Envoi email à Guillaume via Resend
-    const resendKey = process.env.RESEND_API_KEY;
+    // Envoi email à Guillaume via Brevo (Sendinblue) — API transactional v3
+    const brevoKey = process.env.BREVO_API_KEY;
     const toEmail = process.env.CONTACT_TO_EMAIL;
     const fromEmail = process.env.CONTACT_FROM_EMAIL;
 
-    if (!resendKey || !toEmail || !fromEmail) {
-      console.error("[contact] Resend non configuré — RESEND_API_KEY / CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL manquants");
+    if (!brevoKey || !toEmail || !fromEmail) {
+      console.error("[contact] Brevo non configuré — BREVO_API_KEY / CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL manquants");
       console.log("[contact] lead non envoyé:", { ...data, filesCount: files.length, ip });
       return NextResponse.json({ error: "Service email indisponible" }, { status: 503 });
     }
 
-    const resend = new Resend(resendKey);
-
-    // Construit le HTML de l'email — données déjà validées + escapées pour HTML
+    // Échappement HTML — les données viennent déjà du parse zod, mais on
+    // protège quand même contre toute injection dans le mail.
     const esc = (s: string) =>
       s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     const supportHtml = data.support ? `<p><strong>Support :</strong><br>${esc(data.support).replace(/\n/g, "<br>")}</p>` : "";
     const inspirationsHtml = data.inspirations ? `<p><strong>Inspirations :</strong><br>${esc(data.inspirations).replace(/\n/g, "<br>")}</p>` : "";
     const filesNote = files.length > 0 ? `<p><em>${files.length} fichier(s) joint(s) côté formulaire — non transmis dans cet email.</em></p>` : "";
 
-    const html = `
+    const htmlContent = `
       <h2>Nouvelle demande de devis — guihome-art.com</h2>
       <p><strong>${esc(data.firstName)} ${esc(data.lastName)}</strong></p>
       <ul>
@@ -117,16 +115,25 @@ export async function POST(req: NextRequest) {
       <p style="color:#888;font-size:12px;">IP : ${esc(ip)} — reçu le ${new Date().toLocaleString("fr-FR")}</p>
     `;
 
-    const { error: sendError } = await resend.emails.send({
-      from: `Site IWOK <${fromEmail}>`,
-      to: toEmail,
-      replyTo: data.email,
-      subject: `Demande de devis — ${data.firstName} ${data.lastName} (${data.projectType})`,
-      html,
+    const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": brevoKey,
+        "content-type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        sender: { email: fromEmail, name: "Site IWOK" },
+        to: [{ email: toEmail }],
+        replyTo: { email: data.email, name: `${data.firstName} ${data.lastName}` },
+        subject: `Demande de devis — ${data.firstName} ${data.lastName} (${data.projectType})`,
+        htmlContent,
+      }),
     });
 
-    if (sendError) {
-      console.error("[contact] resend error:", sendError);
+    if (!brevoRes.ok) {
+      const errBody = await brevoRes.text();
+      console.error("[contact] brevo error:", brevoRes.status, errBody);
       return NextResponse.json({ error: "Envoi email échoué" }, { status: 502 });
     }
 
