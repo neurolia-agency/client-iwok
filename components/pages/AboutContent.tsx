@@ -733,12 +733,19 @@ export default function AboutContent({
                   ref={(el) => setMetricValueRef(el, i)}
                   style={{
                     fontFamily: "var(--font-heading)",
-                    fontSize: "clamp(2.5rem, 5vw + 0.5rem, 4.5rem)",
+                    // Texte (ex: "Tous supports") plus long et plus susceptible
+                    // de déborder → on lui donne une fourchette plus modérée.
+                    fontSize: metric.isText
+                      ? "clamp(1.5rem, 2.4vw + 0.6rem, 2.5rem)"
+                      : "clamp(2.5rem, 5vw + 0.5rem, 4.5rem)",
                     fontWeight: 800,
                     lineHeight: "var(--line-height-tight)",
                     letterSpacing: "var(--letter-spacing-tight)",
                     color: "var(--primary)",
                     display: "block",
+                    maxInlineSize: "100%",
+                    overflowWrap: "anywhere",
+                    textWrap: "balance",
                   }}
                 >
                   {metric.isText
