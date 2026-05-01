@@ -71,6 +71,7 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
   const [current, setCurrent] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const animatingRef = useRef(false);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const matRef = useRef<ShaderMaterial | null>(null);
   const texturesRef = useRef<Texture[]>([]);
   const rendererRef = useRef<WebGLRenderer | null>(null);
@@ -110,12 +111,21 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
   }, []);
 
   const goToSlide = useCallback((next: number) => {
-    if (animatingRef.current || next === currentRef.current) return;
-    animatingRef.current = true;
+    if (next === currentRef.current) return;
 
     const mat = matRef.current;
     const textures = texturesRef.current;
     if (!mat || textures.length === 0) return;
+
+    // Si une animation est déjà en cours, on la fast-forward (totalProgress=1)
+    // pour déclencher son onComplete : ça finit instantanément la transition
+    // précédente (textures, états DOM, animatingRef remis à false), puis on
+    // enchaîne immédiatement vers la nouvelle cible. Permet de cliquer sur
+    // une catégorie pendant l'animation sans devoir attendre.
+    if (animatingRef.current && tlRef.current) {
+      tlRef.current.totalProgress(1);
+    }
+    animatingRef.current = true;
 
     const prev = currentRef.current;
     currentRef.current = next;
@@ -144,11 +154,13 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
         mat.uniforms.texture2.value = textures[(next + 1) % textures.length];
         render();
         animatingRef.current = false;
+        if (tlRef.current === tl) tlRef.current = null;
         // React state update AFTER animation completes (avoids mid-animation re-render)
         setCurrent(next);
         onSlideChange?.(next);
       },
     });
+    tlRef.current = tl;
 
     // WebGL displacement
     tl.to(mat.uniforms.dispPower, { value: 1, duration: 2, ease: "expo.inOut", onUpdate: render }, 0);

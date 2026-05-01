@@ -249,11 +249,13 @@ export default function AboutContent({
           const text = chapterTextRefs.current[i];
           if (!chapter) return;
 
-          // Pin each chapter
+          // Pin each chapter — durée raccourcie pour libérer le scroll
+          // dès que l'animation de reveal a eu lieu, au lieu de bloquer
+          // une viewport entière par chapitre.
           ScrollTrigger.create({
             trigger: chapter,
             start: "top top",
-            end: "bottom top",
+            end: "+=40%",
             pin: true,
             pinSpacing: true,
           });
