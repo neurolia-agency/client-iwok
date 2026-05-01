@@ -3,35 +3,10 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 
 const PHONE = "06 83 86 76 93";
 const PHONE_TEL = "tel:+33683867693";
-
-// ---------------------------------------------------------------------------
-// Hook: scroll‑triggered reveal (mirrors CtaFinal.tsx pattern)
-// ---------------------------------------------------------------------------
-function useRevealOnScroll(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
 
 // ---------------------------------------------------------------------------
 // Inline SVG icons (no external icon library)

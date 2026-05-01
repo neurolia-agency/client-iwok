@@ -1,40 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-
-// Custom hook pour Intersection Observer
-function useRevealOnScroll(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold }
-    );
-
-    const currentRef = ref.current;
-
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
-
+import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 import type { CtaFinalConfig } from "@/lib/queries/section-config";
 
 interface CtaFinalProps {
@@ -109,35 +76,16 @@ export default function CtaFinal({ config }: CtaFinalProps) {
           {config?.subtitle ?? "Devis gratuit · Réponse sous 48h"}
         </p>
 
-        {/* CTA Button */}
+        {/* CTA Button — utilise la classe standard .cta-primary du site */}
         <Link
           href={config?.ctaHref ?? "/contact"}
+          className="cta-primary"
           style={{
-            display: "inline-block",
-            backgroundColor: "var(--primary)",
-            color: "var(--primary-foreground)",
-            fontFamily: "var(--font-sans)",
-            fontSize: "0.9375rem",
-            fontWeight: "500",
-            padding: "1rem 2.5rem",
-            borderRadius: "var(--radius)",
-            textDecoration: "none",
-            transition:
-              "background-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? "translateY(0)" : "translateY(40px)",
-            willChange: "opacity, transform",
+            transition: "opacity 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             transitionDelay: "300ms",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "var(--primary-dark)";
-            e.currentTarget.style.boxShadow = "var(--shadow-hover)";
-            e.currentTarget.style.transform = "translateY(-2px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "var(--primary)";
-            e.currentTarget.style.boxShadow = "none";
-            e.currentTarget.style.transform = "translateY(0)";
+            willChange: "opacity, transform",
           }}
         >
           {config?.ctaText ?? "Parler de mon projet"}

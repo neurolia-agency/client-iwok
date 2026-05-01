@@ -131,7 +131,13 @@ export default function HeroSection({ config }: HeroSectionProps) {
       fitColumn(lineR1Ref.current, lineR2Ref.current, colRightRef.current);
     };
 
+    // Première mesure synchrone (cas où la font est déjà cached)
     equalize();
+    // Re-mesure après chargement des fonts custom pour éviter le layout
+    // shift (la mesure initiale utilise un fallback, la finale utilise Syne).
+    if (typeof document !== "undefined" && "fonts" in document) {
+      document.fonts.ready.then(() => equalize());
+    }
     window.addEventListener("resize", equalize);
     return () => window.removeEventListener("resize", equalize);
   }, []);

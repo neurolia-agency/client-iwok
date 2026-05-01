@@ -1,38 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-// Custom hook pour Intersection Observer
-function useRevealOnScroll(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold }
-    );
-
-    const currentRef = ref.current;
-
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
+import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 
 interface TestimonialProps {
   quote: string;
