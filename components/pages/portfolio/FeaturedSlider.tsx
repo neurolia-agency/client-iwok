@@ -117,13 +117,50 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
     const textures = texturesRef.current;
     if (!mat || textures.length === 0) return;
 
-    // Si une animation est déjà en cours, on la fast-forward (totalProgress=1)
-    // pour déclencher son onComplete : ça finit instantanément la transition
-    // précédente (textures, états DOM, animatingRef remis à false), puis on
-    // enchaîne immédiatement vers la nouvelle cible. Permet de cliquer sur
-    // une catégorie pendant l'animation sans devoir attendre.
+    // Si une animation est déjà en cours, on la kill et on snap toutes les
+    // slides à un état "neutre" connu : l'ex-cible (currentRef.current)
+    // visible, toutes les autres cachées hors-écran. Comme ça la nouvelle
+    // transition démarre depuis un état propre, peu importe où l'ancienne
+    // était dans son cycle.
     if (animatingRef.current && tlRef.current) {
-      tlRef.current.totalProgress(1);
+      tlRef.current.kill();
+      tlRef.current = null;
+
+      const settledIndex = currentRef.current;
+
+      // Reset WebGL : la slide settled devient texture1, dispPower à 0
+      mat.uniforms.dispPower.value = 0.0;
+      mat.uniforms.texture1.value = textures[settledIndex];
+      mat.uniforms.texture2.value = textures[(settledIndex + 1) % textures.length];
+      render();
+
+      // Reset DOM : toutes les previews/titles/lines à l'état "hors transition"
+      previewRefs.current.forEach((el, i) => {
+        if (!el) return;
+        if (i === settledIndex) {
+          gsap.set(el, { autoAlpha: 1 });
+          const imgs = getPreviewImgs(i);
+          if (imgs) gsap.set(imgs, { yPercent: 0, scaleY: 1 });
+        } else {
+          gsap.set(el, { autoAlpha: 0 });
+        }
+      });
+      titleRefs.current.forEach((el, i) => {
+        if (!el) return;
+        if (i === settledIndex) {
+          gsap.set(el, { autoAlpha: 1 });
+          const inner = getTitleInner(i);
+          if (inner) gsap.set(inner, { yPercent: 0 });
+        } else {
+          gsap.set(el, { autoAlpha: 0 });
+        }
+      });
+      bulletLineRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.set(el, { scaleX: i === settledIndex ? 1 : 0, transformOrigin: "left" });
+      });
+
+      animatingRef.current = false;
     }
     animatingRef.current = true;
 
