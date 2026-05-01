@@ -23,10 +23,11 @@ export interface Metric {
 
 export const getAboutChapters = unstable_cache(
   async (): Promise<Chapter[]> => {
+    // La table iwok_about_chapters n'a pas de colonne `published` (contrairement
+    // à iwok_services). Tous les chapitres présents sont considérés visibles.
     const { data, error } = await supabase
       .from("iwok_about_chapters")
       .select("number, title, text, image, image_alt, bg")
-      .eq("published", true)
       .order("sort_order");
 
     if (error) {
