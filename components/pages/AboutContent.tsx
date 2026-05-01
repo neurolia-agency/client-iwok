@@ -733,18 +733,24 @@ export default function AboutContent({
                   ref={(el) => setMetricValueRef(el, i)}
                   style={{
                     fontFamily: "var(--font-heading)",
-                    // Texte (ex: "Tous supports") plus long et plus susceptible
-                    // de déborder → on lui donne une fourchette plus modérée.
+                    // Taille réduite + adaptée au contenu pour tenir dans
+                    // la colonne (~225px à max-width 900px / 4 cols) sans
+                    // jamais casser un mot ou un nombre au milieu.
                     fontSize: metric.isText
-                      ? "clamp(1.5rem, 2.4vw + 0.6rem, 2.5rem)"
-                      : "clamp(2.5rem, 5vw + 0.5rem, 4.5rem)",
+                      ? "clamp(1.25rem, 1.6vw + 0.6rem, 2rem)"
+                      : "clamp(2rem, 3vw + 0.5rem, 3.25rem)",
                     fontWeight: 800,
-                    lineHeight: "var(--line-height-tight)",
+                    lineHeight: 1.05,
                     letterSpacing: "var(--letter-spacing-tight)",
                     color: "var(--primary)",
                     display: "block",
                     maxInlineSize: "100%",
-                    overflowWrap: "anywhere",
+                    // Wrap UNIQUEMENT entre mots (pas en plein milieu d'un
+                    // nombre ou d'un mot). Le précédent overflowWrap:anywhere
+                    // produisait "+10/0", "Tous suppo/rts" — supprimé.
+                    wordBreak: "keep-all",
+                    overflowWrap: "normal",
+                    hyphens: "none",
                     textWrap: "balance",
                   }}
                 >
