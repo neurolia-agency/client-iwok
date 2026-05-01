@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { Resend } from "resend";
 
 // ─── Rate-limit en mémoire (best-effort, mono-instance) ────────────────
 // Pour un site vitrine sur Vercel mono-région c'est suffisant. À remplacer
@@ -79,15 +80,55 @@ export async function POST(req: NextRequest) {
     }
 
     const files = formData.getAll("files") as File[];
+    const data = parsed.data;
 
-    // TODO(contact-storage): persister la demande (Supabase iwok_contact_requests
-    // à créer) ou envoyer par email transactionnel (Resend). Aujourd'hui les
-    // demandes sont seulement loguées côté serveur — à finaliser avant launch.
-    console.log("[contact] new lead:", {
-      ...parsed.data,
-      filesCount: files.length,
-      ip,
+    // Envoi email à Guillaume via Resend
+    const resendKey = process.env.RESEND_API_KEY;
+    const toEmail = process.env.CONTACT_TO_EMAIL;
+    const fromEmail = process.env.CONTACT_FROM_EMAIL;
+
+    if (!resendKey || !toEmail || !fromEmail) {
+      console.error("[contact] Resend non configuré — RESEND_API_KEY / CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL manquants");
+      console.log("[contact] lead non envoyé:", { ...data, filesCount: files.length, ip });
+      return NextResponse.json({ error: "Service email indisponible" }, { status: 503 });
+    }
+
+    const resend = new Resend(resendKey);
+
+    // Construit le HTML de l'email — données déjà validées + escapées pour HTML
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const supportHtml = data.support ? `<p><strong>Support :</strong><br>${esc(data.support).replace(/\n/g, "<br>")}</p>` : "";
+    const inspirationsHtml = data.inspirations ? `<p><strong>Inspirations :</strong><br>${esc(data.inspirations).replace(/\n/g, "<br>")}</p>` : "";
+    const filesNote = files.length > 0 ? `<p><em>${files.length} fichier(s) joint(s) côté formulaire — non transmis dans cet email.</em></p>` : "";
+
+    const html = `
+      <h2>Nouvelle demande de devis — guihome-art.com</h2>
+      <p><strong>${esc(data.firstName)} ${esc(data.lastName)}</strong></p>
+      <ul>
+        <li><strong>Téléphone :</strong> ${esc(data.phone)}</li>
+        <li><strong>Email :</strong> <a href="mailto:${esc(data.email)}">${esc(data.email)}</a></li>
+        <li><strong>Type de projet :</strong> ${esc(data.projectType)}</li>
+      </ul>
+      ${supportHtml}
+      ${inspirationsHtml}
+      ${filesNote}
+      <hr>
+      <p style="color:#888;font-size:12px;">IP : ${esc(ip)} — reçu le ${new Date().toLocaleString("fr-FR")}</p>
+    `;
+
+    const { error: sendError } = await resend.emails.send({
+      from: `Site IWOK <${fromEmail}>`,
+      to: toEmail,
+      replyTo: data.email,
+      subject: `Demande de devis — ${data.firstName} ${data.lastName} (${data.projectType})`,
+      html,
     });
+
+    if (sendError) {
+      console.error("[contact] resend error:", sendError);
+      return NextResponse.json({ error: "Envoi email échoué" }, { status: 502 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
