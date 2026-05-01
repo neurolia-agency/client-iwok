@@ -38,6 +38,8 @@ export const metadata: Metadata = {
     siteName: "Guihome-art / IWOK",
     locale: "fr_FR",
     type: "website",
+    // TODO: ajouter une image OG dédiée 1200×630 dans /public/og-image.jpg
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "GUIHOME — Fresques murales" }],
   },
 };
 
@@ -49,6 +51,48 @@ const siteJsonLd = {
   url: "https://guihomedecoration.com",
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://guihomedecoration.com/#business",
+  name: "Guihome-art / IWOK",
+  alternateName: "GUIHOME Décoration",
+  description:
+    "Designer mural professionnel — fresques murales, décoration peinte, live painting. +20 ans d'expérience.",
+  url: "https://guihomedecoration.com",
+  telephone: "+33683867693",
+  email: "guihomedecoration@gmail.com",
+  image: "https://guihomedecoration.com/og-image.jpg",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "15 rue Bellevue",
+    postalCode: "12510",
+    addressLocality: "Olemps",
+    addressRegion: "Aveyron",
+    addressCountry: "FR",
+  },
+  areaServed: [
+    { "@type": "AdministrativeArea", name: "Aveyron" },
+    { "@type": "AdministrativeArea", name: "Finistère" },
+    { "@type": "Country", name: "France" },
+  ],
+  founder: {
+    "@type": "Person",
+    "@id": "https://guihomedecoration.com/#person",
+    name: "Guillaume Jeanjean",
+    jobTitle: "Designer mural / Graffeur professionnel",
+    worksFor: { "@id": "https://guihomedecoration.com/#business" },
+    sameAs: [
+      "https://www.instagram.com/guihomefresquesmurales/",
+      "https://www.instagram.com/guihomedesignmural/",
+    ],
+  },
+  sameAs: [
+    "https://www.instagram.com/guihomefresquesmurales/",
+    "https://www.instagram.com/guihomedesignmural/",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -57,11 +101,19 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${syne.variable} ${inter.variable} ${fraunces.variable}`}>
       <body>
-        {/* JSON-LD WebSite : valeurs constantes définies en code, aucune donnée utilisateur, aucun risque XSS */}
+        <a href="#main-content" className="skip-link">
+          Aller au contenu principal
+        </a>
+        {/* JSON-LD : valeurs constantes en code, aucune donnée user, aucun risque XSS */}
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd).replace(/</g, "\\u003c") }}
+        />
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd).replace(/</g, "\\u003c") }}
         />
         <SmoothScrollProvider>
           <Header />

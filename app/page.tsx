@@ -9,12 +9,6 @@ import { getHeroConfig, getServicesPreviewConfig, getCtaFinalConfig, getPortfoli
 
 export const revalidate = 3600;
 
-export const metadata = {
-  title: "GUIHOME — Fresques murales sur mesure en Occitanie",
-  description:
-    "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
-};
-
 export default async function HomePage() {
   const [testimonials, heroConfig, servicesPreviewConfig, ctaConfig, portfolioPreviewConfig] = await Promise.all([
     getTestimonials(),

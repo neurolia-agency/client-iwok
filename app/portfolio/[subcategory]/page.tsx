@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   SECTIONS,
   CATEGORY_SLUGS,
@@ -12,6 +13,34 @@ import SubcategoryGallery from "@/components/pages/portfolio/SubcategoryGallery"
 const SLUG_TO_CATEGORY: Record<string, { name: CategoryName; slug: PortfolioSectionSlug }> = Object.fromEntries(
   Object.entries(CATEGORY_SLUGS).map(([name, slug]) => [slug, { name: name as CategoryName, slug }])
 ) as Record<string, { name: CategoryName; slug: PortfolioSectionSlug }>;
+
+const SUBCATEGORY_SEO: Record<PortfolioSectionSlug, { title: string; description: string }> = {
+  particuliers: {
+    title: "Fresques murales pour particuliers — Aveyron, Finistère",
+    description:
+      "Fresques sur mesure pour chambres d'enfants, salons, façades et extérieurs. Designer mural professionnel basé en Occitanie, intervient partout en France.",
+  },
+  entreprises: {
+    title: "Fresques entreprises et collectivités — Occitanie & France",
+    description:
+      "Réalisations murales pour entreprises, collectivités, mairies, campings et espaces publics. Décor sur mesure aligné à votre identité visuelle.",
+  },
+  participatifs: {
+    title: "Fresques participatives — Ateliers collectifs",
+    description:
+      "Ateliers de fresque collective avec écoles, associations et entreprises. L'art mural comme outil de cohésion et d'expression locale.",
+  },
+  evenementiel: {
+    title: "Live painting et événementiel — Festivals, expositions",
+    description:
+      "Animation live painting pour festivals, salons, vernissages et événements d'entreprise. Performance artistique en direct devant le public.",
+  },
+  "coups-de-coeur": {
+    title: "Coups de cœur — Sélection projets phares",
+    description:
+      "Une sélection des projets murals les plus marquants — fresques signatures, créations atypiques et collaborations de référence.",
+  },
+};
 
 interface Props {
   params: Promise<{ subcategory: string }>;
@@ -26,10 +55,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { subcategory: slug } = await params;
   const entry = SLUG_TO_CATEGORY[slug];
-  const name = entry?.name ?? slug;
+  if (!entry) {
+    return { title: "Catégorie introuvable" };
+  }
+  const seo = SUBCATEGORY_SEO[entry.slug];
   return {
-    title: `${name} — Portfolio GUIHOME | Fresques murales`,
-    description: `Découvrez les projets ${typeof name === "string" ? name.toLowerCase() : slug} réalisés par GUIHOME — fresques murales sur mesure.`,
+    title: `${seo.title} | GUIHOME`,
+    description: seo.description,
   };
 }
 
@@ -38,16 +70,7 @@ export default async function SubcategoryPage({ params }: Props) {
   const entry = SLUG_TO_CATEGORY[slug];
 
   if (!entry) {
-    return (
-      <div className="container-custom" style={{ paddingBlock: "6rem", textAlign: "center" }}>
-        <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", marginBottom: "1rem" }}>
-          Catégorie introuvable
-        </h1>
-        <Link href="/portfolio" style={{ color: "var(--primary)" }}>
-          ← Retour au portfolio
-        </Link>
-      </div>
-    );
+    notFound();
   }
 
   const projects = await getProjectsBySection(entry.slug);
