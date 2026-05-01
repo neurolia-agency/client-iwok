@@ -16,16 +16,28 @@ export default function LogoIntro() {
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
+    const restoreScroll = () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+
+    // Filet de sécurité : si la timeline GSAP ne se termine jamais (bug,
+    // erreur de rendu, prefers-reduced-motion qui court-circuite), on
+    // force le démontage après 6s pour ne pas laisser le scroll bloqué.
+    const fallback = window.setTimeout(() => {
+      restoreScroll();
+      setRemoved(true);
+    }, 6000);
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
-          document.documentElement.style.overflow = "";
-          document.body.style.overflow = "";
+          window.clearTimeout(fallback);
+          restoreScroll();
           setRemoved(true);
         },
       });
 
-      // Logo fades in + subtle scale (0.85 → 1) over 0.9s
       tl.fromTo(
         logoRef.current,
         { scale: 0.85, opacity: 0 },
@@ -33,7 +45,6 @@ export default function LogoIntro() {
         0
       );
 
-      // Hold for a beat, then fade the whole overlay out
       tl.to(overlayRef.current, {
         opacity: 0,
         duration: 0.6,
@@ -42,8 +53,8 @@ export default function LogoIntro() {
     });
 
     return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
+      window.clearTimeout(fallback);
+      restoreScroll();
       ctx.revert();
     };
   }, []);

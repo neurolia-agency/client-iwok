@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import GalleryCard from "./GalleryCard";
-import Lightbox from "./Lightbox";
 import type { PortfolioProject } from "@/data/portfolio-projects";
+
+// Lightbox embarque motion + handlers clavier — chargé à la demande pour
+// alléger le bundle initial de la page portfolio.
+const Lightbox = dynamic(() => import("./Lightbox"), { ssr: false });
 
 interface SubcategoryGalleryProps {
   projects: PortfolioProject[];

@@ -3,7 +3,19 @@
 import { useEffect, useRef, useState, useCallback, useImperativeHandle, forwardRef } from "react";
 import Link from "next/link";
 import { FEATURED_SLIDES, type FeaturedSlide } from "@/data/portfolio-projects";
-import * as THREE from "three";
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  TextureLoader,
+  ShaderMaterial,
+  PlaneGeometry,
+  Mesh,
+  Vector2,
+  LinearFilter,
+  RepeatWrapping,
+  type Texture,
+} from "three";
 import gsap from "gsap";
 
 export interface FeaturedSliderHandle {
@@ -59,11 +71,11 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
   const [current, setCurrent] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const animatingRef = useRef(false);
-  const matRef = useRef<THREE.ShaderMaterial | null>(null);
-  const texturesRef = useRef<THREE.Texture[]>([]);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
+  const matRef = useRef<ShaderMaterial | null>(null);
+  const texturesRef = useRef<Texture[]>([]);
+  const rendererRef = useRef<WebGLRenderer | null>(null);
+  const sceneRef = useRef<Scene | null>(null);
+  const cameraRef = useRef<OrthographicCamera | null>(null);
   const currentRef = useRef(0);
 
   // Preview image refs for GSAP
@@ -202,35 +214,35 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
     const w = el.offsetWidth;
     const h = el.offsetHeight;
 
-    const scene = new THREE.Scene();
+    const scene = new Scene();
     sceneRef.current = scene;
 
-    const camera = new THREE.OrthographicCamera(w / -2, w / 2, h / 2, h / -2, 1, 1000);
+    const camera = new OrthographicCamera(w / -2, w / 2, h / 2, h / -2, 1, 1000);
     camera.lookAt(scene.position);
     camera.position.z = 1;
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    const renderer = new WebGLRenderer({ alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(w, h);
     inner.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    const loader = new THREE.TextureLoader();
-    const textures: THREE.Texture[] = [];
+    const loader = new TextureLoader();
+    const textures: Texture[] = [];
     let loadedCount = 0;
 
     const disp = loader.load("/images/deco/rock-disp.png");
-    disp.magFilter = THREE.LinearFilter;
-    disp.minFilter = THREE.LinearFilter;
-    disp.wrapS = THREE.RepeatWrapping;
-    disp.wrapT = THREE.RepeatWrapping;
+    disp.magFilter = LinearFilter;
+    disp.minFilter = LinearFilter;
+    disp.wrapS = RepeatWrapping;
+    disp.wrapT = RepeatWrapping;
 
     slides.forEach((slide, i) => {
       const tex = loader.load(slide.background, (t) => {
         loadedCount++;
         if (loadedCount === slides.length && matRef.current) {
-          matRef.current.uniforms.size.value = new THREE.Vector2(
+          matRef.current.uniforms.size.value = new Vector2(
             t.image.naturalWidth || 1600,
             t.image.naturalHeight || 1200
           );
@@ -238,18 +250,18 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
           setLoaded(true);
         }
       });
-      tex.minFilter = THREE.LinearFilter;
+      tex.minFilter = LinearFilter;
       tex.generateMipmaps = false;
       textures[i] = tex;
     });
     texturesRef.current = textures;
 
-    const mat = new THREE.ShaderMaterial({
+    const mat = new ShaderMaterial({
       uniforms: {
         dispPower: { value: 0.0 },
         intensity: { value: 0.5 },
-        res: { value: new THREE.Vector2(w, h) },
-        size: { value: new THREE.Vector2(1600, 1200) },
+        res: { value: new Vector2(w, h) },
+        size: { value: new Vector2(1600, 1200) },
         texture1: { value: textures[0] },
         texture2: { value: textures[1] },
         disp: { value: disp },
@@ -260,8 +272,8 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
     });
     matRef.current = mat;
 
-    const geometry = new THREE.PlaneGeometry(w, h, 1);
-    const mesh = new THREE.Mesh(geometry, mat);
+    const geometry = new PlaneGeometry(w, h, 1);
+    const mesh = new Mesh(geometry, mat);
     scene.add(mesh);
 
     renderer.render(scene, camera);
@@ -278,17 +290,23 @@ const FeaturedSlider = forwardRef<FeaturedSliderHandle, { slides?: FeaturedSlide
       camera.updateProjectionMatrix();
       mat.uniforms.res.value.set(nw, nh);
       mesh.geometry.dispose();
-      mesh.geometry = new THREE.PlaneGeometry(nw, nh, 1);
+      mesh.geometry = new PlaneGeometry(nw, nh, 1);
       renderer.render(scene, camera);
     };
     window.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("resize", onResize);
-      renderer.dispose();
-      geometry.dispose();
+      // Dispose toutes les textures pour éviter les fuites mémoire GPU
+      // sur navigation SPA (back/forward, route change).
+      texturesRef.current.forEach((t) => t.dispose());
+      disp.dispose();
+      mesh.geometry.dispose();
       mat.dispose();
-      inner.removeChild(renderer.domElement);
+      renderer.dispose();
+      if (renderer.domElement.parentNode === inner) {
+        inner.removeChild(renderer.domElement);
+      }
     };
   }, []);
 

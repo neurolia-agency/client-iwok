@@ -5,9 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
-import Lightbox from "./Lightbox";
+import dynamic from "next/dynamic";
 import LikeButton from "./LikeButton";
 import type { PortfolioProject } from "@/data/portfolio-projects";
+
+const Lightbox = dynamic(() => import("./Lightbox"), { ssr: false });
 
 interface Props {
   projects: PortfolioProject[];
