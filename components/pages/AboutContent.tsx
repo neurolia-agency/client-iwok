@@ -725,7 +725,8 @@ export default function AboutContent({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  gap: "var(--spacing-gap-tight)",
+                  // Plus d'air entre la valeur et le label
+                  gap: "var(--spacing-gap)",
                   padding: "var(--spacing-gap) 0",
                 }}
               >
@@ -733,9 +734,6 @@ export default function AboutContent({
                   ref={(el) => setMetricValueRef(el, i)}
                   style={{
                     fontFamily: "var(--font-heading)",
-                    // Taille réduite + adaptée au contenu pour tenir dans
-                    // la colonne (~225px à max-width 900px / 4 cols) sans
-                    // jamais casser un mot ou un nombre au milieu.
                     fontSize: metric.isText
                       ? "clamp(1.25rem, 1.6vw + 0.6rem, 2rem)"
                       : "clamp(2rem, 3vw + 0.5rem, 3.25rem)",
@@ -743,11 +741,17 @@ export default function AboutContent({
                     lineHeight: 1.05,
                     letterSpacing: "var(--letter-spacing-tight)",
                     color: "var(--primary)",
-                    display: "block",
+                    // Réserve la hauteur de 2 lignes (2 × 1.05) sur tous les
+                    // metrics, et aligne le contenu en bas. Résultat : les
+                    // valeurs courtes (1 ligne) et longues (2 lignes) ont
+                    // leur baseline alignée → les labels en dessous se
+                    // retrouvent eux aussi sur la même y.
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    minHeight: "2.1em",
                     maxInlineSize: "100%",
-                    // Wrap UNIQUEMENT entre mots (pas en plein milieu d'un
-                    // nombre ou d'un mot). Le précédent overflowWrap:anywhere
-                    // produisait "+10/0", "Tous suppo/rts" — supprimé.
                     wordBreak: "keep-all",
                     overflowWrap: "normal",
                     hyphens: "none",
