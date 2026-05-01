@@ -61,7 +61,7 @@ const localBusinessJsonLd = {
     "Designer mural professionnel — fresques murales, décoration peinte, live painting. +20 ans d'expérience.",
   url: "https://guihomedecoration.com",
   telephone: "+33683867693",
-  email: "guihomedecoration@gmail.com",
+  email: "contact@guihome-art.com",
   image: "https://guihomedecoration.com/og-image.jpg",
   address: {
     "@type": "PostalAddress",
