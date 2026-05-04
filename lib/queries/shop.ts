@@ -1,0 +1,74 @@
+import { supabase } from "@/lib/supabase";
+import { unstable_cache } from "next/cache";
+
+/**
+ * Forme exposée à l'UI — découplée du schéma SQL pour faciliter
+ * une future migration (ex: ajout d'un price_label, variants, etc.).
+ */
+export interface ShopProduct {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  priceLabel: string;            // ex: "250 €" ou "Sur devis"
+  image: string | null;
+  imageAlt: string;
+  category: string;
+}
+
+const PRICE_FORMATTER = new Intl.NumberFormat("fr-FR", {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+});
+
+function formatPrice(cents: number, currency: string): string {
+  if (cents <= 0) return "Sur devis";
+  if (currency && currency !== "EUR") {
+    return new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(cents / 100);
+  }
+  return PRICE_FORMATTER.format(cents / 100);
+}
+
+/**
+ * Charge les produits shop publiés, triés par sort_order.
+ * Cache invalidé via le tag `iwok-shop` (déclenché par les actions du
+ * dashboard à chaque create/update/delete).
+ */
+export const getShopProducts = unstable_cache(
+  async (): Promise<ShopProduct[]> => {
+    const { data, error } = await supabase
+      .from("iwok_shop_products")
+      .select(
+        "id, slug, title, description, price_cents, currency, image_url, image_alt, category"
+      )
+      .eq("published", true)
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("IWOK shop query error:", error.message);
+      return [];
+    }
+
+    return (data ?? []).map((row) => ({
+      id: row.id as string,
+      slug: row.slug as string,
+      title: row.title as string,
+      description: (row.description as string | null) ?? "",
+      priceLabel: formatPrice(
+        (row.price_cents as number) ?? 0,
+        (row.currency as string) ?? "EUR"
+      ),
+      image: (row.image_url as string | null) ?? null,
+      imageAlt: (row.image_alt as string | null) ?? (row.title as string),
+      category: (row.category as string | null) ?? "autre",
+    }));
+  },
+  ["iwok-shop-products"],
+  { tags: ["iwok-shop"], revalidate: 3600 }
+);

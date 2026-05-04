@@ -6,11 +6,15 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProductCard from "./ProductCard";
-import { PRODUCTS } from "@/data/products";
+import type { ShopProduct } from "@/lib/queries/shop";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ShopContent() {
+interface ShopContentProps {
+  products: ShopProduct[];
+}
+
+export default function ShopContent({ products }: ShopContentProps) {
   const heroRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -177,21 +181,48 @@ export default function ShopContent() {
         style={{ backgroundColor: "var(--background-alt)" }}
       >
         <div className="container-custom">
-          <div
-            ref={gridRef}
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
-              gap: "2rem",
-            }}
-          >
-            {PRODUCTS.map((product) => (
-              <div key={product.id} className="product-card">
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          {products.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "clamp(3rem, 8vh, 5rem) 0",
+                maxWidth: "44ch",
+                marginInline: "auto",
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "var(--font-size-body-lg)",
+                  color: "var(--muted-foreground)",
+                  marginBottom: "1.5rem",
+                  lineHeight: "var(--line-height-relaxed)",
+                }}
+              >
+                La boutique se prépare. De nouvelles pièces uniques sont
+                en route — toiles, prints, créations originales.
+              </p>
+              <Link href="/contact" className="cta-primary">
+                Commander une pièce sur mesure
+              </Link>
+            </div>
+          ) : (
+            <div
+              ref={gridRef}
+              style={{
+                display: "grid",
+                gridTemplateColumns:
+                  "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
+                gap: "2rem",
+              }}
+            >
+              {products.map((product) => (
+                <div key={product.id} className="product-card">
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

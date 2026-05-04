@@ -1,14 +1,16 @@
 import { Metadata } from "next";
 import ShopContent from "@/components/pages/shop/ShopContent";
+import { getShopProducts } from "@/lib/queries/shop";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Shop \u2014 GUIHOME | Toiles, prints et cr\u00E9ations originales",
+  title: "Shop — GUIHOME | Toiles, prints et créations originales",
   description:
-    "D\u00E9couvrez les toiles, prints et cr\u00E9ations originales de l\u2019artiste muraliste GUIHOME. Commande sur mesure disponible.",
+    "Découvrez les toiles, prints et créations originales de l’artiste muraliste GUIHOME. Commande sur mesure disponible.",
 };
 
-export default function ShopPage() {
-  return <ShopContent />;
+export default async function ShopPage() {
+  const products = await getShopProducts();
+  return <ShopContent products={products} />;
 }

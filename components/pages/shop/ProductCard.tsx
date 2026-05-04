@@ -3,17 +3,19 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Product } from "@/data/products";
+import type { ShopProduct } from "@/lib/queries/shop";
 
 interface ProductCardProps {
-  product: Product;
+  product: ShopProduct;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
   toile: "Toile",
   print: "Print",
   sticker: "Sticker",
+  original: "Original",
   custom: "Sur mesure",
+  autre: "Autre",
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -46,21 +48,42 @@ export default function ProductCard({ product }: ProductCardProps) {
           position: "relative",
           aspectRatio: "4 / 3",
           overflow: "hidden",
+          backgroundColor: "var(--background-alt)",
         }}
       >
-        <Image
-          src={product.image}
-          alt={product.imageAlt}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          loading="lazy"
-          onLoad={() => setImgLoaded(true)}
-          style={{
-            objectFit: "cover",
-            opacity: imgLoaded ? 1 : 0,
-            transition: "opacity 0.5s ease, transform 0.7s ease",
-          }}
-        />
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.imageAlt}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            loading="lazy"
+            onLoad={() => setImgLoaded(true)}
+            style={{
+              objectFit: "cover",
+              opacity: imgLoaded ? 1 : 0,
+              transition: "opacity 0.5s ease, transform 0.7s ease",
+            }}
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--muted-foreground)",
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.75rem",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+            }}
+          >
+            Image à venir
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -104,7 +127,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             letterSpacing: "var(--letter-spacing-tight)",
           }}
         >
-          {product.name}
+          {product.title}
         </h3>
 
         {/* Description */}
@@ -141,10 +164,10 @@ export default function ProductCard({ product }: ProductCardProps) {
               color: "var(--primary)",
             }}
           >
-            {product.price}
+            {product.priceLabel}
           </span>
           <Link
-            href={`/contact?from=shop&product=${product.id}`}
+            href={`/contact?from=shop&product=${product.slug}`}
             className="cta-primary cta-primary--sm"
           >
             Commander
