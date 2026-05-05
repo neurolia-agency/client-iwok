@@ -30,13 +30,18 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL("https://guihomedecoration.com"),
   title: {
-    default: "guihome-art / IWOK — Fresques murales sur mesure en Occitanie",
+    // Page d'accueil : titre court = uniquement la marque dans le lien bleu Google.
+    default: "guihome-art / IWOK",
+    // Pages internes : "Portfolio — guihome-art / IWOK", etc.
     template: "%s — guihome-art / IWOK",
   },
   description:
     "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
   openGraph: {
-    siteName: "guihome-art / IWOK",
+    // Le "site name" qu'on souhaite voir afficher par Google et les
+    // partages sociaux est le domaine, pour cohérence avec l'identifiant
+    // qu'utilise Google sous le titre dans les SERP.
+    siteName: "guihome-art.com",
     locale: "fr_FR",
     type: "website",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "guihome-art / IWOK — Fresques murales" }],
@@ -46,8 +51,10 @@ export const metadata: Metadata = {
 const siteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "guihome-art / IWOK",
-  alternateName: ["guihome-art", "IWOK", "GUIHOME Décoration"],
+  // Google utilise WebSite.name comme "Site name" affiché sous le titre
+  // dans les SERP. On lui donne le domaine pour qu'il l'affiche tel quel.
+  name: "guihome-art.com",
+  alternateName: ["guihome-art / IWOK", "guihome-art", "IWOK", "GUIHOME Décoration"],
   url: "https://guihomedecoration.com",
 };
 
