@@ -4,9 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
-
-const PHONE = "06 83 86 76 93";
-const PHONE_TEL = "tel:+33683867693";
+import type { SiteContact } from "@/lib/queries/site-contact";
 
 // ---------------------------------------------------------------------------
 // Inline SVG icons (no external icon library)
@@ -93,7 +91,7 @@ function InstagramIcon() {
 // ---------------------------------------------------------------------------
 // Section 1 — Hero sombre (phone‑first)
 // ---------------------------------------------------------------------------
-function ContactHero() {
+function ContactHero({ phone }: { phone: SiteContact["phone"] }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -247,31 +245,33 @@ function ContactHero() {
           Le plus simple, c&apos;est d&apos;en parler.
         </p>
 
-        {/* Phone CTA */}
-        <div data-hero-cta>
-          <a
-            href={PHONE_TEL}
-            className="cta-primary"
-            style={{
-              gap: "0.75rem",
-              fontSize: "0.75rem",
-            }}
-          >
-            <PhoneIcon />
-            Appeler · {PHONE}
-          </a>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "var(--font-size-caption)",
-              color: "var(--foreground-subtle)",
-              marginTop: "1rem",
-              maxWidth: "none",
-            }}
-          >
-            Du lundi au vendredi, 9h · 18h
-          </p>
-        </div>
+        {/* Phone CTA — masqué si Guillaume a vidé le téléphone */}
+        {phone && (
+          <div data-hero-cta>
+            <a
+              href={phone.tel}
+              className="cta-primary"
+              style={{
+                gap: "0.75rem",
+                fontSize: "0.75rem",
+              }}
+            >
+              <PhoneIcon />
+              Appeler · {phone.display}
+            </a>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "var(--font-size-caption)",
+                color: "var(--foreground-subtle)",
+                marginTop: "1rem",
+                maxWidth: "none",
+              }}
+            >
+              Du lundi au vendredi, 9h · 18h
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -1010,7 +1010,7 @@ function CallbackForm() {
 // ---------------------------------------------------------------------------
 // Section 3 — Coordonnees (fond sombre)
 // ---------------------------------------------------------------------------
-function ContactInfo() {
+function ContactInfo({ contact }: { contact: SiteContact }) {
   const { ref: sectionRef, isVisible } = useRevealOnScroll(0.1);
 
   const revealBase: React.CSSProperties = {
@@ -1071,38 +1071,46 @@ function ContactInfo() {
           }}
           className="grid-cols-1 md:grid-cols-2"
         >
-          {/* Column 1 — L'atelier */}
-          <div
-            style={{
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(25px)",
-              ...revealBase,
-            }}
-          >
-            <p style={colTitleStyle}>L&apos;atelier</p>
-            <address style={{ fontStyle: "normal", marginBottom: "1.25rem" }}>
-              <p style={textStyle}>
-                15 rue Bellevue
-                <br />
-                12510 Olemps (Aveyron)
-              </p>
-            </address>
-            <a
-              href="https://maps.google.com/?q=15+rue+Bellevue+12510+Olemps"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={linkStyle}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--primary)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--muted-foreground)";
+          {/* Column 1 — L'atelier (masquée si pas d'adresse) */}
+          {contact.address && (
+            <div
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? "translateY(0)" : "translateY(25px)",
+                ...revealBase,
               }}
             >
-              <MapPinIcon />
-              Voir sur Google Maps
-            </a>
-          </div>
+              <p style={colTitleStyle}>L&apos;atelier</p>
+              <address style={{ fontStyle: "normal", marginBottom: "1.25rem" }}>
+                <p style={textStyle}>
+                  {contact.address.line1}
+                  {contact.address.line2 ? (
+                    <>
+                      <br />
+                      {contact.address.line2}
+                    </>
+                  ) : null}
+                </p>
+              </address>
+              {contact.address.mapsUrl && (
+                <a
+                  href={contact.address.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={linkStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--primary)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--muted-foreground)";
+                  }}
+                >
+                  <MapPinIcon />
+                  Voir sur Google Maps
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Column 2 — En ligne */}
           <div
@@ -1116,25 +1124,38 @@ function ContactInfo() {
             <p style={colTitleStyle}>En ligne</p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <a
-                href="https://www.instagram.com/guihomefresquesmurales/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={linkStyle}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--primary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "var(--muted-foreground)";
-                }}
-              >
-                <InstagramIcon />
-                @guihomefresquesmurales
-              </a>
+              {contact.instagramUrl && (
+                <a
+                  href={contact.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={linkStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--primary)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--muted-foreground)";
+                  }}
+                >
+                  <InstagramIcon />
+                  {contact.instagramHandle}
+                </a>
+              )}
 
-              <p style={{ ...textStyle, fontStyle: "italic", color: "var(--foreground-subtle)" }}>
-                [Email a confirmer]
-              </p>
+              {contact.email && (
+                <a
+                  href={`mailto:${contact.email}`}
+                  style={linkStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--primary)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--muted-foreground)";
+                  }}
+                >
+                  {contact.email}
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -1146,12 +1167,12 @@ function ContactInfo() {
 // ---------------------------------------------------------------------------
 // Main export
 // ---------------------------------------------------------------------------
-export default function ContactContent() {
+export default function ContactContent({ contact }: { contact: SiteContact }) {
   return (
     <>
-      <ContactHero />
+      <ContactHero phone={contact.phone} />
       <CallbackForm />
-      <ContactInfo />
+      <ContactInfo contact={contact} />
     </>
   );
 }

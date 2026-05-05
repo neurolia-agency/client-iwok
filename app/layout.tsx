@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
+import { getContactInfo, addressToJsonLd } from "@/lib/queries/site-contact";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -51,60 +52,66 @@ const siteJsonLd = {
   url: "https://guihomedecoration.com",
 };
 
-const localBusinessJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": "https://guihomedecoration.com/#business",
-  name: "Guihome-art / IWOK",
-  alternateName: "GUIHOME Décoration",
-  description:
-    "Designer mural professionnel — fresques murales, décoration peinte, live painting. +20 ans d'expérience.",
-  url: "https://guihomedecoration.com",
-  telephone: "+33683867693",
-  email: "contact@guihome-art.com",
-  image: "https://guihomedecoration.com/og-image.jpg",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "15 rue Bellevue",
-    postalCode: "12510",
-    addressLocality: "Olemps",
-    addressRegion: "Aveyron",
-    addressCountry: "FR",
-  },
-  areaServed: [
-    { "@type": "AdministrativeArea", name: "Aveyron" },
-    { "@type": "AdministrativeArea", name: "Finistère" },
-    { "@type": "Country", name: "France" },
-  ],
-  founder: {
-    "@type": "Person",
-    "@id": "https://guihomedecoration.com/#person",
-    name: "Guillaume Jeanjean",
-    jobTitle: "Designer mural / Graffeur professionnel",
-    worksFor: { "@id": "https://guihomedecoration.com/#business" },
-    sameAs: [
-      "https://www.instagram.com/guihomefresquesmurales/",
-      "https://www.instagram.com/guihomedesignmural/",
+/**
+ * Construit le JSON-LD ProfessionalService dynamiquement depuis les
+ * settings du dashboard. Les propriétés sensibles (address, telephone,
+ * email) sont OMISES si Guillaume a vidé les champs correspondants —
+ * Google n'indexera donc plus ces infos une fois la prochaine recrawl.
+ */
+async function buildLocalBusinessJsonLd() {
+  const contact = await getContactInfo();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const jsonLd: Record<string, any> = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://guihomedecoration.com/#business",
+    name: "Guihome-art / IWOK",
+    alternateName: "GUIHOME Décoration",
+    description:
+      "Designer mural professionnel — fresques murales, décoration peinte, live painting. +20 ans d'expérience.",
+    url: "https://guihomedecoration.com",
+    image: "https://guihomedecoration.com/og-image.jpg",
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Aveyron" },
+      { "@type": "AdministrativeArea", name: "Finistère" },
+      { "@type": "Country", name: "France" },
     ],
-  },
-  sameAs: [
-    "https://www.instagram.com/guihomefresquesmurales/",
-    "https://www.instagram.com/guihomedesignmural/",
-  ],
-};
+    founder: {
+      "@type": "Person",
+      "@id": "https://guihomedecoration.com/#person",
+      name: "Guillaume Jeanjean",
+      jobTitle: "Designer mural / Graffeur professionnel",
+      worksFor: { "@id": "https://guihomedecoration.com/#business" },
+      sameAs: [contact.instagramUrl].filter(Boolean),
+    },
+    sameAs: [contact.instagramUrl].filter(Boolean),
+  };
+  if (contact.phone) {
+    // tel: "tel:+33..." → on enlève le préfixe pour le JSON-LD pur
+    jsonLd.telephone = contact.phone.tel.replace(/^tel:/i, "");
+  }
+  if (contact.email) {
+    jsonLd.email = contact.email;
+  }
+  if (contact.address) {
+    jsonLd.address = addressToJsonLd(contact.address);
+  }
+  return jsonLd;
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const localBusinessJsonLd = await buildLocalBusinessJsonLd();
   return (
     <html lang="fr" className={`${syne.variable} ${inter.variable} ${fraunces.variable}`}>
       <body>
         <a href="#main-content" className="skip-link">
           Aller au contenu principal
         </a>
-        {/* JSON-LD : valeurs constantes en code, aucune donnée user, aucun risque XSS */}
+        {/* JSON-LD : valeurs constantes ou settings dashboard, aucune donnée user, aucun risque XSS */}
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
