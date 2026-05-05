@@ -8,7 +8,7 @@ import { getFeaturedSlides } from "@/lib/queries/portfolio";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Portfolio — GUIHOME | Fresques murales sur mesure",
+  title: "Portfolio | Fresques murales sur mesure",
   description:
     "Découvrez +100 réalisations de fresques murales : entreprises, collectivités, particuliers, événementiel. plus de 20 ans d'expérience en design mural.",
 };

@@ -6,7 +6,7 @@ import { getAboutHeroConfig } from "@/lib/queries/section-config";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "A propos — GUIHOME | Guillaume Jeanjean, designer mural",
+  title: "À propos | Guillaume Jeanjean, designer mural",
   description:
     "Du graffiti au design mural professionnel. Decouvrez le parcours de Guillaume Jeanjean, artiste muraliste avec plus de 20 ans d'experience en Aveyron et au-dela.",
 };

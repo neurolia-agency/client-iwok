@@ -5,7 +5,7 @@ import { getTopLikedProjects } from "@/lib/queries/portfolio";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Coups de cœur — Portfolio GUIHOME | Fresques murales",
+  title: "Coups de cœur | Portfolio fresques murales",
   description:
     "Les réalisations préférées des visiteurs — fresques murales les plus aimées, classées automatiquement selon les likes.",
 };

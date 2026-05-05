@@ -5,7 +5,7 @@ import { getShopProducts } from "@/lib/queries/shop";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Shop — GUIHOME | Toiles, prints et créations originales",
+  title: "Shop | Toiles, prints et créations originales",
   description:
     "Découvrez les toiles, prints et créations originales de l’artiste muraliste GUIHOME. Commande sur mesure disponible.",
 };

@@ -30,25 +30,24 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL("https://guihomedecoration.com"),
   title: {
-    default: "GUIHOME — Fresques murales sur mesure en Occitanie",
-    template: "%s — GUIHOME",
+    default: "guihome-art / IWOK — Fresques murales sur mesure en Occitanie",
+    template: "%s — guihome-art / IWOK",
   },
   description:
     "Designer mural professionnel, +20 ans d'expérience. Fresques intérieures, extérieures, tous supports. Devis gratuit.",
   openGraph: {
-    siteName: "Guihome-art / IWOK",
+    siteName: "guihome-art / IWOK",
     locale: "fr_FR",
     type: "website",
-    // TODO: ajouter une image OG dédiée 1200×630 dans /public/og-image.jpg
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "GUIHOME — Fresques murales" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "guihome-art / IWOK — Fresques murales" }],
   },
 };
 
 const siteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Guihome-art",
-  alternateName: "IWOK",
+  name: "guihome-art / IWOK",
+  alternateName: ["guihome-art", "IWOK", "GUIHOME Décoration"],
   url: "https://guihomedecoration.com",
 };
 
@@ -65,8 +64,8 @@ async function buildLocalBusinessJsonLd() {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "@id": "https://guihomedecoration.com/#business",
-    name: "Guihome-art / IWOK",
-    alternateName: "GUIHOME Décoration",
+    name: "guihome-art / IWOK",
+    alternateName: ["guihome-art", "IWOK", "GUIHOME Décoration"],
     description:
       "Designer mural professionnel — fresques murales, décoration peinte, live painting. +20 ans d'expérience.",
     url: "https://guihomedecoration.com",

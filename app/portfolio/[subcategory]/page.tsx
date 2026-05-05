@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   const seo = SUBCATEGORY_SEO[entry.slug];
   return {
-    title: `${seo.title} | GUIHOME`,
+    title: seo.title,
     description: seo.description,
   };
 }
