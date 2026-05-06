@@ -265,3 +265,147 @@ export const getAboutHeroConfig = unstable_cache(
   ["iwok-about-hero-config"],
   { tags: ["iwok-settings"], revalidate: 3600 }
 );
+
+/* ─── CTA sections par page (services, portfolio, shop) ────── */
+
+const DEFAULT_SERVICES_CTA: CtaFinalConfig = {
+  title: "Discutons de votre projet",
+  subtitle: "Devis gratuit · Réponse sous 48h",
+  ctaText: "Parler de mon projet",
+  ctaHref: "/contact",
+};
+
+export const getServicesCtaConfig = unstable_cache(
+  async (): Promise<CtaFinalConfig> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "services_cta")
+      .single();
+    if (error || !data?.value) return DEFAULT_SERVICES_CTA;
+    const raw = data.value as Record<string, string>;
+    return { ...DEFAULT_SERVICES_CTA, ...raw };
+  },
+  ["iwok-services-cta-config"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);
+
+const DEFAULT_PORTFOLIO_CTA: CtaFinalConfig = {
+  title: "Un projet similaire en tête ?",
+  subtitle: "Décrivez votre idée — devis gratuit sous 48h.",
+  ctaText: "Parler de mon projet",
+  ctaHref: "/contact",
+};
+
+export const getPortfolioCtaConfig = unstable_cache(
+  async (): Promise<CtaFinalConfig> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "portfolio_cta")
+      .single();
+    if (error || !data?.value) return DEFAULT_PORTFOLIO_CTA;
+    const raw = data.value as Record<string, string>;
+    return { ...DEFAULT_PORTFOLIO_CTA, ...raw };
+  },
+  ["iwok-portfolio-cta-config"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);
+
+const DEFAULT_SHOP_CTA: CtaFinalConfig = {
+  title: "Un projet sur mesure ?",
+  subtitle:
+    "Toile grand format, support atypique, idée folle — parlons-en.",
+  ctaText: "Discuter de mon projet",
+  ctaHref: "/contact",
+};
+
+export const getShopCtaConfig = unstable_cache(
+  async (): Promise<CtaFinalConfig> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "shop_cta")
+      .single();
+    if (error || !data?.value) return DEFAULT_SHOP_CTA;
+    const raw = data.value as Record<string, string>;
+    return { ...DEFAULT_SHOP_CTA, ...raw };
+  },
+  ["iwok-shop-cta-config"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);
+
+/* ─── Hero pages restantes (Shop, Contact) ─────────────────── */
+
+const DEFAULT_SHOP_HERO: PageHeroConfig = {
+  eyebrow: "Boutique",
+  title: "Shop",
+  subtitle:
+    "Toiles, prints et créations originales. L'art mural s'invite chez vous.",
+  backgroundImage: "/images/selection-gui-on-scope/08122021-2.webp",
+};
+
+export const getShopHeroConfig = unstable_cache(
+  async (): Promise<PageHeroConfig> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "shop_hero")
+      .single();
+    if (error || !data?.value) return DEFAULT_SHOP_HERO;
+    const raw = data.value as Record<string, string>;
+    return {
+      eyebrow: raw.eyebrow || DEFAULT_SHOP_HERO.eyebrow,
+      title: raw.title || DEFAULT_SHOP_HERO.title,
+      subtitle: raw.subtitle || DEFAULT_SHOP_HERO.subtitle,
+      backgroundImage:
+        raw.background_image || DEFAULT_SHOP_HERO.backgroundImage,
+    };
+  },
+  ["iwok-shop-hero-config"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);
+
+/**
+ * Hero de la page Contact — pareil que les autres heros mais avec en plus
+ * une description courte (form_description) et un texte d'horaires sous
+ * le bouton téléphone (phone_helper).
+ */
+export interface ContactHeroConfig extends PageHeroConfig {
+  formDescription: string;
+  phoneHelper: string;
+}
+
+const DEFAULT_CONTACT_HERO: ContactHeroConfig = {
+  eyebrow: "Contact",
+  title: "Parlons de votre projet",
+  subtitle:
+    "Un mur vous inspire ? Une idée de fresque ?\nLe plus simple, c'est d'en parler.",
+  backgroundImage: "",
+  formDescription: "Décrivez votre projet. Devis gratuit, réponse sous 48h.",
+  phoneHelper: "Du lundi au vendredi, 9h · 18h",
+};
+
+export const getContactHeroConfig = unstable_cache(
+  async (): Promise<ContactHeroConfig> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "contact_hero")
+      .single();
+    if (error || !data?.value) return DEFAULT_CONTACT_HERO;
+    const raw = data.value as Record<string, string>;
+    return {
+      eyebrow: raw.eyebrow || DEFAULT_CONTACT_HERO.eyebrow,
+      title: raw.title || DEFAULT_CONTACT_HERO.title,
+      subtitle: raw.subtitle || DEFAULT_CONTACT_HERO.subtitle,
+      backgroundImage:
+        raw.background_image || DEFAULT_CONTACT_HERO.backgroundImage,
+      formDescription:
+        raw.form_description || DEFAULT_CONTACT_HERO.formDescription,
+      phoneHelper: raw.phone_helper || DEFAULT_CONTACT_HERO.phoneHelper,
+    };
+  },
+  ["iwok-contact-hero-config"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);

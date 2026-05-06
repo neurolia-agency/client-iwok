@@ -7,14 +7,24 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProductCard from "./ProductCard";
 import type { ShopProduct } from "@/lib/queries/shop";
+import type {
+  PageHeroConfig,
+  CtaFinalConfig,
+} from "@/lib/queries/section-config";
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface ShopContentProps {
   products: ShopProduct[];
+  heroConfig: PageHeroConfig;
+  ctaConfig: CtaFinalConfig;
 }
 
-export default function ShopContent({ products }: ShopContentProps) {
+export default function ShopContent({
+  products,
+  heroConfig,
+  ctaConfig,
+}: ShopContentProps) {
   const heroRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -78,7 +88,7 @@ export default function ShopContent({ products }: ShopContentProps) {
       >
         {/* Background image */}
         <Image
-          src="/images/selection-gui-on-scope/08122021-2.webp"
+          src={heroConfig.backgroundImage || "/images/selection-gui-on-scope/08122021-2.webp"}
           alt=""
           fill
           priority
@@ -111,21 +121,23 @@ export default function ShopContent({ products }: ShopContentProps) {
           style={{ position: "relative", zIndex: 10, width: "100%" }}
         >
           {/* Eyebrow */}
-          <p
-            className="hero-el"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "0.6875rem",
-              fontWeight: 500,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "var(--primary)",
-              marginBottom: "1.5rem",
-              maxWidth: "none",
-            }}
-          >
-            Boutique
-          </p>
+          {heroConfig.eyebrow && (
+            <p
+              className="hero-el"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "0.6875rem",
+                fontWeight: 500,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--primary)",
+                marginBottom: "1.5rem",
+                maxWidth: "none",
+              }}
+            >
+              {heroConfig.eyebrow}
+            </p>
+          )}
 
           {/* H1 */}
           <h1
@@ -140,7 +152,7 @@ export default function ShopContent({ products }: ShopContentProps) {
               marginBottom: "1.5rem",
             }}
           >
-            Shop
+            {heroConfig.title}
           </h1>
 
           {/* Accent line */}
@@ -156,20 +168,22 @@ export default function ShopContent({ products }: ShopContentProps) {
           />
 
           {/* Subtitle */}
-          <p
-            className="hero-el"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "clamp(1rem, 1.2vw + 0.5rem, 1.1875rem)",
-              lineHeight: 1.65,
-              color: "var(--muted-foreground)",
-              maxWidth: "46ch",
-              margin: 0,
-            }}
-          >
-            Toiles, prints et cr&eacute;ations originales. L&apos;art mural
-            s&apos;invite chez vous.
-          </p>
+          {heroConfig.subtitle && (
+            <p
+              className="hero-el"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "clamp(1rem, 1.2vw + 0.5rem, 1.1875rem)",
+                lineHeight: 1.65,
+                color: "var(--muted-foreground)",
+                maxWidth: "46ch",
+                margin: 0,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {heroConfig.subtitle}
+            </p>
+          )}
         </div>
       </section>
 
@@ -248,23 +262,25 @@ export default function ShopContent({ products }: ShopContentProps) {
               marginBottom: "1rem",
             }}
           >
-            Un projet sur mesure ?
+            {ctaConfig.title}
           </h2>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "var(--font-size-body-lg)",
-              lineHeight: "var(--line-height-relaxed)",
-              color: "var(--muted-foreground)",
-              marginBottom: "2.5rem",
-              maxWidth: "40ch",
-              marginInline: "auto",
-            }}
-          >
-            Toile grand format, support atypique, id&eacute;e folle — parlons-en.
-          </p>
-          <Link href="/contact" className="cta-primary">
-            Discuter de mon projet
+          {ctaConfig.subtitle && (
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "var(--font-size-body-lg)",
+                lineHeight: "var(--line-height-relaxed)",
+                color: "var(--muted-foreground)",
+                marginBottom: "2.5rem",
+                maxWidth: "40ch",
+                marginInline: "auto",
+              }}
+            >
+              {ctaConfig.subtitle}
+            </p>
+          )}
+          <Link href={ctaConfig.ctaHref} className="cta-primary">
+            {ctaConfig.ctaText}
           </Link>
         </div>
       </section>

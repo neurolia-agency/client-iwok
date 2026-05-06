@@ -1,34 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
+import type { CtaFinalConfig } from "@/lib/queries/section-config";
 
-function useRevealOnScroll(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold }
-    );
-
-    const el = ref.current;
-    if (el) observer.observe(el);
-    return () => {
-      if (el) observer.unobserve(el);
-    };
-  }, [threshold]);
-
-  return { ref, isVisible };
+interface CtaContextuelProps {
+  config: CtaFinalConfig;
 }
 
-export default function CtaContextuel() {
+export default function CtaContextuel({ config }: CtaContextuelProps) {
   const { ref, isVisible } = useRevealOnScroll();
 
   return (
@@ -68,27 +48,29 @@ export default function CtaContextuel() {
               "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          Un projet similaire en tête ?
+          {config.title}
         </h2>
 
-        <p
-          style={{
-            fontSize: "var(--font-size-body-lg)",
-            lineHeight: "var(--line-height-relaxed)",
-            color: "var(--muted-foreground)",
-            fontFamily: "var(--font-sans)",
-            marginBottom: "2.5rem",
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? "translateY(0)" : "translateY(40px)",
-            transition:
-              "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 150ms, transform 800ms cubic-bezier(0.16, 1, 0.3, 1) 150ms",
-          }}
-        >
-          Décrivez votre idée — devis gratuit sous 48h.
-        </p>
+        {config.subtitle && (
+          <p
+            style={{
+              fontSize: "var(--font-size-body-lg)",
+              lineHeight: "var(--line-height-relaxed)",
+              color: "var(--muted-foreground)",
+              fontFamily: "var(--font-sans)",
+              marginBottom: "2.5rem",
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? "translateY(0)" : "translateY(40px)",
+              transition:
+                "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 150ms, transform 800ms cubic-bezier(0.16, 1, 0.3, 1) 150ms",
+            }}
+          >
+            {config.subtitle}
+          </p>
+        )}
 
         <Link
-          href="/contact"
+          href={config.ctaHref}
           className="cta-primary"
           style={{
             opacity: isVisible ? 1 : 0,
@@ -97,7 +79,7 @@ export default function CtaContextuel() {
               "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 300ms, transform 800ms cubic-bezier(0.16, 1, 0.3, 1) 300ms, color 380ms cubic-bezier(0.16, 1, 0.3, 1), border-color 380ms cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          Parler de mon projet
+          {config.ctaText}
         </Link>
       </div>
     </section>

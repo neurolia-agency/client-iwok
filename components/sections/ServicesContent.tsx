@@ -409,7 +409,7 @@ function ServiceBlock({
    CONTACT CTA
    ═══════════════════════════════════════════════════════════ */
 
-function ContactCta() {
+function ContactCta({ config }: { config: import("@/lib/queries/section-config").CtaFinalConfig }) {
   const ctaRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -461,25 +461,27 @@ function ContactCta() {
             marginBottom: "1rem",
           }}
         >
-          Discutons de votre projet
+          {config.title}
         </h2>
-        <p
-          className="cta-el"
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "var(--font-size-body-lg)",
-            lineHeight: "var(--line-height-relaxed)",
-            color: "var(--muted-foreground)",
-            marginBottom: "2.5rem",
-            maxWidth: "40ch",
-            marginInline: "auto",
-          }}
-        >
-          Devis gratuit · Réponse sous 48h
-        </p>
+        {config.subtitle && (
+          <p
+            className="cta-el"
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "var(--font-size-body-lg)",
+              lineHeight: "var(--line-height-relaxed)",
+              color: "var(--muted-foreground)",
+              marginBottom: "2.5rem",
+              maxWidth: "40ch",
+              marginInline: "auto",
+            }}
+          >
+            {config.subtitle}
+          </p>
+        )}
         <div className="cta-el">
-          <Link href="/contact" className="cta-primary">
-            Parler de mon projet
+          <Link href={config.ctaHref} className="cta-primary">
+            {config.ctaText}
           </Link>
         </div>
       </div>
@@ -494,9 +496,10 @@ function ContactCta() {
 interface ServicesContentProps {
   services?: Service[];
   heroConfig?: PageHeroConfig;
+  ctaConfig: import("@/lib/queries/section-config").CtaFinalConfig;
 }
 
-export default function ServicesContent({ services: servicesProp, heroConfig }: ServicesContentProps) {
+export default function ServicesContent({ services: servicesProp, heroConfig, ctaConfig }: ServicesContentProps) {
   const heroRef = useRef<HTMLElement>(null);
 
   const services = servicesProp && servicesProp.length > 0 ? servicesProp : DEFAULT_SERVICES;
@@ -649,7 +652,7 @@ export default function ServicesContent({ services: servicesProp, heroConfig }: 
       {/* ═══════════════════════════════════════════════
           CTA — Conversion
           ═══════════════════════════════════════════════ */}
-      <ContactCta />
+      <ContactCta config={ctaConfig} />
     </>
   );
 }

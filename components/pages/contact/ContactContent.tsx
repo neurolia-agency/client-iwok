@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 import type { SiteContact } from "@/lib/queries/site-contact";
+import type { ContactHeroConfig } from "@/lib/queries/section-config";
 
 // ---------------------------------------------------------------------------
 // Inline SVG icons (no external icon library)
@@ -91,7 +92,13 @@ function InstagramIcon() {
 // ---------------------------------------------------------------------------
 // Section 1 — Hero sombre (phone‑first)
 // ---------------------------------------------------------------------------
-function ContactHero({ phone }: { phone: SiteContact["phone"] }) {
+function ContactHero({
+  phone,
+  hero,
+}: {
+  phone: SiteContact["phone"];
+  hero: ContactHeroConfig;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -182,21 +189,23 @@ function ContactHero({ phone }: { phone: SiteContact["phone"] }) {
       {/* Content */}
       <div className="container-custom" style={{ position: "relative", zIndex: 10 }}>
         {/* Eyebrow */}
-        <p
-          data-hero-eyebrow
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "0.6875rem",
-            fontWeight: 500,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "var(--primary)",
-            margin: "0 0 1.25rem",
-            maxWidth: "none",
-          }}
-        >
-          Contact
-        </p>
+        {hero.eyebrow && (
+          <p
+            data-hero-eyebrow
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.6875rem",
+              fontWeight: 500,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "var(--primary)",
+              margin: "0 0 1.25rem",
+              maxWidth: "none",
+            }}
+          >
+            {hero.eyebrow}
+          </p>
+        )}
 
         {/* H1 */}
         <h1
@@ -211,7 +220,7 @@ function ContactHero({ phone }: { phone: SiteContact["phone"] }) {
             maxWidth: "18ch",
           }}
         >
-          Parlons de votre projet
+          {hero.title}
         </h1>
 
         {/* Separator */}
@@ -229,21 +238,22 @@ function ContactHero({ phone }: { phone: SiteContact["phone"] }) {
         />
 
         {/* Subtitle */}
-        <p
-          data-hero-sub
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "var(--font-size-body-lg)",
-            lineHeight: "var(--line-height-relaxed)",
-            color: "var(--muted-foreground)",
-            margin: "0 0 2.5rem",
-            maxWidth: "42ch",
-          }}
-        >
-          Un mur vous inspire&nbsp;? Une idee de fresque&nbsp;?
-          <br />
-          Le plus simple, c&apos;est d&apos;en parler.
-        </p>
+        {hero.subtitle && (
+          <p
+            data-hero-sub
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "var(--font-size-body-lg)",
+              lineHeight: "var(--line-height-relaxed)",
+              color: "var(--muted-foreground)",
+              margin: "0 0 2.5rem",
+              maxWidth: "42ch",
+              whiteSpace: "pre-line",
+            }}
+          >
+            {hero.subtitle}
+          </p>
+        )}
 
         {/* Phone CTA — masqué si Guillaume a vidé le téléphone */}
         {phone && (
@@ -259,17 +269,19 @@ function ContactHero({ phone }: { phone: SiteContact["phone"] }) {
               <PhoneIcon />
               Appeler · {phone.display}
             </a>
-            <p
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "var(--font-size-caption)",
-                color: "var(--foreground-subtle)",
-                marginTop: "1rem",
-                maxWidth: "none",
-              }}
-            >
-              Du lundi au vendredi, 9h · 18h
-            </p>
+            {hero.phoneHelper && (
+              <p
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "var(--font-size-caption)",
+                  color: "var(--foreground-subtle)",
+                  marginTop: "1rem",
+                  maxWidth: "none",
+                }}
+              >
+                {hero.phoneHelper}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -313,7 +325,7 @@ function UploadIcon() {
   );
 }
 
-function CallbackForm() {
+function CallbackForm({ description }: { description: string }) {
   const { ref: sectionRef, isVisible } = useRevealOnScroll(0.1);
 
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -545,7 +557,7 @@ function CallbackForm() {
             transitionDelay: "100ms",
           }}
         >
-          Decrivez votre projet. Devis gratuit, reponse sous 48h.
+          {description}
         </p>
 
         {/* Success state */}
@@ -1167,11 +1179,17 @@ function ContactInfo({ contact }: { contact: SiteContact }) {
 // ---------------------------------------------------------------------------
 // Main export
 // ---------------------------------------------------------------------------
-export default function ContactContent({ contact }: { contact: SiteContact }) {
+export default function ContactContent({
+  contact,
+  hero,
+}: {
+  contact: SiteContact;
+  hero: ContactHeroConfig;
+}) {
   return (
     <>
-      <ContactHero phone={contact.phone} />
-      <CallbackForm />
+      <ContactHero phone={contact.phone} hero={hero} />
+      <CallbackForm description={hero.formDescription} />
       <ContactInfo contact={contact} />
     </>
   );

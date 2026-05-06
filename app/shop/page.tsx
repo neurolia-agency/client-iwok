@@ -1,6 +1,10 @@
 import { Metadata } from "next";
 import ShopContent from "@/components/pages/shop/ShopContent";
 import { getShopProducts } from "@/lib/queries/shop";
+import {
+  getShopHeroConfig,
+  getShopCtaConfig,
+} from "@/lib/queries/section-config";
 
 export const revalidate = 3600;
 
@@ -11,6 +15,16 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const products = await getShopProducts();
-  return <ShopContent products={products} />;
+  const [products, heroConfig, ctaConfig] = await Promise.all([
+    getShopProducts(),
+    getShopHeroConfig(),
+    getShopCtaConfig(),
+  ]);
+  return (
+    <ShopContent
+      products={products}
+      heroConfig={heroConfig}
+      ctaConfig={ctaConfig}
+    />
+  );
 }
