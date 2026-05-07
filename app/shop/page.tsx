@@ -1,6 +1,7 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ShopContent from "@/components/pages/shop/ShopContent";
-import { getShopProducts } from "@/lib/queries/shop";
+import { getShopProducts, getShopVisibility } from "@/lib/queries/shop";
 import {
   getShopHeroConfig,
   getShopCtaConfig,
@@ -15,6 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
+  const visibility = await getShopVisibility();
+  if (!visibility.enabled) {
+    notFound();
+  }
+
   const [products, heroConfig, ctaConfig] = await Promise.all([
     getShopProducts(),
     getShopHeroConfig(),

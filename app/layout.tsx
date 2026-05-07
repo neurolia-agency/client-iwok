@@ -5,6 +5,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { getContactInfo, addressToJsonLd } from "@/lib/queries/site-contact";
+import { getShopVisibility } from "@/lib/queries/shop";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -110,7 +111,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const localBusinessJsonLd = await buildLocalBusinessJsonLd();
+  const [localBusinessJsonLd, shopVisibility] = await Promise.all([
+    buildLocalBusinessJsonLd(),
+    getShopVisibility(),
+  ]);
   return (
     <html lang="fr" className={`${syne.variable} ${inter.variable} ${fraunces.variable}`}>
       <body>
@@ -129,7 +133,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd).replace(/</g, "\\u003c") }}
         />
         <SmoothScrollProvider>
-          <Header />
+          <Header showShop={shopVisibility.enabled} />
           <main id="main-content">{children}</main>
           <Footer />
         </SmoothScrollProvider>

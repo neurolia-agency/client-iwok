@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MobileMenu } from "./mobile-menu";
 
-const NAV_LINKS = [
+const ALL_NAV_LINKS = [
   { href: "/portfolio", label: "Réalisations" },
   { href: "/services", label: "Services" },
   { href: "/shop", label: "Shop" },
@@ -14,7 +14,15 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  /** Si false, masque le lien /shop dans la navigation. */
+  showShop?: boolean;
+}
+
+export default function Header({ showShop = true }: HeaderProps) {
+  const NAV_LINKS = showShop
+    ? ALL_NAV_LINKS
+    : ALL_NAV_LINKS.filter((l) => l.href !== "/shop");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sectionIsDark, setSectionIsDark] = useState(true);
@@ -300,7 +308,7 @@ export default function Header() {
         </div>
       </header>
 
-      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} showShop={showShop} />
     </>
   );
 }

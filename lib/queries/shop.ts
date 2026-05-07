@@ -2,6 +2,36 @@ import { supabase } from "@/lib/supabase";
 import { unstable_cache } from "next/cache";
 
 /**
+ * Visibilité globale du shop sur le site.
+ * Setting iwok_settings.shop_visibility = { enabled: boolean }.
+ * Si absent, par défaut on considère le shop visible (compat).
+ *
+ * Quand `enabled` est false :
+ *  - Le lien Shop disparaît du header / footer / menu mobile
+ *  - La route /shop renvoie un 404 (notFound)
+ *  - Le sitemap n'inclut plus /shop
+ *  - robots.txt continue d'autoriser (pas critique côté SEO)
+ */
+export const getShopVisibility = unstable_cache(
+  async (): Promise<{ enabled: boolean }> => {
+    const { data, error } = await supabase
+      .from("iwok_settings")
+      .select("value")
+      .eq("key", "shop_visibility")
+      .maybeSingle();
+    if (error) {
+      console.error("IWOK shop visibility error:", error.message);
+      return { enabled: true };
+    }
+    const raw = data?.value as { enabled?: boolean } | null;
+    if (!raw) return { enabled: true };
+    return { enabled: raw.enabled !== false };
+  },
+  ["iwok-shop-visibility"],
+  { tags: ["iwok-settings"], revalidate: 3600 }
+);
+
+/**
  * Forme exposée à l'UI — découplée du schéma SQL pour faciliter
  * une future migration (ex: ajout d'un price_label, variants, etc.).
  */

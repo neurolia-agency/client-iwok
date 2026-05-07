@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV_LINKS = [
+const ALL_NAV_LINKS = [
   { href: "/portfolio", label: "Réalisations" },
   { href: "/services", label: "Services" },
   { href: "/shop", label: "Shop" },
@@ -15,10 +15,14 @@ const NAV_LINKS = [
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  showShop?: boolean;
 }
 
-export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export function MobileMenu({ isOpen, onClose, showShop = true }: MobileMenuProps) {
   const pathname = usePathname();
+  const NAV_LINKS = showShop
+    ? ALL_NAV_LINKS
+    : ALL_NAV_LINKS.filter((l) => l.href !== "/shop");
 
   // Verrouille le scroll body quand le menu est ouvert
   useEffect(() => {

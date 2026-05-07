@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getFooterConfig } from "@/lib/queries/footer";
+import { getShopVisibility } from "@/lib/queries/shop";
 
-const NAV_LINKS = [
+const ALL_NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/services", label: "Services" },
@@ -12,7 +13,13 @@ const NAV_LINKS = [
 ];
 
 export default async function Footer() {
-  const config = await getFooterConfig();
+  const [config, shopVisibility] = await Promise.all([
+    getFooterConfig(),
+    getShopVisibility(),
+  ]);
+  const NAV_LINKS = shopVisibility.enabled
+    ? ALL_NAV_LINKS
+    : ALL_NAV_LINKS.filter((l) => l.href !== "/shop");
   const { contact } = config;
   const year = new Date().getFullYear();
   const copyright = config.copyright.replace("{year}", String(year));
