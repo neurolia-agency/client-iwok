@@ -70,10 +70,37 @@ pipeline/input/assets/
 | A06 | Design Tokens | ✅ | `app/globals.css` |
 | B01 | Layout | ✅ | `components/layout/` |
 | B02 | Homepage | ✅ | `components/sections/` + `app/page.tsx` |
-| B03 | Pages | ⬜ | `app/[pages]/` |
-| B04 | Polish | ⬜ | Animations + SEO |
-| B05 | Validate | ⬜ | `pipeline/output/validation.md` |
-| B06 | Deploy | ⬜ | Production |
+| B03 | Pages | ✅ | `app/[pages]/` (portfolio, services, shop, a-propos, contact) |
+| B04 | Polish | ✅ | Animations + SEO + a11y + sécurité headers |
+| B05 | Validate | ✅ | Tests prod, isolation Supabase |
+| B06 | Deploy | ✅ | guihomedecoration.com en prod |
+| B07 | CMS | ✅ | 100% des sections éditables depuis le portail Guillaume |
+| B08 | Shop e-commerce | ⬜ | Cf. `docs/task-prompts/T10-shop-ecommerce.md` |
+
+## Architecture e-commerce (état actuel)
+
+**Côté DB** (Supabase, projet partagé avec MGF, rôle `iwok_app` isolé) :
+- `iwok_shop_products` — products with `published`, `price_cents`, `image_url`, etc.
+- `iwok_settings.shop_visibility` — toggle global du shop sur le site
+- ⚠️ Pas encore de table orders, customers, line_items
+
+**Côté site (`client-iwok`)** :
+- `/shop` lit `iwok_shop_products WHERE published = true`
+- Bouton "Commander" actuellement → `/contact?from=shop&product={slug}` (juste un lead, pas un achat)
+- Pas de checkout, pas de Stripe, pas de panier
+
+**Côté dashboard (`neurolia-dashboard`)** :
+- `/portal/editeur` onglet Shop : CRUD complet sur produits + toggle Publier/Masquer
+- Pas d'onglet Commandes/Orders
+
+## Intégrations en place
+
+- **Supabase** : DB + Storage (images shop uploadées via dashboard)
+- **Brevo** : email transactionnel (formulaire contact). `BREVO_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`
+- **Vercel** : hébergement + ISR + cron via revalidate
+- **Cloudflare** : DNS + email routing pour `contact@guihome-art.com`
+
+**Pas encore** : Stripe / SumUp / PayPal, intégration carrier (Colissimo / Mondial Relay)
 
 ## Conventions UI
 
@@ -97,4 +124,4 @@ La classe `.cta-primary` (définie dans `globals.css`) est le **bouton standard*
 
 ---
 
-*Dernière mise à jour : 2026-02-24 (B02 complétée — HeroSection, PortfolioPreview, ServicesPreview, TestimonialsSection, CtaFinal)*
+*Dernière mise à jour : 2026-05-11 (site en prod, 100% éditable via portail, prochaine étape : shop e-commerce — cf. `docs/task-prompts/T10-shop-ecommerce.md`)*
