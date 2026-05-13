@@ -215,7 +215,7 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Uint8Array>
 
   // Client (droite)
   const rightX = marginX + colWidth + 30;
-  drawText(page, "FACTURER A", {
+  drawText(page, "DESTINATAIRE", {
     x: rightX,
     y: blockY,
     font: fontBold,
