@@ -45,10 +45,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Vérifier le stock
-    const stock = product.stock as number | null;
-    if (stock !== null && stock <= 0) {
-      return NextResponse.json({ error: "Produit en rupture de stock." }, { status: 409 });
+    // 2. Décrémenter le stock de façon atomique pour éviter les conditions de course
+    //    (deux clients achetant simultanément la dernière pièce unique)
+    const initialStock = product.stock as number | null;
+    if (initialStock !== null) {
+      if (initialStock <= 0) {
+        return NextResponse.json({ error: "Produit en rupture de stock." }, { status: 409 });
+      }
+      // UPDATE conditionnel : ne décrémente que si stock > 0. Si une autre commande
+      // a déjà pris le stock, ce UPDATE n'affecte aucune ligne (count === 0).
+      const { data: updatedRows, error: decrementError } = await supabase
+        .from("iwok_shop_products")
+        .update({ stock: initialStock - 1 })
+        .eq("id", product.id as string)
+        .gt("stock", 0)
+        .select("id");
+
+      if (decrementError) {
+        console.error("[checkout] stock decrement error:", decrementError.message);
+        return NextResponse.json({ error: "Erreur lors de la réservation du stock." }, { status: 500 });
+      }
+      if (!updatedRows || updatedRows.length === 0) {
+        return NextResponse.json({ error: "Produit en rupture de stock." }, { status: 409 });
+      }
     }
 
     const isPickup = delivery_mode === "pickup";
@@ -86,16 +105,36 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const session = await getStripe().checkout.sessions.create({
-      mode: "payment",
-      line_items: lineItems,
-      ...(isPickup ? {} : { shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "MC"] } }),
-      phone_number_collection: { enabled: true },
-      ...(customer_email ? { customer_email } : {}),
-      success_url: `${base}/shop/commande/${orderId}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${base}/shop/${product.slug as string}`,
-      metadata: { order_id: orderId, product_id: product.id as string, delivery_mode },
-    });
+    // Helper: restaurer le stock en cas d'échec ultérieur (rollback)
+    async function rollbackStock() {
+      if (initialStock === null) return;
+      try {
+        await supabase
+          .from("iwok_shop_products")
+          .update({ stock: initialStock })
+          .eq("id", product!.id as string);
+      } catch {
+        /* best-effort */
+      }
+    }
+
+    let session;
+    try {
+      session = await getStripe().checkout.sessions.create({
+        mode: "payment",
+        line_items: lineItems,
+        ...(isPickup ? {} : { shipping_address_collection: { allowed_countries: ["FR", "BE", "CH", "LU", "MC"] } }),
+        phone_number_collection: { enabled: true },
+        ...(customer_email ? { customer_email } : {}),
+        success_url: `${base}/shop/commande/${orderId}?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${base}/shop/${product.slug as string}`,
+        metadata: { order_id: orderId, product_id: product.id as string, delivery_mode },
+      });
+    } catch (stripeErr) {
+      console.error("[checkout] stripe error:", stripeErr);
+      await rollbackStock();
+      return NextResponse.json({ error: "Erreur lors de la création du paiement." }, { status: 500 });
+    }
 
     // 5. Insérer la commande en base (status=pending — sera passée à 'paid' par le webhook)
     const { error: orderError } = await supabase.from("iwok_orders").insert({
@@ -116,8 +155,9 @@ export async function POST(req: NextRequest) {
 
     if (orderError) {
       console.error("[checkout] supabase insert error:", orderError.message);
-      // La session Stripe est créée mais l'ordre DB a échoué — on annule la session
+      // La session Stripe est créée mais l'ordre DB a échoué — on annule la session ET on restaure le stock
       await getStripe().checkout.sessions.expire(session.id).catch(() => {});
+      await rollbackStock();
       return NextResponse.json({ error: "Erreur lors de la création de la commande." }, { status: 500 });
     }
 

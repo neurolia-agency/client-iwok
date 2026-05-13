@@ -142,6 +142,9 @@ export default async function Footer() {
             <Link href="/mentions-legales" className="footer-legal-link">
               Mentions légales
             </Link>
+            <Link href="/politique-confidentialite" className="footer-legal-link">
+              Confidentialité
+            </Link>
             <Link href="/cgv" className="footer-legal-link">
               CGV
             </Link>

@@ -90,9 +90,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const stock = product.stock as number | null;
-    if (stock !== null && stock <= 0) {
-      return NextResponse.json({ error: "Produit en rupture de stock." }, { status: 409 });
+    // Décrément atomique du stock (réserve l'œuvre pendant que Guillaume calcule les frais de port)
+    const initialStock = product.stock as number | null;
+    if (initialStock !== null) {
+      if (initialStock <= 0) {
+        return NextResponse.json({ error: "Produit en rupture de stock." }, { status: 409 });
+      }
+      const { data: updatedRows, error: decrementError } = await supabase
+        .from("iwok_shop_products")
+        .update({ stock: initialStock - 1 })
+        .eq("id", product.id as string)
+        .gt("stock", 0)
+        .select("id");
+
+      if (decrementError) {
+        console.error("[quote] stock decrement error:", decrementError.message);
+        return NextResponse.json({ error: "Erreur lors de la réservation du stock." }, { status: 500 });
+      }
+      if (!updatedRows || updatedRows.length === 0) {
+        return NextResponse.json({ error: "Produit en rupture de stock." }, { status: 409 });
+      }
     }
 
     const orderId = crypto.randomUUID();
@@ -121,6 +138,17 @@ export async function POST(req: NextRequest) {
 
     if (orderError) {
       console.error("[quote] insert order error:", orderError.message);
+      // Rollback : restaurer le stock si l'insertion a échoué
+      if (initialStock !== null) {
+        try {
+          await supabase
+            .from("iwok_shop_products")
+            .update({ stock: initialStock })
+            .eq("id", product.id as string);
+        } catch {
+          /* best-effort */
+        }
+      }
       return NextResponse.json(
         { error: "Erreur lors de la création de la commande." },
         { status: 500 }

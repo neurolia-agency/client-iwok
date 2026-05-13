@@ -6,6 +6,7 @@ import Footer from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { getContactInfo, addressToJsonLd } from "@/lib/queries/site-contact";
 import { getShopVisibility } from "@/lib/queries/shop";
+import { Analytics } from "@vercel/analytics/next";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -137,6 +138,7 @@ export default async function RootLayout({
           <main id="main-content">{children}</main>
           <Footer />
         </SmoothScrollProvider>
+        <Analytics />
       </body>
     </html>
   );

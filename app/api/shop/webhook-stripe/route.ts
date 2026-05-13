@@ -93,29 +93,9 @@ async function handleSessionCompleted(session: Stripe.Checkout.Session) {
     return;
   }
 
-  // 2. Décrémenter le stock (best-effort — lecture puis écriture)
-  const { data: items } = await supabase
-    .from("iwok_order_items")
-    .select("product_id, quantity")
-    .eq("order_id", orderId);
-
-  for (const item of items ?? []) {
-    if (!item.product_id) continue;
-
-    const { data: prod } = await supabase
-      .from("iwok_shop_products")
-      .select("stock")
-      .eq("id", item.product_id as string)
-      .maybeSingle();
-
-    if (prod?.stock !== null && prod?.stock !== undefined) {
-      const newStock = Math.max(0, (prod.stock as number) - (item.quantity as number));
-      await supabase
-        .from("iwok_shop_products")
-        .update({ stock: newStock })
-        .eq("id", item.product_id as string);
-    }
-  }
+  // 2. Stock déjà décrémenté de façon atomique au moment du checkout (voir checkout/route.ts)
+  //    Pour les commandes "quote" (international), le stock est décrémenté au moment de la
+  //    soumission du formulaire dans quote/route.ts. Rien à faire ici.
 
   // 3. Emails Brevo
   const orderRef = orderId.slice(0, 8).toUpperCase();
