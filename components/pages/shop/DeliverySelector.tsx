@@ -9,10 +9,10 @@ type DeliveryMode = "" | "home" | "pickup";
 
 interface Props {
   productId: string;
-  productTitle: string;
-  productSlug: string;
-  priceCents: number;
-  shippingCostCents: number;
+  productTitle?: string;
+  productSlug?: string;
+  priceCents?: number;
+  shippingCostCents?: number;
   disabled: boolean;
 }
 
@@ -281,10 +281,6 @@ function ChoiceCard({
 
 export default function DeliverySelector({
   productId,
-  productTitle: _productTitle,
-  productSlug: _productSlug,
-  priceCents: _priceCents,
-  shippingCostCents: _shippingCostCents,
   disabled,
 }: Props) {
   const router = useRouter();
@@ -320,7 +316,6 @@ export default function DeliverySelector({
   const isOtherCountry = countryCode === "OTHER";
   const isFrance = countryCode === "FR";
   const isInternational = Boolean(countryCode) && !isFrance;
-  const effectiveCountryName = isOtherCountry ? customCountry : countryName;
 
   // ─── Effects ─────────────────────────────────────────────────────────────
 

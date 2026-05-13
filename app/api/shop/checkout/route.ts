@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json({ error: "Données invalides" }, { status: 400 });
     }
-    const { product_id, delivery_mode, customer_name, customer_email } = parsed.data;
+    const { product_id, delivery_mode, customer_email } = parsed.data;
 
     // 1. Charger le produit
     const { data: product, error: productError } = await supabase

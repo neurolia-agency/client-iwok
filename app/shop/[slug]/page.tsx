@@ -33,12 +33,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   autre: "Création",
 };
 
-const PRICE_FORMATTER = new Intl.NumberFormat("fr-FR", {
-  style: "currency",
-  currency: "EUR",
-  maximumFractionDigits: 0,
-});
-
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
 
