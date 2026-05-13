@@ -7,6 +7,7 @@ import {
   getShopVisibility,
 } from "@/lib/queries/shop";
 import DeliverySelector from "@/components/pages/shop/DeliverySelector";
+import ProductImageZoom from "@/components/pages/shop/ProductImageZoom";
 
 export const revalidate = 3600;
 
@@ -99,14 +100,17 @@ export default async function ProductPage({ params }: Props) {
             }}
           >
             {product.image ? (
-              <Image
-                src={product.image}
-                alt={product.imageAlt}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                style={{ objectFit: "cover" }}
-              />
+              <>
+                <Image
+                  src={product.image}
+                  alt={product.imageAlt}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: "cover" }}
+                />
+                <ProductImageZoom src={product.image} alt={product.imageAlt} />
+              </>
             ) : (
               <div
                 style={{
