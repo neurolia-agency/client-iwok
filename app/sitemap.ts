@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SECTIONS } from "@/data/portfolio-projects";
 import { getShopVisibility } from "@/lib/queries/shop";
 
-const BASE_URL = "https://guihomedecoration.com";
+const BASE_URL = "https://www.guihome-art.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();

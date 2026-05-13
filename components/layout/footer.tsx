@@ -133,9 +133,19 @@ export default async function Footer() {
         {/* Bas de page */}
         <div className="footer-bottom">
           <p className="footer-copyright">{copyright}</p>
-          <Link href="/mentions-legales" className="footer-legal-link">
-            Mentions légales
-          </Link>
+          <div className="flex items-center gap-4">
+            {shopVisibility.enabled && (
+              <Link href="/shop/suivi" className="footer-legal-link">
+                Suivre ma commande
+              </Link>
+            )}
+            <Link href="/mentions-legales" className="footer-legal-link">
+              Mentions légales
+            </Link>
+            <Link href="/cgv" className="footer-legal-link">
+              CGV
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
