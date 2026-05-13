@@ -65,6 +65,66 @@ function formatPrice(cents: number, currency: string): string {
 }
 
 /**
+ * Type riche pour la page détail produit (prix brut, stock, frais de port).
+ */
+export interface ShopProductDetail {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  priceCents: number;
+  priceLabel: string;
+  shippingCostCents: number;
+  currency: string;
+  image: string | null;
+  imageAlt: string;
+  category: string;
+  stock: number | null;
+  inStock: boolean;
+}
+
+export const getShopProductBySlug = unstable_cache(
+  async (slug: string): Promise<ShopProductDetail | null> => {
+    const { data, error } = await supabase
+      .from("iwok_shop_products")
+      .select(
+        "id, slug, title, description, price_cents, currency, image_url, image_alt, category, stock, shipping_cost_cents"
+      )
+      .eq("slug", slug)
+      .eq("published", true)
+      .maybeSingle();
+
+    if (error) {
+      console.error("IWOK shop product detail error:", error.message);
+      return null;
+    }
+    if (!data) return null;
+
+    const priceCents = (data.price_cents as number) ?? 0;
+    const currency = (data.currency as string) ?? "EUR";
+    const stock = data.stock as number | null;
+
+    return {
+      id: data.id as string,
+      slug: data.slug as string,
+      title: data.title as string,
+      description: (data.description as string | null) ?? "",
+      priceCents,
+      priceLabel: formatPrice(priceCents, currency),
+      shippingCostCents: (data.shipping_cost_cents as number | null) ?? 0,
+      currency,
+      image: (data.image_url as string | null) ?? null,
+      imageAlt: (data.image_alt as string | null) ?? (data.title as string),
+      category: (data.category as string | null) ?? "autre",
+      stock,
+      inStock: stock === null || stock > 0,
+    };
+  },
+  ["iwok-shop-product-detail"],
+  { tags: ["iwok-shop"], revalidate: 3600 }
+);
+
+/**
  * Charge les produits shop publiés, triés par sort_order.
  * Cache invalidé via le tag `iwok-shop` (déclenché par les actions du
  * dashboard à chaque create/update/delete).

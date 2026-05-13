@@ -1,18 +1,22 @@
 import type { NextConfig } from "next";
 
-// CSP minimaliste pour un site vitrine. À élargir si on ajoute Plausible / GA.
+// CSP — mise à jour pour Stripe Checkout (shop e-commerce T10).
+// js.stripe.com : SDK Stripe côté client
+// hooks.stripe.com + checkout.stripe.com : iframes Stripe Checkout
+// api.stripe.com : requêtes réseau du SDK
 const cspDirectives = [
   "default-src 'self'",
   // Next.js a besoin d'inline pour l'hydratation + 'unsafe-eval' pour Turbopack en dev
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
-  "img-src 'self' data: blob: https://*.supabase.co",
+  "img-src 'self' data: blob: https://*.supabase.co https://*.stripe.com",
   "media-src 'self' https://*.supabase.co",
-  "connect-src 'self' https://*.supabase.co",
+  "connect-src 'self' https://*.supabase.co https://api.stripe.com",
+  "frame-src https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self'",
+  "form-action 'self' https://checkout.stripe.com",
   "object-src 'none'",
   "upgrade-insecure-requests",
 ].join("; ");

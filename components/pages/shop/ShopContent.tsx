@@ -184,6 +184,65 @@ export default function ShopContent({
               {heroConfig.subtitle}
             </p>
           )}
+
+          {/* CTA secondaire — Suivre ma commande */}
+          <Link
+            href="/shop/suivi"
+            className="hero-el"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginTop: "2rem",
+              padding: "0.625rem 1.125rem",
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.8125rem",
+              fontWeight: 500,
+              letterSpacing: "0.02em",
+              color: "var(--foreground-on-dark)",
+              background: "rgba(255,255,255,0.08)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              borderRadius: "999px",
+              textDecoration: "none",
+              transition: "background 0.2s, border-color 0.2s, transform 0.15s",
+            }}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              style={{ color: "var(--primary)" }}
+            >
+              <path d="M16.5 9.4 7.55 4.24" />
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span>Déjà commandé&nbsp;? Suivre ma commande</span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              style={{ opacity: 0.6 }}
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </Link>
         </div>
       </section>
 

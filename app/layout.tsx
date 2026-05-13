@@ -29,7 +29,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://guihomedecoration.com"),
+  metadataBase: new URL("https://www.guihome-art.com"),
   title: {
     // Page d'accueil : titre court = uniquement la marque dans le lien bleu Google.
     default: "guihome-art / IWOK",
@@ -56,7 +56,7 @@ const siteJsonLd = {
   // dans les SERP. On lui donne le domaine pour qu'il l'affiche tel quel.
   name: "guihome-art.com",
   alternateName: ["guihome-art / IWOK", "guihome-art", "IWOK", "GUIHOME Décoration"],
-  url: "https://guihomedecoration.com",
+  url: "https://www.guihome-art.com",
 };
 
 /**
@@ -71,13 +71,13 @@ async function buildLocalBusinessJsonLd() {
   const jsonLd: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "@id": "https://guihomedecoration.com/#business",
+    "@id": "https://www.guihome-art.com/#business",
     name: "guihome-art / IWOK",
     alternateName: ["guihome-art", "IWOK", "GUIHOME Décoration"],
     description:
       "Designer mural professionnel — fresques murales, décoration peinte, live painting. +20 ans d'expérience.",
-    url: "https://guihomedecoration.com",
-    image: "https://guihomedecoration.com/og-image.jpg",
+    url: "https://www.guihome-art.com",
+    image: "https://www.guihome-art.com/og-image.jpg",
     areaServed: [
       { "@type": "AdministrativeArea", name: "Aveyron" },
       { "@type": "AdministrativeArea", name: "Finistère" },
@@ -85,10 +85,10 @@ async function buildLocalBusinessJsonLd() {
     ],
     founder: {
       "@type": "Person",
-      "@id": "https://guihomedecoration.com/#person",
+      "@id": "https://www.guihome-art.com/#person",
       name: "Guillaume Jeanjean",
       jobTitle: "Designer mural / Graffeur professionnel",
-      worksFor: { "@id": "https://guihomedecoration.com/#business" },
+      worksFor: { "@id": "https://www.guihome-art.com/#business" },
       sameAs: [contact.instagramUrl].filter(Boolean),
     },
     sameAs: [contact.instagramUrl].filter(Boolean),

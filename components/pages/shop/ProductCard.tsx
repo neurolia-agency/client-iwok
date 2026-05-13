@@ -5,10 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ShopProduct } from "@/lib/queries/shop";
 
-interface ProductCardProps {
-  product: ShopProduct;
-}
-
 const CATEGORY_LABELS: Record<string, string> = {
   toile: "Toile",
   print: "Print",
@@ -18,28 +14,26 @@ const CATEGORY_LABELS: Record<string, string> = {
   autre: "Autre",
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product }: { product: ShopProduct }) {
+  const [hovered, setHovered] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
-    <div
+    <Link
+      href={`/shop/${product.slug}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
+        display: "flex",
+        flexDirection: "column",
+        textDecoration: "none",
         backgroundColor: "var(--background)",
         borderRadius: "var(--radius)",
         overflow: "hidden",
-        boxShadow: "var(--shadow-subtle)",
+        boxShadow: hovered ? "var(--shadow-hover)" : "var(--shadow-subtle)",
+        transform: hovered ? "translateY(-2px)" : "translateY(0)",
         transition:
           "box-shadow var(--transition-standard), transform var(--transition-standard)",
-        display: "flex",
-        flexDirection: "column",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = "var(--shadow-hover)";
-        e.currentTarget.style.transform = "translateY(-2px)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "var(--shadow-subtle)";
-        e.currentTarget.style.transform = "translateY(0)";
       }}
     >
       {/* Image */}
@@ -62,7 +56,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             style={{
               objectFit: "cover",
               opacity: imgLoaded ? 1 : 0,
-              transition: "opacity 0.5s ease, transform 0.7s ease",
+              transform: hovered ? "scale(1.04)" : "scale(1)",
+              transition: "opacity 0.5s ease, transform 0.6s ease",
             }}
           />
         ) : (
@@ -84,6 +79,34 @@ export default function ProductCard({ product }: ProductCardProps) {
             Image à venir
           </div>
         )}
+
+        {/* Hover overlay */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(28,25,23,0.52)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: hovered ? 1 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.8125rem",
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#fff",
+            }}
+          >
+            Voir l&apos;œuvre →
+          </span>
+        </div>
       </div>
 
       {/* Content */}
@@ -130,7 +153,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.title}
         </h3>
 
-        {/* Description */}
+        {/* Description — 2 lignes max */}
         <p
           style={{
             fontFamily: "var(--font-sans)",
@@ -138,14 +161,17 @@ export default function ProductCard({ product }: ProductCardProps) {
             lineHeight: "var(--line-height-relaxed)",
             color: "var(--muted-foreground)",
             margin: 0,
-            maxWidth: "none",
             flex: 1,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
           }}
         >
           {product.description}
         </p>
 
-        {/* Price + CTA */}
+        {/* Prix + indicateur */}
         <div
           style={{
             display: "flex",
@@ -166,14 +192,21 @@ export default function ProductCard({ product }: ProductCardProps) {
           >
             {product.priceLabel}
           </span>
-          <Link
-            href={`/contact?from=shop&product=${product.slug}`}
-            className="cta-primary cta-primary--sm"
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              color: "var(--muted-foreground)",
+              letterSpacing: "0.08em",
+              transition: "color var(--transition-standard)",
+              ...(hovered ? { color: "var(--primary)" } : {}),
+            }}
           >
-            Commander
-          </Link>
+            Commander →
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
