@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { supabase } from "@/lib/supabase";
+import { generateInvoicePdf, type InvoiceData } from "@/lib/invoice/generate";
 
 export const dynamic = "force-dynamic";
+// Le PDF de facture peut prendre quelques secondes à générer
+export const maxDuration = 30;
 
 function esc(s: string) {
   return s
@@ -13,10 +16,16 @@ function esc(s: string) {
     .replace(/"/g, "&quot;");
 }
 
+interface BrevoAttachment {
+  name: string;
+  content: string; // base64
+}
+
 async function sendEmail(opts: {
   to: { email: string; name?: string };
   subject: string;
   html: string;
+  attachments?: BrevoAttachment[];
 }) {
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) return;
@@ -35,6 +44,9 @@ async function sendEmail(opts: {
       to: [opts.to],
       subject: opts.subject,
       htmlContent: opts.html,
+      ...(opts.attachments && opts.attachments.length > 0
+        ? { attachment: opts.attachments }
+        : {}),
     }),
   }).catch((err) => console.error("[webhook] brevo error:", err));
 }
@@ -116,6 +128,68 @@ async function handleSessionCompleted(session: Stripe.Checkout.Session) {
   const dbCity = (order?.shipping_city as string | null) ?? "";
   const dbCountry = (order?.shipping_country as string | null) ?? "";
 
+  // Générer le PDF de facture (numéro séquentiel atomique via RPC)
+  let invoiceAttachment: BrevoAttachment | null = null;
+  let invoiceNumber: string | null = null;
+  try {
+    const { data: invoiceNumData, error: invoiceErr } = await supabase
+      .rpc("assign_iwok_invoice_number", { p_order_id: orderId });
+
+    if (invoiceErr) {
+      console.error("[webhook] invoice number RPC error:", invoiceErr.message);
+    } else if (invoiceNumData) {
+      invoiceNumber = invoiceNumData as string;
+
+      // Recharger l'order avec toutes les infos pour la facture
+      const { data: fullOrder } = await supabase
+        .from("iwok_orders")
+        .select("*, iwok_order_items(title, quantity, price_cents)")
+        .eq("id", orderId)
+        .maybeSingle();
+
+      if (fullOrder) {
+        const orderRow = fullOrder as Record<string, unknown>;
+        const items = (orderRow.iwok_order_items as Array<{ title: string; quantity: number; price_cents: number }>) ?? [];
+
+        const invoiceData: InvoiceData = {
+          invoiceNumber,
+          invoiceDate: new Date(),
+          paidAt: orderRow.paid_at ? new Date(orderRow.paid_at as string) : new Date(),
+          orderRef,
+          customer: {
+            name: (orderRow.customer_name as string) || "",
+            email: (orderRow.customer_email as string) || "",
+            phone: (orderRow.customer_phone as string | null) ?? null,
+            shippingLine1: (orderRow.shipping_line1 as string) || "",
+            shippingLine2: (orderRow.shipping_line2 as string | null) ?? null,
+            shippingPostalCode: (orderRow.shipping_postal_code as string) || "",
+            shippingCity: (orderRow.shipping_city as string) || "",
+            shippingCountry: (orderRow.shipping_country as string) || "France",
+          },
+          items: items.map((it) => ({
+            title: it.title,
+            quantity: it.quantity,
+            priceCents: it.price_cents,
+          })),
+          shippingCostCents: (orderRow.shipping_cost_cents as number) ?? 0,
+          totalCents: (orderRow.total_cents as number) ?? 0,
+          isPickup,
+          currency: (orderRow.currency as string) ?? "EUR",
+        };
+
+        const pdfBytes = await generateInvoicePdf(invoiceData);
+        const pdfBase64 = Buffer.from(pdfBytes).toString("base64");
+        invoiceAttachment = {
+          name: `Facture-${invoiceNumber}.pdf`,
+          content: pdfBase64,
+        };
+      }
+    }
+  } catch (err) {
+    console.error("[webhook] invoice generation failed:", err);
+    // On continue sans facture plutôt que de bloquer l'email de confirmation
+  }
+
   // Email client
   const clientEmail = customer?.email || "";
   if (clientEmail) {
@@ -124,6 +198,7 @@ async function handleSessionCompleted(session: Stripe.Checkout.Session) {
     await sendEmail({
       to: { email: clientEmail, name: customer?.name ?? "" },
       subject: `✅ Commande confirmée #${orderRef} — merci pour votre confiance !`,
+      attachments: invoiceAttachment ? [invoiceAttachment] : undefined,
       html: `
 <!DOCTYPE html>
 <html lang="fr">
@@ -185,6 +260,16 @@ async function handleSessionCompleted(session: Stripe.Checkout.Session) {
           }
         </p>
       </div>
+
+      ${invoiceNumber ? `
+      <div style="background:#fef9f0;border:1px solid #f0e6d2;border-radius:8px;padding:14px 18px;margin:0 0 20px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">📎</span>
+        <div>
+          <p style="margin:0;font-size:13px;font-weight:700;color:#1c1917">Votre facture est jointe à cet email</p>
+          <p style="margin:2px 0 0;font-size:12px;color:#78716c">Référence&nbsp;: <strong style="font-family:monospace;color:#1c1917">${invoiceNumber}</strong></p>
+        </div>
+      </div>
+      ` : ""}
 
       <p style="margin:0 0 8px;font-size:15px;color:#44403c;line-height:1.7">
         Suivez votre commande à tout moment sur
