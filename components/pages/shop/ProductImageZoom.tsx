@@ -60,6 +60,7 @@ export default function ProductImageZoom({ src, alt }: Props) {
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const dragging = useRef(false);
+  const wasDragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
   const pinchStart = useRef<{ distance: number; zoom: number } | null>(null);
 
@@ -129,7 +130,13 @@ export default function ProductImageZoom({ src, alt }: Props) {
     });
   }
 
-  function handleDoubleClick() {
+  function handleImageClick() {
+    // Si l'utilisateur a draggé, on ignore le clic
+    if (wasDragging.current) {
+      wasDragging.current = false;
+      return;
+    }
+    // Toggle zoom 1x ↔ 2.5x
     if (zoom > 1) {
       setZoom(1);
       setOffset({ x: 0, y: 0 });
@@ -139,28 +146,39 @@ export default function ProductImageZoom({ src, alt }: Props) {
   }
 
   function handlePointerDown(e: React.PointerEvent) {
-    if (zoom <= 1) return;
-    (e.target as Element).setPointerCapture(e.pointerId);
-    dragging.current = true;
     dragStart.current = {
       x: e.clientX,
       y: e.clientY,
       offsetX: offset.x,
       offsetY: offset.y,
     };
+    wasDragging.current = false;
+    if (zoom > 1) {
+      (e.target as Element).setPointerCapture(e.pointerId);
+      dragging.current = true;
+    }
   }
 
   function handlePointerMove(e: React.PointerEvent) {
     if (!dragging.current) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      wasDragging.current = true;
+    }
     setOffset({
-      x: dragStart.current.offsetX + (e.clientX - dragStart.current.x),
-      y: dragStart.current.offsetY + (e.clientY - dragStart.current.y),
+      x: dragStart.current.offsetX + dx,
+      y: dragStart.current.offsetY + dy,
     });
   }
 
   function handlePointerUp(e: React.PointerEvent) {
     if (!dragging.current) return;
-    (e.target as Element).releasePointerCapture(e.pointerId);
+    try {
+      (e.target as Element).releasePointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
+    }
     dragging.current = false;
   }
 
@@ -275,17 +293,12 @@ export default function ProductImageZoom({ src, alt }: Props) {
         </button>
       </div>
 
-      {/* Image area */}
+      {/* Image area — clic dans la zone noire autour ferme, clic sur l'image zoome */}
       <div
         onClick={(e) => {
           if (e.target === e.currentTarget) handleClose();
         }}
         onWheel={handleWheel}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-        onDoubleClick={handleDoubleClick}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -296,7 +309,6 @@ export default function ProductImageZoom({ src, alt }: Props) {
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
-          cursor: zoom > 1 ? "grab" : "zoom-in",
           touchAction: "none",
         }}
       >
@@ -305,6 +317,14 @@ export default function ProductImageZoom({ src, alt }: Props) {
           src={src}
           alt={alt}
           draggable={false}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageClick();
+          }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
           style={{
             maxWidth: "94vw",
             maxHeight: "86vh",
@@ -313,9 +333,10 @@ export default function ProductImageZoom({ src, alt }: Props) {
             transformOrigin: "center",
             transition: dragging.current ? "none" : "transform 220ms cubic-bezier(0.16, 1, 0.3, 1)",
             userSelect: "none",
-            pointerEvents: "none",
             opacity: visible ? 1 : 0,
             willChange: "transform",
+            cursor: zoom > 1 ? (dragging.current ? "grabbing" : "grab") : "zoom-in",
+            touchAction: "none",
           }}
         />
       </div>
@@ -388,27 +409,6 @@ export default function ProductImageZoom({ src, alt }: Props) {
         </button>
       </div>
 
-      {/* Mobile hint (apparait en bas après chargement) */}
-      <p
-        style={{
-          position: "absolute",
-          bottom: "5rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          fontFamily: "var(--font-sans)",
-          fontSize: "0.6875rem",
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-          color: "rgba(255,255,255,0.35)",
-          whiteSpace: "nowrap",
-          opacity: visible && zoom === 1 ? 1 : 0,
-          transition: "opacity 300ms ease-out",
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      >
-        Double-clic ou pincer pour zoomer
-      </p>
     </div>
   ) : null;
 
