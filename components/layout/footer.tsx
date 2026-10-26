@@ -132,7 +132,12 @@ export default async function Footer() {
 
         {/* Bas de page */}
         <div className="footer-bottom">
-          <p className="footer-copyright">{copyright}</p>
+          <p className="footer-copyright">
+            {copyright}
+            <a href="https://neurolia.work" className="footer-legal-link mt-1 block">
+              Site réalisé par Neurolia
+            </a>
+          </p>
           <div className="flex items-center gap-4">
             {shopVisibility.enabled && (
               <Link href="/shop/suivi" className="footer-legal-link">
